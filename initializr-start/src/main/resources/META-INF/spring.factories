@@ -1,2 +1,3 @@
 io.spring.initializr.generator.project.ProjectGenerationConfiguration=\
-io.spring.initializr.start.extension.BuildCustomizerProjectGenerationConfiguration
+io.spring.initializr.start.extension.BuildCustomizerProjectGenerationConfiguration,\
+io.spring.initializr.start.code.ExtensionSourceCodeConfiguration

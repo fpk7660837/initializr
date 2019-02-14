@@ -1198,6 +1198,17 @@ initializr:
           versionRange: "[1.5.0.RELEASE,2.0.0.M1)"
           groupId: org.springframework.boot
           artifactId: spring-boot-actuator-docs
+    ### personal extension
+    - name: DSF
+      content:
+        - name: DSF
+          id: dsf
+          description: dmall dubbo framework
+          groupId: com.dmall.dsf
+          artifactId: dsf-sdk
+          mappings:
+            - versionRange: "[1.5.0.RELEASE,2.0.0.RELEASE)"
+              version: 2.5.7
   types:
     - name: Maven Project
       id: maven-project

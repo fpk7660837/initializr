@@ -16,14 +16,10 @@
 
 package io.spring.initializr.generator.buildsystem.maven;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-
 import io.spring.initializr.generator.buildsystem.Build;
 import io.spring.initializr.generator.buildsystem.BuildItemResolver;
+
+import java.util.*;
 
 /**
  * Maven build for a project.
@@ -32,101 +28,114 @@ import io.spring.initializr.generator.buildsystem.BuildItemResolver;
  */
 public class MavenBuild extends Build {
 
-	private MavenParent parent;
+    private MavenParent parent;
 
-	private String name;
+    private String name;
 
-	private String description;
+    private String description;
 
-	private String sourceDirectory;
+    private String sourceDirectory;
 
-	private String testSourceDirectory;
+    private String testSourceDirectory;
 
-	private final Map<String, String> properties = new TreeMap<>();
+    private final Map<String, String> properties = new TreeMap<>();
 
-	private final List<MavenPlugin> plugins = new ArrayList<>();
+    private final List<MavenPlugin> plugins = new ArrayList<>();
 
-	private String packaging;
+    private String packaging;
 
-	public MavenBuild(BuildItemResolver buildItemResolver) {
-		super(buildItemResolver);
-	}
+    private List<MavenProfile> profiles = new ArrayList<>();
 
-	public MavenBuild() {
-		this(null);
-	}
+    public MavenBuild(BuildItemResolver buildItemResolver) {
+        super(buildItemResolver);
+    }
 
-	public MavenParent parent(String groupId, String artifactId, String version) {
-		this.parent = new MavenParent(groupId, artifactId, version);
-		return this.parent;
-	}
+    public MavenBuild() {
+        this(null);
+    }
 
-	public MavenParent getParent() {
-		return this.parent;
-	}
+    public MavenParent parent(String groupId, String artifactId, String version) {
+        this.parent = new MavenParent(groupId, artifactId, version);
+        return this.parent;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public MavenParent getParent() {
+        return this.parent;
+    }
 
-	public String getName() {
-		return this.name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public String getName() {
+        return this.name;
+    }
 
-	public String getDescription() {
-		return this.description;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public void setProperty(String key, String value) {
-		this.properties.put(key, value);
-	}
+    public String getDescription() {
+        return this.description;
+    }
 
-	public Map<String, String> getProperties() {
-		return Collections.unmodifiableMap(this.properties);
-	}
+    public void setProperty(String key, String value) {
+        this.properties.put(key, value);
+    }
 
-	public String getSourceDirectory() {
-		return this.sourceDirectory;
-	}
+    public Map<String, String> getProperties() {
+        return Collections.unmodifiableMap(this.properties);
+    }
 
-	public void setSourceDirectory(String sourceDirectory) {
-		this.sourceDirectory = sourceDirectory;
-	}
+    public String getSourceDirectory() {
+        return this.sourceDirectory;
+    }
 
-	public String getTestSourceDirectory() {
-		return this.testSourceDirectory;
-	}
+    public void setSourceDirectory(String sourceDirectory) {
+        this.sourceDirectory = sourceDirectory;
+    }
 
-	public void setTestSourceDirectory(String testSourceDirectory) {
-		this.testSourceDirectory = testSourceDirectory;
-	}
+    public String getTestSourceDirectory() {
+        return this.testSourceDirectory;
+    }
 
-	public MavenPlugin plugin(String groupId, String artifactId) {
-		MavenPlugin plugin = new MavenPlugin(groupId, artifactId);
-		this.plugins.add(plugin);
-		return plugin;
-	}
+    public void setTestSourceDirectory(String testSourceDirectory) {
+        this.testSourceDirectory = testSourceDirectory;
+    }
 
-	public MavenPlugin plugin(String groupId, String artifactId, String version) {
-		MavenPlugin plugin = new MavenPlugin(groupId, artifactId, version);
-		this.plugins.add(plugin);
-		return plugin;
-	}
+    public MavenPlugin plugin(String groupId, String artifactId) {
+        MavenPlugin plugin = new MavenPlugin(groupId, artifactId);
+        this.plugins.add(plugin);
+        return plugin;
+    }
 
-	public List<MavenPlugin> getPlugins() {
-		return Collections.unmodifiableList(this.plugins);
-	}
+    public MavenPlugin plugin(String groupId, String artifactId, String version) {
+        MavenPlugin plugin = new MavenPlugin(groupId, artifactId, version);
+        this.plugins.add(plugin);
+        return plugin;
+    }
 
-	public void setPackaging(String packaging) {
-		this.packaging = packaging;
-	}
+    public List<MavenPlugin> getPlugins() {
+        return Collections.unmodifiableList(this.plugins);
+    }
 
-	public String getPackaging() {
-		return this.packaging;
-	}
+    public MavenProfile profile(String id) {
+        MavenProfile profile = new MavenProfile(id);
+        this.profiles.add(profile);
+        return profile;
+    }
+
+
+    public List<MavenProfile> getProfiles() {
+        return profiles;
+    }
+
+    public void setPackaging(String packaging) {
+        this.packaging = packaging;
+    }
+
+    public String getPackaging() {
+        return this.packaging;
+    }
 
 }

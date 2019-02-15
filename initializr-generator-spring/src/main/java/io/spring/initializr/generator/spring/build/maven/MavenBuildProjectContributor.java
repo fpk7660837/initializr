@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 
 /**
  * {@link ProjectContributor} to contribute the files for a {@link MavenBuild}.
@@ -41,12 +42,13 @@ public class MavenBuildProjectContributor implements BuildWriter, ProjectContrib
 
     private final MavenBuildWriter buildWriter;
 
+    private final MavenBuild build;
 
     private MavenBuild childBuild;
 
     public MavenBuildProjectContributor(MavenBuild build,
                                         IndentingWriterFactory indentingWriterFactory) {
-        this.childBuild = build;
+        this.build = build;
         this.indentingWriterFactory = indentingWriterFactory;
         this.buildWriter = new MavenBuildWriter();
     }
@@ -55,14 +57,31 @@ public class MavenBuildProjectContributor implements BuildWriter, ProjectContrib
     public void contribute(Path projectRoot) throws IOException {
         Path pomFile = Files.createFile(projectRoot.resolve("pom.xml"));
         writeBuild(Files.newBufferedWriter(pomFile));
+
+        MavenBuild build = this.build;
+        List<MavenBuild> childBuilds = build.getChildBuilds();
+
+        for (MavenBuild childBuild : childBuilds) {
+            this.childBuild = childBuild;
+            pomFile = Files.createFile(projectRoot.resolve(childBuild.getName() + "/pom.xml"));
+            writeChildBuild(Files.newBufferedWriter(pomFile));
+        }
+
     }
 
     @Override
     public void writeBuild(Writer out) throws IOException {
         try (IndentingWriter writer = this.indentingWriterFactory
                 .createIndentingWriter("maven", out)) {
-            this.buildWriter.writeTo(writer, this.childBuild);
+            this.buildWriter.writeTo(writer, this.build);
         }
     }
 
+    @Override
+    public void writeChildBuild(Writer out) throws IOException {
+        try (IndentingWriter writer = this.indentingWriterFactory
+                .createIndentingWriter("maven", out)) {
+            this.buildWriter.writeTo(writer, this.childBuild);
+        }
+    }
 }

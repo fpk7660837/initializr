@@ -16,11 +16,11 @@
 
 package io.spring.initializr.generator.spring.build;
 
-import java.io.IOException;
-import java.io.Writer;
-
 import io.spring.initializr.generator.buildsystem.Build;
 import io.spring.initializr.generator.buildsystem.BuildSystem;
+
+import java.io.IOException;
+import java.io.Writer;
 
 /**
  * Strategy that can be implemented by a {@link BuildSystem} that can generate a proper
@@ -30,11 +30,16 @@ import io.spring.initializr.generator.buildsystem.BuildSystem;
  */
 public interface BuildWriter {
 
-	/**
-	 * Write the {@link Build} to the specified {@link Writer}.
-	 * @param out the writer to use
-	 * @throws IOException if writing the build to {@code out} failed
-	 */
-	void writeBuild(Writer out) throws IOException;
+    /**
+     * Write the {@link Build} to the specified {@link Writer}.
+     *
+     * @param out the writer to use
+     * @throws IOException if writing the build to {@code out} failed
+     */
+    void writeBuild(Writer out) throws IOException;
 
+
+    default void writeChildBuild(Writer out) throws IOException {
+
+    }
 }

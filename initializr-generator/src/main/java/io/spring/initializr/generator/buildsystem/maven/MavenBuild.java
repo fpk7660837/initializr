@@ -46,6 +46,8 @@ public class MavenBuild extends Build {
 
     private List<MavenProfile> profiles = new ArrayList<>();
 
+    private List<MavenBuild> childBuilds = new ArrayList<>();
+
     public MavenBuild(BuildItemResolver buildItemResolver) {
         super(buildItemResolver);
     }
@@ -53,6 +55,7 @@ public class MavenBuild extends Build {
     public MavenBuild() {
         this(null);
     }
+
 
     public MavenParent parent(String groupId, String artifactId, String version) {
         this.parent = new MavenParent(groupId, artifactId, version);
@@ -125,6 +128,15 @@ public class MavenBuild extends Build {
         return profile;
     }
 
+    public MavenBuild childBuild(String name) {
+        MavenBuild mavenBuild = new MavenBuild();
+        this.childBuilds.add(mavenBuild);
+        return mavenBuild;
+    }
+
+    public List<MavenBuild> getChildBuilds() {
+        return childBuilds;
+    }
 
     public List<MavenProfile> getProfiles() {
         return profiles;

@@ -83,6 +83,7 @@ public class MainSourceCodeProjectContributor<T extends TypeDeclaration, C exten
                         this.projectDescription.getBuildSystem().getDirectory(
                                 projectRoot, this.projectDescription.getLanguage(), "web"),
                         sourceCode);
+
         this.sourceWriter
                 .writeTo(this.projectDescription.getBuildSystem().getDirectory(
                         projectRoot, this.projectDescription.getLanguage(), "api"),

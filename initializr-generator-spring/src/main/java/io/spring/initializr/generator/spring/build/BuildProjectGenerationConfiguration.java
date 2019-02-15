@@ -27,6 +27,7 @@ import io.spring.initializr.generator.language.kotlin.KotlinLanguage;
 import io.spring.initializr.generator.packaging.war.WarPackaging;
 import io.spring.initializr.generator.project.ProjectGenerationConfiguration;
 import io.spring.initializr.generator.project.ResolvedProjectDescription;
+import io.spring.initializr.generator.spring.build.maven.ChildMavenBuildCustomizer;
 import io.spring.initializr.generator.spring.build.maven.DefaultMavenBuildCustomizer;
 import io.spring.initializr.generator.spring.code.kotlin.KotlinJpaGradleBuildCustomizer;
 import io.spring.initializr.generator.spring.code.kotlin.KotlinJpaMavenBuildCustomizer;
@@ -58,6 +59,11 @@ public class BuildProjectGenerationConfiguration {
     public DefaultMavenBuildCustomizer initializrMetadataMavenBuildCustomizer(
             ResolvedProjectDescription projectDescription, InitializrMetadata metadata) {
         return new DefaultMavenBuildCustomizer(projectDescription, metadata);
+    }
+
+    @Bean
+    public ChildMavenBuildCustomizer childMavenBuildCustomizer() {
+        return new ChildMavenBuildCustomizer();
     }
 
 

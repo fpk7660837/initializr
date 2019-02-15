@@ -16,12 +16,6 @@
 
 package io.spring.initializr.generator.spring.code;
 
-import java.io.IOException;
-import java.nio.file.Path;
-import java.util.List;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
-
 import io.spring.initializr.generator.language.CompilationUnit;
 import io.spring.initializr.generator.language.SourceCode;
 import io.spring.initializr.generator.language.SourceCodeWriter;
@@ -29,8 +23,13 @@ import io.spring.initializr.generator.language.TypeDeclaration;
 import io.spring.initializr.generator.project.ResolvedProjectDescription;
 import io.spring.initializr.generator.project.contributor.ProjectContributor;
 import io.spring.initializr.generator.spring.util.LambdaSafe;
-
 import org.springframework.beans.factory.ObjectProvider;
+
+import java.io.IOException;
+import java.nio.file.Path;
+import java.util.List;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 /**
  * {@link ProjectContributor} for the application's test source code.
@@ -75,8 +74,14 @@ public class TestSourceCodeProjectContributor<T extends TypeDeclaration, C exten
 		customizeTestSourceCode(sourceCode);
 		this.sourceWriter
 				.writeTo(
-						this.projectDescription.getBuildSystem().getTestDirectory(
-								projectRoot, this.projectDescription.getLanguage()),
+						this.projectDescription.getBuildSystem().getDirectory(
+								projectRoot, this.projectDescription.getLanguage(),"web"),
+						sourceCode);
+
+		this.sourceWriter
+				.writeTo(
+						this.projectDescription.getBuildSystem().getDirectory(
+								projectRoot, this.projectDescription.getLanguage(),"api"),
 						sourceCode);
 	}
 

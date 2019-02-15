@@ -18,10 +18,17 @@ public class Module {
 
     private List<Module> childModules;
 
+    private List<Module> referModules;
+
     private MavenBuild mavenBuild;
 
-    public Module(String name) {
+    private String packaging;
+
+
+    public Module(String name, String packaging, MavenBuild build) {
         this.name = name;
+        this.packaging = packaging;
+        this.mavenBuild = build;
     }
 
     public String getName() {
@@ -32,6 +39,13 @@ public class Module {
         this.name = name;
     }
 
+    public String getPackaging() {
+        return packaging;
+    }
+
+    public void setPackaging(String packaging) {
+        this.packaging = packaging;
+    }
 
     public MavenBuild getMavenBuild() {
         return mavenBuild;
@@ -53,7 +67,6 @@ public class Module {
 
         Set<Module> dependencies = new HashSet<>();
         for (Module childModule : childModules) {
-            System.out.println(childModule.getName());
             dependencies.add(childModule);
             List<Module> childModules = childModule.getChildModulesRecursive();
 
@@ -66,11 +79,39 @@ public class Module {
         return new ArrayList<>(dependencies);
     }
 
+    public List<Module> getAllModules() {
+        List<Module> childModules = getChildModulesRecursive();
+        List<Module> referModules = getReferModules();
+
+        List<Module> allModules = new ArrayList<>();
+
+        if (!CollectionUtils.isEmpty(childModules)) {
+            allModules.addAll(childModules);
+        }
+
+        if (!CollectionUtils.isEmpty(referModules)) {
+            allModules.addAll(referModules);
+        }
+
+        return allModules;
+    }
+
     public void addChildModule(Module child) {
         if (null == childModules) {
             childModules = new ArrayList<>();
         }
         childModules.add(child);
+    }
+
+    public void addReferModule(Module module) {
+        if (null == referModules) {
+            referModules = new ArrayList<>();
+        }
+        referModules.add(module);
+    }
+
+    public List<Module> getReferModules() {
+        return referModules;
     }
 
     @Override

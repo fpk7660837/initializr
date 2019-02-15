@@ -16,17 +16,17 @@
 
 package io.spring.initializr.generator.spring.build.maven;
 
-import java.io.IOException;
-import java.io.StringWriter;
-import java.nio.file.Path;
-import java.util.Arrays;
-import java.util.List;
-
 import io.spring.initializr.generator.buildsystem.maven.MavenBuild;
 import io.spring.initializr.generator.io.IndentingWriterFactory;
 import io.spring.initializr.generator.io.SimpleIndentStrategy;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+
+import java.io.IOException;
+import java.io.StringWriter;
+import java.nio.file.Path;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -43,7 +43,7 @@ class MavenBuildProjectContributorTests {
 			throws IOException {
 		MavenBuild build = new MavenBuild();
 		new MavenBuildProjectContributor(build,
-				IndentingWriterFactory.withDefaultSettings()).contribute(projectDir);
+				IndentingWriterFactory.withDefaultSettings(),null).contribute(projectDir);
 		Path buildGradle = projectDir.resolve("pom.xml");
 		assertThat(buildGradle).isRegularFile();
 	}
@@ -86,7 +86,7 @@ class MavenBuildProjectContributorTests {
 	private List<String> generatePom(MavenBuild mavenBuild,
 			IndentingWriterFactory indentingWriterFactory) throws Exception {
 		StringWriter writer = new StringWriter();
-		new MavenBuildProjectContributor(mavenBuild, indentingWriterFactory)
+		new MavenBuildProjectContributor(mavenBuild, indentingWriterFactory,null)
 				.writeBuild(writer);
 		return Arrays.asList(writer.toString().split("\\r?\\n"));
 	}

@@ -17,6 +17,7 @@
 package io.spring.initializr.generator.spring.configuration;
 
 import io.spring.initializr.generator.buildsystem.Build;
+import io.spring.initializr.generator.buildsystem.maven.MavenBuild;
 import io.spring.initializr.generator.project.ProjectGenerationConfiguration;
 import io.spring.initializr.generator.project.module.DefaultModuleTopology;
 import io.spring.initializr.generator.project.module.ModuleTopology;
@@ -45,8 +46,8 @@ public class ApplicationConfigurationProjectGenerationConfiguration {
 
 
     @Bean
-    public ModuleTopology moduleTopology() {
-        return new DefaultModuleTopology();
+    public ModuleTopology moduleTopology(MavenBuild build) {
+        return new DefaultModuleTopology(build);
     }
 
 

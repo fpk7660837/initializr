@@ -14,7 +14,7 @@ class DefaultModuleTopologyTest {
 
     @Test
     void getAllModuleNames() {
-        DefaultModuleTopology defaultModuleTopology = new DefaultModuleTopology();
+        DefaultModuleTopology defaultModuleTopology = new DefaultModuleTopology(null);
 
         List<String> modules = new ArrayList<>();
         modules.add("web");

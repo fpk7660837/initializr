@@ -1,5 +1,6 @@
 package io.spring.initializr.generator.project.module;
 
+import io.spring.initializr.generator.buildsystem.maven.MavenBuild;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
@@ -17,18 +18,17 @@ public class DefaultModuleTopology implements ModuleTopology {
 
     private Module root;
 
-    private Module exporter;
 
-    public DefaultModuleTopology() {
-        root = new Module("root");
+    public DefaultModuleTopology(MavenBuild build) {
+        root = new Module("root", null, build);
 
-        Module common = new Module("common");
-        Module rpc = new Module("rpc");
-        Module service = new Module("service");
-        Module dao = new Module("dao");
-        Module web = new Module("web");
-        Module api = new Module("api");
-        Module mq = new Module("mq");
+        Module common = new Module("common", null, new MavenBuild());
+        Module rpc = new Module("rpc", null, new MavenBuild());
+        Module service = new Module("service", null, new MavenBuild());
+        Module dao = new Module("dao", null, new MavenBuild());
+        Module web = new Module("web", "war", new MavenBuild());
+        Module api = new Module("api", "war", new MavenBuild());
+        Module mq = new Module("mq", null, new MavenBuild());
 
         dao.addChildModule(common);
 
@@ -42,9 +42,36 @@ public class DefaultModuleTopology implements ModuleTopology {
         root.addChildModule(web);
         root.addChildModule(api);
 
-        exporter = new Module("sdk");
+        Module sdk = new Module("sdk", null, new MavenBuild());
+
+        root.addReferModule(sdk);
+
+
+        List<Module> childModule = root.getChildModulesRecursive();
+
+        for (Module module : childModule) {
+            MavenBuild mavenBuild = childBuild(module);
+            mavenBuild.parent(root.getMavenBuild().getGroup(), root.getMavenBuild().getArtifact(),
+                    root.getMavenBuild().getVersion());
+        }
+
+        List<Module> referModules = root.getReferModules();
+
+        for (Module referModule : referModules) {
+            childBuild(referModule);
+        }
     }
 
+    private MavenBuild childBuild(Module module) {
+        String name = module.getName();
+        MavenBuild mavenBuild = module.getMavenBuild();
+        String packaging = module.getPackaging();
+
+        mavenBuild.setArtifact(name);
+        mavenBuild.setPackaging(packaging);
+        mavenBuild.setVersion(null);
+        return mavenBuild;
+    }
 
     @Override
     public List<String> getAllModuleNames() {
@@ -52,7 +79,7 @@ public class DefaultModuleTopology implements ModuleTopology {
         List<String> moduleNames = new ArrayList<>();
 
         appendChildNames(moduleNames);
-        appendExportName(moduleNames);
+        appendReferNames(moduleNames);
 
         return moduleNames;
     }
@@ -74,8 +101,22 @@ public class DefaultModuleTopology implements ModuleTopology {
                 .collect(Collectors.toList()));
     }
 
-    private void appendExportName(List<String> moduleNames) {
-        moduleNames.add(exporter.getName());
+    private void appendReferNames(List<String> moduleNames) {
+        List<String> referNames = root.getReferModules().stream()
+                .map(Module::getName)
+                .collect(Collectors.toList());
+
+        if (CollectionUtils.isEmpty(referNames)) {
+            return;
+        }
+
+        moduleNames.addAll(referNames);
     }
+
+
+    public Module getRoot() {
+        return root;
+    }
+
 
 }

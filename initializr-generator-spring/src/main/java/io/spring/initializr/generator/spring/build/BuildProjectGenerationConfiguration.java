@@ -32,7 +32,6 @@ import io.spring.initializr.generator.spring.code.kotlin.KotlinJpaGradleBuildCus
 import io.spring.initializr.generator.spring.code.kotlin.KotlinJpaMavenBuildCustomizer;
 import io.spring.initializr.generator.spring.code.kotlin.KotlinProjectSettings;
 import io.spring.initializr.metadata.InitializrMetadata;
-
 import org.springframework.context.annotation.Bean;
 
 /**
@@ -43,64 +42,65 @@ import org.springframework.context.annotation.Bean;
 @ProjectGenerationConfiguration
 public class BuildProjectGenerationConfiguration {
 
-	@Bean
-	public BuildCustomizer<Build> testStarterContributor() {
-		return (build) -> build.dependencies().add("test", "org.springframework.boot",
-				"spring-boot-starter-test", DependencyScope.TEST_COMPILE);
-	}
+    @Bean
+    public BuildCustomizer<Build> testStarterContributor() {
+        return (build) -> build.dependencies().add("test", "org.springframework.boot",
+                "spring-boot-starter-test", DependencyScope.TEST_COMPILE);
+    }
 
-	@Bean
-	public DefaultStarterBuildCustomizer defaultStarterContributor(
-			InitializrMetadata metadata) {
-		return new DefaultStarterBuildCustomizer(metadata);
-	}
+    @Bean
+    public DefaultStarterBuildCustomizer defaultStarterContributor(
+            InitializrMetadata metadata) {
+        return new DefaultStarterBuildCustomizer(metadata);
+    }
 
-	@Bean
-	public DefaultMavenBuildCustomizer initializrMetadataMavenBuildCustomizer(
-			ResolvedProjectDescription projectDescription, InitializrMetadata metadata) {
-		return new DefaultMavenBuildCustomizer(projectDescription, metadata);
-	}
+    @Bean
+    public DefaultMavenBuildCustomizer initializrMetadataMavenBuildCustomizer(
+            ResolvedProjectDescription projectDescription, InitializrMetadata metadata) {
+        return new DefaultMavenBuildCustomizer(projectDescription, metadata);
+    }
 
-	@Bean
-	@ConditionalOnPackaging(WarPackaging.ID)
-	public WarPackagingWebStarterBuildCustomizer warPackagingWebStarterBuildCustomizer(
-			InitializrMetadata metadata) {
-		return new WarPackagingWebStarterBuildCustomizer(metadata);
-	}
 
-	@Bean
-	@ConditionalOnLanguage(KotlinLanguage.ID)
-	@ConditionalOnBuildSystem(GradleBuildSystem.ID)
-	public KotlinJpaGradleBuildCustomizer kotlinJpaGradleBuildCustomizer(
-			InitializrMetadata metadata, KotlinProjectSettings settings) {
-		return new KotlinJpaGradleBuildCustomizer(metadata, settings);
-	}
+    @Bean
+    @ConditionalOnPackaging(WarPackaging.ID)
+    public WarPackagingWebStarterBuildCustomizer warPackagingWebStarterBuildCustomizer(
+            InitializrMetadata metadata) {
+        return new WarPackagingWebStarterBuildCustomizer(metadata);
+    }
 
-	@Bean
-	@ConditionalOnLanguage(KotlinLanguage.ID)
-	@ConditionalOnBuildSystem(MavenBuildSystem.ID)
-	public KotlinJpaMavenBuildCustomizer kotlinJpaMavenBuildCustomizer(
-			InitializrMetadata metadata) {
-		return new KotlinJpaMavenBuildCustomizer(metadata);
-	}
+    @Bean
+    @ConditionalOnLanguage(KotlinLanguage.ID)
+    @ConditionalOnBuildSystem(GradleBuildSystem.ID)
+    public KotlinJpaGradleBuildCustomizer kotlinJpaGradleBuildCustomizer(
+            InitializrMetadata metadata, KotlinProjectSettings settings) {
+        return new KotlinJpaGradleBuildCustomizer(metadata, settings);
+    }
 
-	@Bean
-	public DependencyManagementBuildCustomizer dependencyManagementBuildCustomizer(
-			ResolvedProjectDescription projectDescription, InitializrMetadata metadata) {
-		return new DependencyManagementBuildCustomizer(projectDescription, metadata);
-	}
+    @Bean
+    @ConditionalOnLanguage(KotlinLanguage.ID)
+    @ConditionalOnBuildSystem(MavenBuildSystem.ID)
+    public KotlinJpaMavenBuildCustomizer kotlinJpaMavenBuildCustomizer(
+            InitializrMetadata metadata) {
+        return new KotlinJpaMavenBuildCustomizer(metadata);
+    }
 
-	@Bean
-	public SimpleBuildCustomizer projectDescriptionBuildCustomizer(
-			ResolvedProjectDescription projectDescription, InitializrMetadata metadata) {
-		return new SimpleBuildCustomizer(projectDescription, metadata);
-	}
+    @Bean
+    public DependencyManagementBuildCustomizer dependencyManagementBuildCustomizer(
+            ResolvedProjectDescription projectDescription, InitializrMetadata metadata) {
+        return new DependencyManagementBuildCustomizer(projectDescription, metadata);
+    }
 
-	@Bean
-	public SpringBootVersionRepositoriesBuildCustomizer repositoriesBuilderCustomizer(
-			ResolvedProjectDescription description) {
-		return new SpringBootVersionRepositoriesBuildCustomizer(
-				description.getPlatformVersion());
-	}
+    @Bean
+    public SimpleBuildCustomizer projectDescriptionBuildCustomizer(
+            ResolvedProjectDescription projectDescription, InitializrMetadata metadata) {
+        return new SimpleBuildCustomizer(projectDescription, metadata);
+    }
+
+    @Bean
+    public SpringBootVersionRepositoriesBuildCustomizer repositoriesBuilderCustomizer(
+            ResolvedProjectDescription description) {
+        return new SpringBootVersionRepositoriesBuildCustomizer(
+                description.getPlatformVersion());
+    }
 
 }

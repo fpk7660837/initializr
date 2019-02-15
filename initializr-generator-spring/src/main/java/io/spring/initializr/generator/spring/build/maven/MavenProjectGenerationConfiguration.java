@@ -24,6 +24,8 @@ import io.spring.initializr.generator.condition.ConditionalOnPackaging;
 import io.spring.initializr.generator.io.IndentingWriterFactory;
 import io.spring.initializr.generator.packaging.war.WarPackaging;
 import io.spring.initializr.generator.project.ProjectGenerationConfiguration;
+import io.spring.initializr.generator.project.module.Module;
+import io.spring.initializr.generator.project.module.ModuleTopology;
 import io.spring.initializr.generator.spring.build.BuildCustomizer;
 import io.spring.initializr.generator.spring.util.LambdaSafe;
 import org.springframework.beans.factory.ObjectProvider;
@@ -66,8 +68,10 @@ public class MavenProjectGenerationConfiguration {
 
     @Bean
     public MavenBuildProjectContributor mavenBuildProjectContributor(MavenBuild build,
-                                                                     IndentingWriterFactory indentingWriterFactory) {
-        return new MavenBuildProjectContributor(build, indentingWriterFactory);
+                                                                     IndentingWriterFactory indentingWriterFactory,
+                                                                     ModuleTopology moduleTopology) {
+        Module root = moduleTopology.getRoot();
+        return new MavenBuildProjectContributor(build, indentingWriterFactory, root);
     }
 
     @Bean

@@ -22,6 +22,7 @@ import io.spring.initializr.generator.buildsystem.maven.MavenPlugin.Execution;
 import io.spring.initializr.generator.buildsystem.maven.MavenPlugin.Setting;
 import io.spring.initializr.generator.io.IndentingWriter;
 import io.spring.initializr.generator.version.VersionReference;
+import org.springframework.util.CollectionUtils;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -350,6 +351,9 @@ public class MavenBuildWriter {
 
     private void writeProfile(IndentingWriter writer, String containerName, String childName, List<MavenProfile>
             profiles) {
+        if (CollectionUtils.isEmpty(profiles)) {
+            return;
+        }
         writeElement(writer, containerName, () -> profiles.forEach(mavenProfile -> writeElement(writer, childName, () -> {
             writeSingleElement(writer, "id", mavenProfile.getId());
             writeElement(writer, "activation", () -> writeSingleElement(writer, "activeByDefault", mavenProfile.getActivation()

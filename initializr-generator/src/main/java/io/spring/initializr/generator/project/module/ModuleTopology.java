@@ -11,5 +11,7 @@ public interface ModuleTopology {
 
     List<String> getAllModuleNames();
 
+    Module getRoot();
+
 
 }

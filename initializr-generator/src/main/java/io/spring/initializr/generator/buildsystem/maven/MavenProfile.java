@@ -19,8 +19,9 @@ public class MavenProfile {
 
     private DependencyContainer dependencies = null;
 
-    public MavenProfile(String id) {
+    public MavenProfile(String id, boolean activation) {
         this.id = id;
+        this.activation = new Activation(activation);
     }
 
 
@@ -32,9 +33,10 @@ public class MavenProfile {
         this.id = id;
     }
 
-    public void setProperties(Map<String, String> properties) {
-        this.properties = properties;
+    public void properties(String key, String value) {
+        this.properties.put(key, value);
     }
+
 
     public void setDependencies(DependencyContainer dependencies) {
         this.dependencies = dependencies;
@@ -71,6 +73,12 @@ public class MavenProfile {
         public void setActiveByDefault(boolean activeByDefault) {
             this.activeByDefault = activeByDefault;
         }
+
+
+        public String getValue() {
+            return activeByDefault ? "true" : "false";
+        }
+
     }
 
 }

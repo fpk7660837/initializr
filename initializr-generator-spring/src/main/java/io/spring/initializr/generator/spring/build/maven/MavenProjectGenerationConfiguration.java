@@ -77,4 +77,9 @@ public class MavenProjectGenerationConfiguration {
     }
 
 
+    @Bean
+    public BuildCustomizer<MavenBuild> profileMavenBuilderCustomizer() {
+        return new ProfileMavenBuilderCustomizer();
+    }
+
 }

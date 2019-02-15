@@ -119,8 +119,8 @@ public class MavenBuild extends Build {
         return Collections.unmodifiableList(this.plugins);
     }
 
-    public MavenProfile profile(String id) {
-        MavenProfile profile = new MavenProfile(id);
+    public MavenProfile profile(String id, boolean activation) {
+        MavenProfile profile = new MavenProfile(id, activation);
         this.profiles.add(profile);
         return profile;
     }

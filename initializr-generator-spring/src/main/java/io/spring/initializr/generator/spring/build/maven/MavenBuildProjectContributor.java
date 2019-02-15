@@ -21,15 +21,12 @@ import io.spring.initializr.generator.buildsystem.maven.MavenBuildWriter;
 import io.spring.initializr.generator.io.IndentingWriter;
 import io.spring.initializr.generator.io.IndentingWriterFactory;
 import io.spring.initializr.generator.project.contributor.ProjectContributor;
-import io.spring.initializr.generator.project.module.Module;
 import io.spring.initializr.generator.spring.build.BuildWriter;
-import org.springframework.util.CollectionUtils;
 
 import java.io.IOException;
 import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
 
 /**
  * {@link ProjectContributor} to contribute the files for a {@link MavenBuild}.
@@ -39,42 +36,25 @@ import java.util.List;
  */
 public class MavenBuildProjectContributor implements BuildWriter, ProjectContributor {
 
-    private final MavenBuild build;
 
     private final IndentingWriterFactory indentingWriterFactory;
 
     private final MavenBuildWriter buildWriter;
 
-    private final Module module;
 
     private MavenBuild childBuild;
 
     public MavenBuildProjectContributor(MavenBuild build,
-                                        IndentingWriterFactory indentingWriterFactory, Module module) {
-        this.build = build;
+                                        IndentingWriterFactory indentingWriterFactory) {
         this.childBuild = build;
         this.indentingWriterFactory = indentingWriterFactory;
         this.buildWriter = new MavenBuildWriter();
-        this.module = module;
     }
 
     @Override
     public void contribute(Path projectRoot) throws IOException {
         Path pomFile = Files.createFile(projectRoot.resolve("pom.xml"));
         writeBuild(Files.newBufferedWriter(pomFile));
-
-        List<Module> childModules = module.getChildModulesRecursive();
-        if (CollectionUtils.isEmpty(childModules)) {
-            return;
-        }
-
-        for (Module childModule : childModules) {
-            pomFile = Files.createFile(projectRoot.resolve(childModule.getName() + "/pom.xml"));
-            this.childBuild = childModule.getMavenBuild();
-            writeBuild(Files.newBufferedWriter(pomFile));
-        }
-
-
     }
 
     @Override

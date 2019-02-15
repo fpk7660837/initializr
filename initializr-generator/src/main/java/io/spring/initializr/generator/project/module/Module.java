@@ -1,6 +1,5 @@
 package io.spring.initializr.generator.project.module;
 
-import io.spring.initializr.generator.buildsystem.maven.MavenBuild;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
@@ -20,15 +19,9 @@ public class Module {
 
     private List<Module> referModules;
 
-    private MavenBuild mavenBuild;
 
-    private String packaging;
-
-
-    public Module(String name, String packaging, MavenBuild build) {
+    public Module(String name) {
         this.name = name;
-        this.packaging = packaging;
-        this.mavenBuild = build;
     }
 
     public String getName() {
@@ -39,21 +32,6 @@ public class Module {
         this.name = name;
     }
 
-    public String getPackaging() {
-        return packaging;
-    }
-
-    public void setPackaging(String packaging) {
-        this.packaging = packaging;
-    }
-
-    public MavenBuild getMavenBuild() {
-        return mavenBuild;
-    }
-
-    public void setMavenBuild(MavenBuild mavenBuild) {
-        this.mavenBuild = mavenBuild;
-    }
 
     public List<Module> getChildModules() {
         return childModules;

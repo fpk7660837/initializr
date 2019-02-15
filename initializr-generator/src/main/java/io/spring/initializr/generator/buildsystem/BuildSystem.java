@@ -16,12 +16,11 @@
 
 package io.spring.initializr.generator.buildsystem;
 
+import io.spring.initializr.generator.language.Language;
+import org.springframework.core.io.support.SpringFactoriesLoader;
+
 import java.nio.file.Path;
 import java.util.Objects;
-
-import io.spring.initializr.generator.language.Language;
-
-import org.springframework.core.io.support.SpringFactoriesLoader;
 
 /**
  * A build system that can be used by a generated project.
@@ -30,28 +29,33 @@ import org.springframework.core.io.support.SpringFactoriesLoader;
  */
 public interface BuildSystem {
 
-	/**
-	 * The id of the build system.
-	 * @return the id
-	 */
-	String id();
+    /**
+     * The id of the build system.
+     *
+     * @return the id
+     */
+    String id();
 
-	default Path getMainDirectory(Path projectRoot, Language language) {
-		return projectRoot.resolve("src/main/" + language.id());
-	}
+    default Path getMainDirectory(Path projectRoot, Language language) {
+        return projectRoot.resolve("src/main/" + language.id());
+    }
 
-	default Path getTestDirectory(Path projectRoot, Language language) {
-		return projectRoot.resolve("src/test/" + language.id());
-	}
+    default Path getTestDirectory(Path projectRoot, Language language) {
+        return projectRoot.resolve("src/test/" + language.id());
+    }
 
-	static BuildSystem forId(String id) {
-		return SpringFactoriesLoader
-				.loadFactories(BuildSystemFactory.class,
-						BuildSystem.class.getClassLoader())
-				.stream().map((factory) -> factory.createBuildSystem(id))
-				.filter(Objects::nonNull).findFirst()
-				.orElseThrow(() -> new IllegalStateException(
-						"Unrecognized build system id '" + id + "'"));
-	}
+    static BuildSystem forId(String id) {
+        return SpringFactoriesLoader
+                .loadFactories(BuildSystemFactory.class,
+                        BuildSystem.class.getClassLoader())
+                .stream().map((factory) -> factory.createBuildSystem(id))
+                .filter(Objects::nonNull).findFirst()
+                .orElseThrow(() -> new IllegalStateException(
+                        "Unrecognized build system id '" + id + "'"));
+    }
+
+    default Path getDirectory(Path projectRoot, Language language, String module) {
+        return projectRoot.resolve(module + "/src/main/" + language.id());
+    }
 
 }

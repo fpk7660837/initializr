@@ -46,11 +46,14 @@ public class DefaultModuleTopology implements ModuleTopology {
 
         root.addReferModule(sdk);
 
+        addMavenBuild();
+    }
 
+    private void addMavenBuild() {
         List<Module> childModule = root.getChildModulesRecursive();
 
         for (Module module : childModule) {
-            MavenBuild mavenBuild = childBuild(module);
+            MavenBuild mavenBuild = addChildBuild(module);
             mavenBuild.parent(root.getMavenBuild().getGroup(), root.getMavenBuild().getArtifact(),
                     root.getMavenBuild().getVersion());
         }
@@ -58,11 +61,11 @@ public class DefaultModuleTopology implements ModuleTopology {
         List<Module> referModules = root.getReferModules();
 
         for (Module referModule : referModules) {
-            childBuild(referModule);
+            addChildBuild(referModule);
         }
     }
 
-    private MavenBuild childBuild(Module module) {
+    private MavenBuild addChildBuild(Module module) {
         String name = module.getName();
         MavenBuild mavenBuild = module.getMavenBuild();
         String packaging = module.getPackaging();

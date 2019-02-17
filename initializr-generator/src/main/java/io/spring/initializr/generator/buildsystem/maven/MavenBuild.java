@@ -128,7 +128,7 @@ public class MavenBuild extends Build {
         return profile;
     }
 
-    public MavenBuild childBuild(String name) {
+    public MavenBuild childBuild() {
         MavenBuild mavenBuild = new MavenBuild();
         this.childBuilds.add(mavenBuild);
         return mavenBuild;

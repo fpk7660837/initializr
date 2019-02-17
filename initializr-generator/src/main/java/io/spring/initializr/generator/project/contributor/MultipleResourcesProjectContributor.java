@@ -16,14 +16,14 @@
 
 package io.spring.initializr.generator.project.contributor;
 
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import org.springframework.util.FileCopyUtils;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.function.Predicate;
-
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
-import org.springframework.util.FileCopyUtils;
 
 /**
  * A {@link ProjectContributor} that contributes all of the resources found beneath a root
@@ -58,7 +58,7 @@ public class MultipleResourcesProjectContributor implements ProjectContributor {
 			String filename = resource.getURI().toString()
 					.substring(root.getURI().toString().length() + 1);
 			if (resource.isReadable()) {
-				Path output = projectRoot.resolve(filename);
+				Path output = getFilePath(projectRoot, filename);
 				Files.createDirectories(output.getParent());
 				Files.createFile(output);
 				FileCopyUtils.copy(resource.getInputStream(),
@@ -67,6 +67,10 @@ public class MultipleResourcesProjectContributor implements ProjectContributor {
 				output.toFile().setExecutable(this.executable.test(filename));
 			}
 		}
+	}
+
+	protected Path getFilePath(Path projectRoot, String filename) {
+		return projectRoot.resolve(filename);
 	}
 
 }

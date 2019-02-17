@@ -63,7 +63,7 @@ public class MavenBuildProjectContributor implements BuildWriter, ProjectContrib
 
         for (MavenBuild childBuild : childBuilds) {
             this.childBuild = childBuild;
-            pomFile = Files.createFile(projectRoot.resolve(childBuild.getName() + "/pom.xml"));
+            pomFile = Files.createFile(projectRoot.resolve(childBuild.getArtifact() + "/pom.xml"));
             writeChildBuild(Files.newBufferedWriter(pomFile));
         }
 

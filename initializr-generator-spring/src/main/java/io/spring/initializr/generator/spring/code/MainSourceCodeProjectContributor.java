@@ -70,6 +70,27 @@ public class MainSourceCodeProjectContributor<T extends TypeDeclaration, C exten
 
     @Override
     public void contribute(Path projectRoot) throws IOException {
+        S sourceCode = buildMainSourceCode();
+        writeCode(projectRoot, sourceCode, "web");
+        writeCode(projectRoot, sourceCode, "api");
+
+        sourceCode = buildEmptySourceCode();
+
+        writeCode(projectRoot, sourceCode, "service");
+        writeCode(projectRoot, sourceCode, "dao");
+        writeCode(projectRoot, sourceCode, "common");
+        writeCode(projectRoot, sourceCode, "rpc");
+        writeCode(projectRoot, sourceCode, "sdk");
+        writeCode(projectRoot, sourceCode, "mq");
+    }
+
+
+    private S buildEmptySourceCode() {
+        return this.sourceFactory.get();
+    }
+
+
+    private S buildMainSourceCode() {
         S sourceCode = this.sourceFactory.get();
         String applicationName = this.projectDescription.getApplicationName();
         C compilationUnit = sourceCode.createCompilationUnit(
@@ -78,15 +99,13 @@ public class MainSourceCodeProjectContributor<T extends TypeDeclaration, C exten
         customizeMainApplicationType(mainApplicationType);
         customizeMainCompilationUnit(compilationUnit);
         customizeMainSourceCode(sourceCode);
-        this.sourceWriter
-                .writeTo(
-                        this.projectDescription.getBuildSystem().getDirectory(
-                                projectRoot, this.projectDescription.getLanguage(), "web"),
-                        sourceCode);
+        return sourceCode;
+    }
 
+    private void writeCode(Path projectRoot, S sourceCode, String module) throws IOException {
         this.sourceWriter
                 .writeTo(this.projectDescription.getBuildSystem().getDirectory(
-                        projectRoot, this.projectDescription.getLanguage(), "api"),
+                        projectRoot, this.projectDescription.getLanguage(), module),
                         sourceCode);
     }
 

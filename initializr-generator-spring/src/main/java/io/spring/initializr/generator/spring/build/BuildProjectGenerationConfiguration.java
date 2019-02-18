@@ -16,8 +16,7 @@
 
 package io.spring.initializr.generator.spring.build;
 
-import io.spring.initializr.generator.buildsystem.Build;
-import io.spring.initializr.generator.buildsystem.DependencyScope;
+import io.spring.initializr.generator.buildsystem.BuildItemResolver;
 import io.spring.initializr.generator.buildsystem.gradle.GradleBuildSystem;
 import io.spring.initializr.generator.buildsystem.maven.MavenBuildSystem;
 import io.spring.initializr.generator.condition.ConditionalOnBuildSystem;
@@ -28,12 +27,14 @@ import io.spring.initializr.generator.packaging.war.WarPackaging;
 import io.spring.initializr.generator.project.ProjectGenerationConfiguration;
 import io.spring.initializr.generator.project.ResolvedProjectDescription;
 import io.spring.initializr.generator.project.module.ModuleTopology;
+import io.spring.initializr.generator.spring.build.maven.ChildDependencyMavenBuildCustomizer;
 import io.spring.initializr.generator.spring.build.maven.ChildMavenBuildCustomizer;
 import io.spring.initializr.generator.spring.build.maven.DefaultMavenBuildCustomizer;
 import io.spring.initializr.generator.spring.code.kotlin.KotlinJpaGradleBuildCustomizer;
 import io.spring.initializr.generator.spring.code.kotlin.KotlinJpaMavenBuildCustomizer;
 import io.spring.initializr.generator.spring.code.kotlin.KotlinProjectSettings;
 import io.spring.initializr.metadata.InitializrMetadata;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.context.annotation.Bean;
 
 /**
@@ -44,17 +45,17 @@ import org.springframework.context.annotation.Bean;
 @ProjectGenerationConfiguration
 public class BuildProjectGenerationConfiguration {
 
-    @Bean
-    public BuildCustomizer<Build> testStarterContributor() {
-        return (build) -> build.dependencies().add("test", "org.springframework.boot",
-                "spring-boot-starter-test", DependencyScope.TEST_COMPILE);
-    }
+    // @Bean
+    // public BuildCustomizer<Build> testStarterContributor() {
+    //     return (build) -> build.dependencies().add("test", "org.springframework.boot",
+    //             "spring-boot-starter-test", DependencyScope.TEST_COMPILE);
+    // }
 
-    @Bean
-    public DefaultStarterBuildCustomizer defaultStarterContributor(
-            InitializrMetadata metadata) {
-        return new DefaultStarterBuildCustomizer(metadata);
-    }
+    // @Bean
+    // public DefaultStarterBuildCustomizer defaultStarterContributor(
+    //         InitializrMetadata metadata) {
+    //     return new DefaultStarterBuildCustomizer(metadata);
+    // }
 
     @Bean
     public DefaultMavenBuildCustomizer initializrMetadataMavenBuildCustomizer(
@@ -63,8 +64,8 @@ public class BuildProjectGenerationConfiguration {
     }
 
     @Bean
-    public ChildMavenBuildCustomizer childMavenBuildCustomizer(ModuleTopology moduleTopology) {
-        return new ChildMavenBuildCustomizer(moduleTopology);
+    public ChildMavenBuildCustomizer childMavenBuildCustomizer(ObjectProvider<BuildItemResolver> buildItemResolver, ModuleTopology moduleTopology) {
+        return new ChildMavenBuildCustomizer(buildItemResolver.getIfAvailable(), moduleTopology);
     }
 
 
@@ -110,4 +111,9 @@ public class BuildProjectGenerationConfiguration {
                 description.getPlatformVersion());
     }
 
+
+    @Bean
+    public ChildDependencyMavenBuildCustomizer childDependencyMavenBuildCustomizer(ResolvedProjectDescription projectDescription) {
+        return new ChildDependencyMavenBuildCustomizer(projectDescription);
+    }
 }

@@ -128,8 +128,8 @@ public class MavenBuild extends Build {
         return profile;
     }
 
-    public MavenBuild childBuild() {
-        MavenBuild mavenBuild = new MavenBuild();
+    public MavenBuild childBuild(BuildItemResolver buildItemResolver) {
+        MavenBuild mavenBuild = new MavenBuild(buildItemResolver);
         this.childBuilds.add(mavenBuild);
         return mavenBuild;
     }
@@ -137,6 +137,7 @@ public class MavenBuild extends Build {
     public List<MavenBuild> getChildBuilds() {
         return childBuilds;
     }
+
 
     public List<MavenProfile> getProfiles() {
         return profiles;

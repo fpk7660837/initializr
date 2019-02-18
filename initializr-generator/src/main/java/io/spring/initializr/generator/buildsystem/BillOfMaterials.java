@@ -25,40 +25,44 @@ import io.spring.initializr.generator.version.VersionReference;
  */
 public class BillOfMaterials {
 
-	private final String groupId;
+    private final String groupId;
 
-	private final String artifactId;
+    private final String artifactId;
 
-	private final VersionReference version;
+    private final VersionReference version;
 
-	private final int order;
+    private final int order;
 
-	public BillOfMaterials(String groupId, String artifactId, VersionReference version) {
-		this(groupId, artifactId, version, Integer.MAX_VALUE);
-	}
+    public BillOfMaterials(String groupId, String artifactId, VersionReference version) {
+        this(groupId, artifactId, version, Integer.MAX_VALUE);
+    }
 
-	public BillOfMaterials(String groupId, String artifactId, VersionReference version,
-			int order) {
-		this.groupId = groupId;
-		this.artifactId = artifactId;
-		this.version = version;
-		this.order = order;
-	}
+    public BillOfMaterials(String groupId, String artifactId, VersionReference version,
+                           int order) {
+        this.groupId = groupId;
+        this.artifactId = artifactId;
+        this.version = version;
+        this.order = order;
+    }
 
-	public String getGroupId() {
-		return this.groupId;
-	}
+    public String getGroupId() {
+        return this.groupId;
+    }
 
-	public String getArtifactId() {
-		return this.artifactId;
-	}
+    public String getArtifactId() {
+        return this.artifactId;
+    }
 
-	public VersionReference getVersion() {
-		return this.version;
-	}
+    public VersionReference getVersion() {
+        return this.version;
+    }
 
-	public int getOrder() {
-		return this.order;
-	}
+    public int getOrder() {
+        return this.order;
+    }
 
+
+    public static BillOfMaterials from(Dependency dependency) {
+        return new BillOfMaterials(dependency.getGroupId(), dependency.getArtifactId(), dependency.getVersion());
+    }
 }

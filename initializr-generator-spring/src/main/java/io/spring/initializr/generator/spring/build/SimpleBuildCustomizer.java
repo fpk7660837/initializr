@@ -16,10 +16,10 @@
 
 package io.spring.initializr.generator.spring.build;
 
+import io.spring.initializr.generator.buildsystem.BillOfMaterials;
 import io.spring.initializr.generator.buildsystem.Build;
 import io.spring.initializr.generator.project.ResolvedProjectDescription;
 import io.spring.initializr.metadata.InitializrMetadata;
-
 import org.springframework.core.Ordered;
 
 /**
@@ -31,28 +31,33 @@ import org.springframework.core.Ordered;
  */
 public class SimpleBuildCustomizer implements BuildCustomizer<Build> {
 
-	private final ResolvedProjectDescription projectDescription;
+    private final ResolvedProjectDescription projectDescription;
 
-	private final InitializrMetadata metadata;
+    private final InitializrMetadata metadata;
 
-	public SimpleBuildCustomizer(ResolvedProjectDescription projectDescription,
-			InitializrMetadata metadata) {
-		this.projectDescription = projectDescription;
-		this.metadata = metadata;
-	}
+    public SimpleBuildCustomizer(ResolvedProjectDescription projectDescription,
+                                 InitializrMetadata metadata) {
+        this.projectDescription = projectDescription;
+        this.metadata = metadata;
+    }
 
-	@Override
-	public void customize(Build build) {
-		build.setGroup(this.projectDescription.getGroupId());
-		build.setArtifact(this.projectDescription.getArtifactId());
-		build.setVersion(this.metadata.getVersion().getContent());
-		this.projectDescription.getRequestedDependencies()
-				.forEach((id, dependency) -> build.dependencies().add(id, dependency));
-	}
+    @Override
+    public void customize(Build build) {
+        build.setGroup(this.projectDescription.getGroupId());
+        build.setArtifact(this.projectDescription.getArtifactId());
+        build.setVersion(this.metadata.getVersion().getContent());
+        this.projectDescription.getRequestedDependencies()
+                .forEach((id, dependency) -> {
+                    if (dependency.getGroupId().equals("org.springframework.boot")) {
+                        return;
+                    }
+                    build.boms().add(id, BillOfMaterials.from(dependency));
+                });
+    }
 
-	@Override
-	public int getOrder() {
-		return Ordered.HIGHEST_PRECEDENCE;
-	}
+    @Override
+    public int getOrder() {
+        return Ordered.HIGHEST_PRECEDENCE;
+    }
 
 }

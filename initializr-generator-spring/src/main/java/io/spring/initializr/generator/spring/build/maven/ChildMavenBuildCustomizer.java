@@ -1,5 +1,6 @@
 package io.spring.initializr.generator.spring.build.maven;
 
+import io.spring.initializr.generator.buildsystem.BuildItemResolver;
 import io.spring.initializr.generator.buildsystem.DependencyContainer;
 import io.spring.initializr.generator.buildsystem.DependencyScope;
 import io.spring.initializr.generator.buildsystem.maven.MavenBuild;
@@ -17,10 +18,12 @@ import java.util.List;
  */
 public class ChildMavenBuildCustomizer implements BuildCustomizer<MavenBuild> {
 
+    private BuildItemResolver buildItemResolver;
 
     private ModuleTopology moduleTopology;
 
-    public ChildMavenBuildCustomizer(ModuleTopology moduleTopology) {
+    public ChildMavenBuildCustomizer(BuildItemResolver buildItemResolver, ModuleTopology moduleTopology) {
+        this.buildItemResolver = buildItemResolver;
         this.moduleTopology = moduleTopology;
     }
 
@@ -38,7 +41,7 @@ public class ChildMavenBuildCustomizer implements BuildCustomizer<MavenBuild> {
     }
 
     public void addChildMavenBuild(MavenBuild build, String name, String packaging, List<Module> childModules) {
-        MavenBuild childBuild = build.childBuild();
+        MavenBuild childBuild = build.childBuild(buildItemResolver);
         childBuild.parent(build.getGroup(), build.getArtifact(), build.getVersion());
         childBuild.setArtifact(name);
         childBuild.setPackaging(packaging);
@@ -57,7 +60,8 @@ public class ChildMavenBuildCustomizer implements BuildCustomizer<MavenBuild> {
         childModules
                 .forEach(module -> {
                     String name = module.getName();
-                    dependencies.add(name, build.getGroup(), name, VersionReference.ofValue("${project.parent.version}"), DependencyScope.COMPILE);
+                    dependencies.add(name, build.getGroup(), name, VersionReference.ofValue("${project.parent.version}"),
+                            DependencyScope.COMPILE);
                 });
     }
 

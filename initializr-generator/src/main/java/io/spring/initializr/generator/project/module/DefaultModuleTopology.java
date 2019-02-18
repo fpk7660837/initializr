@@ -24,14 +24,14 @@ public class DefaultModuleTopology implements ModuleTopology {
     }
 
     private void moduleDependency() {
-        Module common = newModule("common");
-        Module rpc = newModule("rpc");
-        Module service = newModule("service");
-        Module dao = newModule("dao");
-        Module web = newModule("web", "war");
-        Module api = newModule("api", "war");
-        Module mq = newModule("mq");
-        Module pojo = newModule("pojo");
+        Module common = newModule(Modules.COMMON.getName());
+        Module rpc = newModule(Modules.RPC.getName());
+        Module service = newModule(Modules.SERVICE.getName());
+        Module dao = newModule(Modules.DAO.getName());
+        Module web = newModule(Modules.WEB.getName(), Modules.WEB.getPackaging());
+        Module api = newModule(Modules.API.getName(), Modules.API.getPackaging());
+        Module mq = newModule(Modules.MQ.getName());
+        Module pojo = newModule(Modules.POJO.getName());
 
         dao.addChildModule(common);
         dao.addChildModule(pojo);
@@ -46,7 +46,7 @@ public class DefaultModuleTopology implements ModuleTopology {
         root.addChildModule(web);
         root.addChildModule(api);
 
-        Module sdk = newModule("sdk");
+        Module sdk = newModule(Modules.SDK.getName());
 
         root.addReferModule(sdk);
     }
@@ -112,4 +112,38 @@ public class DefaultModuleTopology implements ModuleTopology {
     public Module getModule(String name) {
         return moduleMap.get(name);
     }
+
+
+    public enum Modules {
+        WEB("web", "war"),
+        API("api", "war"),
+        SERVICE("service", null),
+        DAO("dao", null),
+        COMMON("common", null),
+        POJO("pojo", null),
+        RPC("rpc", null),
+        MQ("mq", null),
+        SDK("sdk", null);
+
+
+        private String name;
+
+        private String packaging;
+
+        Modules(String name, String packaging) {
+            this.name = name;
+            this.packaging = packaging;
+        }
+
+
+        public String getName() {
+            return name;
+        }
+
+        public String getPackaging() {
+            return packaging;
+        }
+    }
+
+
 }

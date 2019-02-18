@@ -1,7 +1,15 @@
 package io.spring.initializr.generator.spring.build.maven;
 
+import io.spring.initializr.generator.buildsystem.DependencyContainer;
+import io.spring.initializr.generator.buildsystem.DependencyScope;
 import io.spring.initializr.generator.buildsystem.maven.MavenBuild;
+import io.spring.initializr.generator.project.module.Module;
+import io.spring.initializr.generator.project.module.ModuleTopology;
 import io.spring.initializr.generator.spring.build.BuildCustomizer;
+import io.spring.initializr.generator.version.VersionReference;
+import org.springframework.util.CollectionUtils;
+
+import java.util.List;
 
 /**
  * Date : 2019-02-15
@@ -10,27 +18,48 @@ import io.spring.initializr.generator.spring.build.BuildCustomizer;
 public class ChildMavenBuildCustomizer implements BuildCustomizer<MavenBuild> {
 
 
+    private ModuleTopology moduleTopology;
+
+    public ChildMavenBuildCustomizer(ModuleTopology moduleTopology) {
+        this.moduleTopology = moduleTopology;
+    }
+
     @Override
     public void customize(MavenBuild build) {
-        addChildMavenBuild(build, "web", "war");
-        addChildMavenBuild(build, "api", "war");
-        addChildMavenBuild(build, "rpc");
-        addChildMavenBuild(build, "service");
-        addChildMavenBuild(build, "dao");
-        addChildMavenBuild(build, "mq");
-        addChildMavenBuild(build, "sdk");
-        addChildMavenBuild(build, "common");
+        List<String> allModuleNames = moduleTopology.getAllModuleNames();
+
+        for (String moduleName : allModuleNames) {
+            addChildMavenBuild(build, moduleTopology.getModule(moduleName));
+        }
     }
 
-    public void addChildMavenBuild(MavenBuild build, String name) {
-        addChildMavenBuild(build, name, null);
+    public void addChildMavenBuild(MavenBuild build, Module module) {
+        addChildMavenBuild(build, module.getName(), module.getPackaging(), module.getChildModules());
     }
 
-    public void addChildMavenBuild(MavenBuild build, String name, String packaging) {
+    public void addChildMavenBuild(MavenBuild build, String name, String packaging, List<Module> childModules) {
         MavenBuild childBuild = build.childBuild();
         childBuild.parent(build.getGroup(), build.getArtifact(), build.getVersion());
         childBuild.setArtifact(name);
         childBuild.setPackaging(packaging);
+
+        if (CollectionUtils.isEmpty(childModules)) {
+            return;
+        }
+
+        addReferDependency(build, childBuild, childModules);
     }
+
+
+    public void addReferDependency(MavenBuild build, MavenBuild childBuild, List<Module> childModules) {
+        DependencyContainer dependencies = childBuild.dependencies();
+
+        childModules
+                .forEach(module -> {
+                    String name = module.getName();
+                    dependencies.add(name, build.getGroup(), name, VersionReference.ofValue("${project.parent.version}"), DependencyScope.COMPILE);
+                });
+    }
+
 
 }

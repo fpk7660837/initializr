@@ -27,6 +27,7 @@ import io.spring.initializr.generator.language.kotlin.KotlinLanguage;
 import io.spring.initializr.generator.packaging.war.WarPackaging;
 import io.spring.initializr.generator.project.ProjectGenerationConfiguration;
 import io.spring.initializr.generator.project.ResolvedProjectDescription;
+import io.spring.initializr.generator.project.module.ModuleTopology;
 import io.spring.initializr.generator.spring.build.maven.ChildMavenBuildCustomizer;
 import io.spring.initializr.generator.spring.build.maven.DefaultMavenBuildCustomizer;
 import io.spring.initializr.generator.spring.code.kotlin.KotlinJpaGradleBuildCustomizer;
@@ -62,8 +63,8 @@ public class BuildProjectGenerationConfiguration {
     }
 
     @Bean
-    public ChildMavenBuildCustomizer childMavenBuildCustomizer() {
-        return new ChildMavenBuildCustomizer();
+    public ChildMavenBuildCustomizer childMavenBuildCustomizer(ModuleTopology moduleTopology) {
+        return new ChildMavenBuildCustomizer(moduleTopology);
     }
 
 

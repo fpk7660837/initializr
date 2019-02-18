@@ -13,5 +13,6 @@ public interface ModuleTopology {
 
     Module getRoot();
 
+    Module getModule(String name);
 
 }

@@ -2,9 +2,7 @@ package io.spring.initializr.generator.project.module;
 
 import org.springframework.util.CollectionUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -15,7 +13,9 @@ import java.util.stream.Collectors;
 public class DefaultModuleTopology implements ModuleTopology {
 
 
-    private Module root;
+    private final Module root;
+
+    private final Map<String, Module> moduleMap = new HashMap<>();
 
 
     public DefaultModuleTopology() {
@@ -24,15 +24,17 @@ public class DefaultModuleTopology implements ModuleTopology {
     }
 
     private void moduleDependency() {
-        Module common = new Module("common");
-        Module rpc = new Module("rpc");
-        Module service = new Module("service");
-        Module dao = new Module("dao");
-        Module web = new Module("web");
-        Module api = new Module("api");
-        Module mq = new Module("mq");
+        Module common = newModule("common");
+        Module rpc = newModule("rpc");
+        Module service = newModule("service");
+        Module dao = newModule("dao");
+        Module web = newModule("web", "war");
+        Module api = newModule("api", "war");
+        Module mq = newModule("mq");
+        Module pojo = newModule("pojo");
 
         dao.addChildModule(common);
+        dao.addChildModule(pojo);
 
         service.addChildModule(dao);
         service.addChildModule(rpc);
@@ -44,9 +46,17 @@ public class DefaultModuleTopology implements ModuleTopology {
         root.addChildModule(web);
         root.addChildModule(api);
 
-        Module sdk = new Module("sdk");
+        Module sdk = newModule("sdk");
 
         root.addReferModule(sdk);
+    }
+
+
+    private Module newModule(String name, String... packaging) {
+        Module module = new Module(name);
+        module.setPackaging(null == packaging || packaging.length == 0 ? null : packaging[0]);
+        moduleMap.put(name, module);
+        return module;
     }
 
 
@@ -60,6 +70,7 @@ public class DefaultModuleTopology implements ModuleTopology {
 
         return moduleNames;
     }
+
 
     private void appendRootName(List<String> moduleNames) {
         moduleNames.add(this.root.getName());
@@ -91,9 +102,14 @@ public class DefaultModuleTopology implements ModuleTopology {
     }
 
 
+    @Override
     public Module getRoot() {
         return root;
     }
 
 
+    @Override
+    public Module getModule(String name) {
+        return moduleMap.get(name);
+    }
 }

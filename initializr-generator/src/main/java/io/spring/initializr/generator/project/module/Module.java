@@ -15,6 +15,8 @@ public class Module {
 
     private String name;
 
+    private String packaging;
+
     private List<Module> childModules;
 
     private List<Module> referModules;
@@ -32,6 +34,13 @@ public class Module {
         this.name = name;
     }
 
+    public String getPackaging() {
+        return packaging;
+    }
+
+    public void setPackaging(String packaging) {
+        this.packaging = packaging;
+    }
 
     public List<Module> getChildModules() {
         return childModules;

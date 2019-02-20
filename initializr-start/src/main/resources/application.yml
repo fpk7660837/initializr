@@ -17,7 +17,7 @@ server:
 spring:
   jackson:
     serialization:
-     write-dates-as-timestamps: false
+      write-dates-as-timestamps: false
   resources:
     chain:
       strategy:
@@ -358,7 +358,7 @@ initializr:
         - name: Mobile
           id: mobile
           description: Simplify the development of mobile web applications with spring-mobile
-          versionRange : "[1.5.0.RELEASE, 2.0.0.M1)"
+          versionRange: "[1.5.0.RELEASE, 2.0.0.M1)"
     - name: Template Engines
       content:
         - name: Thymeleaf
@@ -1166,8 +1166,8 @@ initializr:
           version: 2.0.0.RELEASE
           repository: spring-milestones
           links:
-           - rel: reference
-             href: https://docs.spring.io/spring-shell/docs/2.0.0.M2/reference/htmlsingle/
+            - rel: reference
+              href: https://docs.spring.io/spring-shell/docs/2.0.0.M2/reference/htmlsingle/
         - name: Statemachine
           id: statemachine
           groupId: org.springframework.statemachine
@@ -1221,14 +1221,18 @@ initializr:
     ### dmall extension
     - name: Drt
       content:
-        - name: Dmall Retail Toolkit
+        - name: Dmall Retail Middleware Starter
           id: drt
           description: dmall middleware integration
           groupId: com.dmall
-          artifactId: dmall-retail-toolkit
-          mappings:
-            - versionRange: "[1.5.0.RELEASE,2.0.0.RELEASE)"
-              version: 2.5.7
+          artifactId: drt-spring-boot-starter
+          version: 1.0
+        - name: Dmall Retail toolkit
+          id: drt-core
+          description: dmall intern toolkit
+          groupId: com.dmall
+          artifactId: drt-core
+          version: 1.0
   types:
     - name: Maven Project
       id: maven-project
@@ -1286,9 +1290,9 @@ initializr:
       id: groovy
       default: false
   bootVersions:
-    - name : Latest SNAPSHOT
+    - name: Latest SNAPSHOT
       id: 2.2.0.BUILD-SNAPSHOT
       default: false
-    - name : 2.1.1.
+    - name: 2.1.1.
       id: 2.1.1.RELEASE
       default: true

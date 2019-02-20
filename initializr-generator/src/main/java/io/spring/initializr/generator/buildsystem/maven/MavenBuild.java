@@ -48,12 +48,19 @@ public class MavenBuild extends Build {
 
     private List<MavenBuild> childBuilds = new ArrayList<>();
 
+    private boolean root;
+
     public MavenBuild(BuildItemResolver buildItemResolver) {
+        this(buildItemResolver, true);
+    }
+
+    public MavenBuild(BuildItemResolver buildItemResolver, boolean root) {
         super(buildItemResolver);
+        this.root = root;
     }
 
     public MavenBuild() {
-        this(null);
+        this(null, true);
     }
 
 
@@ -129,7 +136,7 @@ public class MavenBuild extends Build {
     }
 
     public MavenBuild childBuild(BuildItemResolver buildItemResolver) {
-        MavenBuild mavenBuild = new MavenBuild(buildItemResolver);
+        MavenBuild mavenBuild = new MavenBuild(buildItemResolver, false);
         this.childBuilds.add(mavenBuild);
         return mavenBuild;
     }
@@ -149,6 +156,11 @@ public class MavenBuild extends Build {
 
     public String getPackaging() {
         return this.packaging;
+    }
+
+
+    public boolean isRoot() {
+        return root;
     }
 
 }

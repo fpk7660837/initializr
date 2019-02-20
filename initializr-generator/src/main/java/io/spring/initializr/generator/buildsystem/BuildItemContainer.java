@@ -124,4 +124,7 @@ public class BuildItemContainer<I, V> {
         ids.forEach(this.items::remove);
     }
 
+    public void clear() {
+        this.items.clear();
+    }
 }

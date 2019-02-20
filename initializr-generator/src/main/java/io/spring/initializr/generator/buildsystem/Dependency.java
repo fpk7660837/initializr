@@ -39,6 +39,8 @@ public class Dependency {
 
     private String id;
 
+    private boolean root;
+
     public Dependency(String groupId, String artifactId) {
         this(groupId, artifactId, DependencyScope.COMPILE);
     }
@@ -128,5 +130,13 @@ public class Dependency {
 
     public String getId() {
         return id;
+    }
+
+    public boolean isRoot() {
+        return root;
+    }
+
+    public void setRoot(boolean root) {
+        this.root = root;
     }
 }

@@ -124,23 +124,24 @@ public class MavenBuildWriter {
         writer.println();
         writeElement(writer, "dependencies", () -> {
             Collection<Dependency> compiledDependencies = writeDependencies(writer,
-                    dependencies, DependencyScope.COMPILE);
+                    dependencies,build.isRoot(), DependencyScope.COMPILE);
             if (!compiledDependencies.isEmpty()) {
                 writer.println();
             }
-            writeDependencies(writer, dependencies, DependencyScope.RUNTIME);
-            writeDependencies(writer, dependencies, DependencyScope.COMPILE_ONLY);
-            writeDependencies(writer, dependencies, DependencyScope.ANNOTATION_PROCESSOR);
-            writeDependencies(writer, dependencies, DependencyScope.PROVIDED_RUNTIME);
-            writeDependencies(writer, dependencies, DependencyScope.TEST_COMPILE,
+            writeDependencies(writer, dependencies,build.isRoot(), DependencyScope.RUNTIME);
+            writeDependencies(writer, dependencies,build.isRoot(), DependencyScope.COMPILE_ONLY);
+            writeDependencies(writer, dependencies, build.isRoot(),DependencyScope.ANNOTATION_PROCESSOR);
+            writeDependencies(writer, dependencies, build.isRoot(),DependencyScope.PROVIDED_RUNTIME);
+            writeDependencies(writer, dependencies, build.isRoot(),DependencyScope.TEST_COMPILE,
                     DependencyScope.TEST_RUNTIME);
         });
     }
 
     private Collection<Dependency> writeDependencies(IndentingWriter writer,
-                                                     DependencyContainer dependencies, DependencyScope... types) {
+                                                     DependencyContainer dependencies,boolean rootBuild, DependencyScope... types) {
         Collection<Dependency> candidates = filterDependencies(dependencies, types);
-        writeCollection(writer, candidates, this::writeDependency);
+        candidates.forEach(dependency -> dependency.setRoot(rootBuild));
+        writeCollection(writer, candidates,this::writeDependency);
         return candidates;
     }
 
@@ -148,13 +149,15 @@ public class MavenBuildWriter {
         writeElement(writer, "dependency", () -> {
             writeSingleElement(writer, "groupId", dependency.getGroupId());
             writeSingleElement(writer, "artifactId", dependency.getArtifactId());
-            writeSingleElement(writer, "version",
-                    determineVersion(dependency.getVersion()));
-            writeSingleElement(writer, "scope", scopeForType(dependency.getScope()));
-            if (isOptional(dependency.getScope())) {
-                writeSingleElement(writer, "optional", Boolean.toString(true));
+            if (dependency.isRoot()) {
+                writeSingleElement(writer, "version",
+                        determineVersion(dependency.getVersion()));
+                writeSingleElement(writer, "scope", scopeForType(dependency.getScope()));
+                if (isOptional(dependency.getScope())) {
+                    writeSingleElement(writer, "optional", Boolean.toString(true));
+                }
+                writeSingleElement(writer, "type", dependency.getType());
             }
-            writeSingleElement(writer, "type", dependency.getType());
         });
     }
 

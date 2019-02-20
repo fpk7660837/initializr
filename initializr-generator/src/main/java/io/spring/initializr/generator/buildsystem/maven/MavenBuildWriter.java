@@ -340,12 +340,12 @@ public class MavenBuildWriter {
         }
         writer.println();
         if (!repositories.isEmpty()) {
-            writeRepositories(writer, "repositories", "repository", repositories);
+            writeRepositories(writer, "distributionManagement", repositories);
         }
-        if (!pluginRepositories.isEmpty()) {
-            writeRepositories(writer, "pluginRepositories", "pluginRepository",
-                    pluginRepositories);
-        }
+        // if (!pluginRepositories.isEmpty()) {
+        //     writeRepositories(writer, "pluginRepositories", "pluginRepository",
+        //             pluginRepositories);
+        // }
     }
 
 
@@ -357,17 +357,16 @@ public class MavenBuildWriter {
     }
 
     private void writeRepositories(IndentingWriter writer, String containerName,
-                                   String childName, List<MavenRepository> repositories) {
+                                   List<MavenRepository> repositories) {
         writeElement(writer, containerName, () -> repositories
-                .forEach((repository) -> writeElement(writer, childName, () -> {
-                    writeSingleElement(writer, "id", repository.getId());
-                    writeSingleElement(writer, "name", repository.getName());
-                    writeSingleElement(writer, "url", repository.getUrl());
-                    if (repository.isSnapshotsEnabled()) {
-                        writeElement(writer, "snapshots", () -> writeSingleElement(writer,
-                                "enabled", Boolean.toString(true)));
-                    }
-                })));
+                .forEach((repository) -> {
+                    String childName = repository.isSnapshotsEnabled() ? "snapshotRepository" : "repository";
+                    writeElement(writer, childName, () -> {
+                        writeSingleElement(writer, "id", repository.getId());
+                        writeSingleElement(writer, "name", repository.getName());
+                        writeSingleElement(writer, "url", repository.getUrl());
+                    });
+                }));
     }
 
 

@@ -61,16 +61,23 @@ public class DefaultModuleTopology implements ModuleTopology {
 
 
     @Override
-    public List<String> getAllModuleNames() {
+    public List<String> getAllChildModuleNames() {
         Objects.requireNonNull(root, "root module doesn't exist");
         List<String> moduleNames = new ArrayList<>();
 
         appendChildNames(moduleNames);
-        appendReferNames(moduleNames);
+
 
         return moduleNames;
     }
 
+    @Override
+    public List<String> getAllReferModuleNames() {
+        Objects.requireNonNull(root, "root module doesn't exist");
+        List<String> moduleNames = new ArrayList<>();
+        appendReferNames(moduleNames);
+        return moduleNames;
+    }
 
     private void appendRootName(List<String> moduleNames) {
         moduleNames.add(this.root.getName());

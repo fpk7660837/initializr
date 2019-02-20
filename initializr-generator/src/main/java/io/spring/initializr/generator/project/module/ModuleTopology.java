@@ -9,7 +9,9 @@ import java.util.List;
 public interface ModuleTopology {
 
 
-    List<String> getAllModuleNames();
+    List<String> getAllChildModuleNames();
+
+    List<String> getAllReferModuleNames();
 
     Module getRoot();
 

@@ -30,6 +30,7 @@ import io.spring.initializr.generator.project.module.ModuleTopology;
 import io.spring.initializr.generator.spring.build.maven.BaseChildDependencyMavenBuildCustomizer;
 import io.spring.initializr.generator.spring.build.maven.ChildMavenBuildCustomizer;
 import io.spring.initializr.generator.spring.build.maven.DefaultMavenBuildCustomizer;
+import io.spring.initializr.generator.spring.build.maven.ReferMavenBuildCustomizer;
 import io.spring.initializr.generator.spring.code.kotlin.KotlinJpaGradleBuildCustomizer;
 import io.spring.initializr.generator.spring.code.kotlin.KotlinJpaMavenBuildCustomizer;
 import io.spring.initializr.generator.spring.code.kotlin.KotlinProjectSettings;
@@ -68,6 +69,10 @@ public class BuildProjectGenerationConfiguration {
         return new ChildMavenBuildCustomizer(buildItemResolver.getIfAvailable(), moduleTopology);
     }
 
+    @Bean
+    public ReferMavenBuildCustomizer referMavenBuildCustomizer(ObjectProvider<BuildItemResolver> buildItemResolver, ModuleTopology moduleTopology) {
+        return new ReferMavenBuildCustomizer(buildItemResolver.getIfAvailable(), moduleTopology);
+    }
 
     @Bean
     @ConditionalOnPackaging(WarPackaging.ID)

@@ -26,7 +26,7 @@ class DefaultModuleTopologyTest {
         modules.add("sdk");
         modules.add("mq");
 
-        Assertions.assertThat(defaultModuleTopology.getAllModuleNames())
+        Assertions.assertThat(defaultModuleTopology.getAllChildModuleNames())
                 .containsAll(modules);
     }
 }

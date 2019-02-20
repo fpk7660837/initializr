@@ -29,7 +29,7 @@ public class ChildMavenBuildCustomizer implements BuildCustomizer<MavenBuild> {
 
     @Override
     public void customize(MavenBuild build) {
-        List<String> allModuleNames = moduleTopology.getAllModuleNames();
+        List<String> allModuleNames = moduleTopology.getAllChildModuleNames();
 
         for (String moduleName : allModuleNames) {
             addChildMavenBuild(build, moduleTopology.getModule(moduleName));

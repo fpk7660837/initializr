@@ -33,8 +33,13 @@ public class MultiModuleProjectContributor implements ProjectContributor {
     }
 
     private void generateMultiModules(Path projectRoot) throws IOException {
-        for (String modulePath : moduleTopology.getAllModuleNames()) {
+        for (String modulePath : moduleTopology.getAllChildModuleNames()) {
             Path module = projectRoot.resolve(modulePath);
+            Files.createDirectories(module);
+        }
+
+        for (String referModulePath : moduleTopology.getAllReferModuleNames()) {
+            Path module = projectRoot.resolve(referModulePath);
             Files.createDirectories(module);
         }
     }

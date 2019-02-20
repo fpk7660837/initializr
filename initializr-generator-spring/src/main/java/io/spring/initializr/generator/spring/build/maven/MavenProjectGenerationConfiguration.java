@@ -78,8 +78,8 @@ public class MavenProjectGenerationConfiguration {
 
 
     @Bean
-    public BuildCustomizer<MavenBuild> profileMavenBuilderCustomizer() {
-        return new ProfileMavenBuilderCustomizer();
+    public BuildCustomizer<MavenBuild> profileMavenBuilderCustomizer(ObjectProvider<BuildItemResolver> buildItemResolver) {
+        return new ProfileMavenBuilderCustomizer(buildItemResolver.getIfAvailable());
     }
 
 }

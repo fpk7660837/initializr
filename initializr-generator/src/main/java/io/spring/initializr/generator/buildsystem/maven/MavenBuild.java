@@ -18,6 +18,7 @@ package io.spring.initializr.generator.buildsystem.maven;
 
 import io.spring.initializr.generator.buildsystem.Build;
 import io.spring.initializr.generator.buildsystem.BuildItemResolver;
+import io.spring.initializr.generator.buildsystem.MavenProfile;
 
 import java.util.*;
 
@@ -129,8 +130,8 @@ public class MavenBuild extends Build {
         return Collections.unmodifiableList(this.plugins);
     }
 
-    public MavenProfile profile(String id, boolean activation) {
-        MavenProfile profile = new MavenProfile(id, activation);
+    public MavenProfile profile(String id, boolean activation,BuildItemResolver itemResolver) {
+        MavenProfile profile = new MavenProfile(id, activation,itemResolver);
         this.profiles.add(profile);
         return profile;
     }

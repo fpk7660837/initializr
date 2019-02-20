@@ -87,4 +87,8 @@ public class BuildCustomizerProjectGenerationConfiguration {
 		return new SpringSessionBuildCustomizer(description);
 	}
 
+	@Bean
+	public SpringbootTomcatBuildCustomizer springbootTomcatBuildCustomizer() {
+		return new SpringbootTomcatBuildCustomizer();
+	}
 }

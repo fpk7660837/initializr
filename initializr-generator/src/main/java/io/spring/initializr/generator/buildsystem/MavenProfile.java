@@ -1,6 +1,4 @@
-package io.spring.initializr.generator.buildsystem.maven;
-
-import io.spring.initializr.generator.buildsystem.DependencyContainer;
+package io.spring.initializr.generator.buildsystem;
 
 import java.util.Map;
 import java.util.TreeMap;
@@ -17,11 +15,12 @@ public class MavenProfile {
 
     private Map<String, String> properties = new TreeMap<>();
 
-    private DependencyContainer dependencies = null;
+    private DependencyContainer dependencies;
 
-    public MavenProfile(String id, boolean activation) {
+    public MavenProfile(String id, boolean activation, BuildItemResolver itemResolver) {
         this.id = id;
         this.activation = new Activation(activation);
+        this.dependencies =  new DependencyContainer(itemResolver::resolveDependency);
     }
 
 
@@ -37,10 +36,13 @@ public class MavenProfile {
         this.properties.put(key, value);
     }
 
-
-    public void setDependencies(DependencyContainer dependencies) {
-        this.dependencies = dependencies;
+    public void addDependency(Dependency dependency) {
+        if (null == dependency) {
+            return;
+        }
+        this.dependencies.add(dependency.getId(), dependency);
     }
+
 
     public Map<String, String> getProperties() {
         return properties;

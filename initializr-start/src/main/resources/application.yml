@@ -1221,7 +1221,7 @@ initializr:
     ### dmall extension
     - name: Drt
       content:
-        - name: Dmall retail toolkit
+        - name: Dmall Retail Toolkit
           id: drt
           description: dmall middleware integration
           groupId: com.dmall

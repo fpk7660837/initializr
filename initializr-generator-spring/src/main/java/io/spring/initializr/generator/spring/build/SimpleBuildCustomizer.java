@@ -48,10 +48,8 @@ public class SimpleBuildCustomizer implements BuildCustomizer<Build> {
         build.setVersion(this.metadata.getVersion().getContent());
         this.projectDescription.getRequestedDependencies()
                 .forEach((id, dependency) -> {
-                    if (dependency.getGroupId().equals("org.springframework.boot")) {
-                        return;
-                    }
                     build.boms().add(id, BillOfMaterials.from(dependency));
+                    build.dependencies().add(id, dependency);
                 });
     }
 

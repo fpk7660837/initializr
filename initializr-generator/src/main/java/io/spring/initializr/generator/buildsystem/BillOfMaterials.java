@@ -33,16 +33,19 @@ public class BillOfMaterials {
 
     private final int order;
 
+    private String id;
+
     public BillOfMaterials(String groupId, String artifactId, VersionReference version) {
-        this(groupId, artifactId, version, Integer.MAX_VALUE);
+        this(groupId, artifactId, version, Integer.MAX_VALUE, null);
     }
 
     public BillOfMaterials(String groupId, String artifactId, VersionReference version,
-                           int order) {
+                           int order, String id) {
         this.groupId = groupId;
         this.artifactId = artifactId;
         this.version = version;
         this.order = order;
+        this.id = id;
     }
 
     public String getGroupId() {
@@ -61,8 +64,12 @@ public class BillOfMaterials {
         return this.order;
     }
 
+    public String getId() {
+        return id;
+    }
 
     public static BillOfMaterials from(Dependency dependency) {
-        return new BillOfMaterials(dependency.getGroupId(), dependency.getArtifactId(), dependency.getVersion());
+        return new BillOfMaterials(dependency.getGroupId(), dependency.getArtifactId(), dependency.getVersion(),
+                Integer.MAX_VALUE, dependency.getId());
     }
 }

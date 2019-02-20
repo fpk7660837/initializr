@@ -218,6 +218,7 @@ initializr:
         - name: Aspects
           id: aop
           description: Create your own Aspects using Spring AOP and AspectJ
+          module: common
     - name: Web
       content:
         - name: Web

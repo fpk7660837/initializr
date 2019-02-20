@@ -46,7 +46,8 @@ public final class MetadataBuildItemMapper {
 		return new io.spring.initializr.generator.buildsystem.Dependency(
 				dependency.getGroupId(), dependency.getArtifactId(),
 				VersionReference.ofValue(dependency.getVersion()),
-				toDependencyScope(dependency.getScope()), dependency.getType());
+				toDependencyScope(dependency.getScope()), dependency.getType(),
+				dependency.getModule(),dependency.getId());
 	}
 
 	private static DependencyScope toDependencyScope(String scope) {
@@ -81,7 +82,7 @@ public final class MetadataBuildItemMapper {
 				? VersionReference.ofProperty(bom.getVersionProperty())
 				: VersionReference.ofValue(bom.getVersion());
 		return new io.spring.initializr.generator.buildsystem.BillOfMaterials(
-				bom.getGroupId(), bom.getArtifactId(), version, bom.getOrder());
+				bom.getGroupId(), bom.getArtifactId(), version, bom.getOrder(),null);
 	}
 
 	/**

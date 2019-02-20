@@ -16,10 +16,10 @@
 
 package io.spring.initializr.generator.buildsystem;
 
+import io.spring.initializr.generator.version.VersionReference;
+
 import java.util.LinkedHashMap;
 import java.util.function.Function;
-
-import io.spring.initializr.generator.version.VersionReference;
 
 /**
  * A {@link BuildItemContainer} implementation for boms.
@@ -28,35 +28,37 @@ import io.spring.initializr.generator.version.VersionReference;
  */
 public class BomContainer extends BuildItemContainer<String, BillOfMaterials> {
 
-	BomContainer(Function<String, BillOfMaterials> itemResolver) {
-		super(new LinkedHashMap<>(), itemResolver);
-	}
+    BomContainer(Function<String, BillOfMaterials> itemResolver) {
+        super(new LinkedHashMap<>(), itemResolver);
+    }
 
-	/**
-	 * Register a {@link BillOfMaterials} with the specified {@code id} and a
-	 * {@link Integer#MAX_VALUE} order.
-	 * @param id the id of the bom
-	 * @param groupId the groupId
-	 * @param artifactId the artifactId
-	 * @param version the {@link VersionReference}
-	 */
-	public void add(String id, String groupId, String artifactId,
-			VersionReference version) {
-		add(id, new BillOfMaterials(groupId, artifactId, version));
-	}
+    /**
+     * Register a {@link BillOfMaterials} with the specified {@code id} and a
+     * {@link Integer#MAX_VALUE} order.
+     *
+     * @param id         the id of the bom
+     * @param groupId    the groupId
+     * @param artifactId the artifactId
+     * @param version    the {@link VersionReference}
+     */
+    public void add(String id, String groupId, String artifactId,
+                    VersionReference version) {
+        add(id, new BillOfMaterials(groupId, artifactId, version));
+    }
 
-	/**
-	 * Register a {@link BillOfMaterials} with the specified {@code id} and a custom
-	 * order.
-	 * @param id the id of the bom
-	 * @param groupId the groupId
-	 * @param artifactId the artifactId
-	 * @param version the {@link VersionReference}
-	 * @param order the order of the bom
-	 */
-	public void add(String id, String groupId, String artifactId,
-			VersionReference version, int order) {
-		add(id, new BillOfMaterials(groupId, artifactId, version, order));
-	}
+    /**
+     * Register a {@link BillOfMaterials} with the specified {@code id} and a custom
+     * order.
+     *
+     * @param id         the id of the bom
+     * @param groupId    the groupId
+     * @param artifactId the artifactId
+     * @param version    the {@link VersionReference}
+     * @param order      the order of the bom
+     */
+    public void add(String id, String groupId, String artifactId,
+                    VersionReference version, int order) {
+        add(id, new BillOfMaterials(groupId, artifactId, version, order, id));
+    }
 
 }

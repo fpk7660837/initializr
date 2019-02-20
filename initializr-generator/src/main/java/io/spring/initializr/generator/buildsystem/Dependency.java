@@ -25,78 +25,108 @@ import io.spring.initializr.generator.version.VersionReference;
  */
 public class Dependency {
 
-	private final String groupId;
+    private final String groupId;
 
-	private final String artifactId;
+    private final String artifactId;
 
-	private final VersionReference version;
+    private final VersionReference version;
 
-	private final DependencyScope scope;
+    private final DependencyScope scope;
 
-	private final String type;
+    private final String type;
 
-	public Dependency(String groupId, String artifactId) {
-		this(groupId, artifactId, DependencyScope.COMPILE);
-	}
+    private String module;
 
-	public Dependency(String groupId, String artifactId, DependencyScope scope) {
-		this(groupId, artifactId, null, scope);
-	}
+    private String id;
 
-	public Dependency(String groupId, String artifactId, VersionReference version,
-			DependencyScope scope) {
-		this(groupId, artifactId, version, scope, null);
-	}
+    public Dependency(String groupId, String artifactId) {
+        this(groupId, artifactId, DependencyScope.COMPILE);
+    }
 
-	public Dependency(String groupId, String artifactId, VersionReference version,
-			DependencyScope scope, String type) {
-		this.groupId = groupId;
-		this.artifactId = artifactId;
-		this.version = version;
-		this.scope = scope;
-		this.type = type;
-	}
+    public Dependency(String groupId, String artifactId, DependencyScope scope) {
+        this(groupId, artifactId, null, scope);
+    }
 
-	/**
-	 * The group ID of the dependency.
-	 * @return the group ID
-	 */
-	public String getGroupId() {
-		return this.groupId;
-	}
+    public Dependency(String groupId, String artifactId, VersionReference version,
+                      DependencyScope scope) {
+        this(groupId, artifactId, version, scope, null);
+    }
 
-	/**
-	 * The artifact ID of the dependency.
-	 * @return the artifact ID
-	 */
-	public String getArtifactId() {
-		return this.artifactId;
-	}
+    public Dependency(String groupId, String artifactId, VersionReference version,
+                      DependencyScope scope, String type) {
+        this(groupId, artifactId, version, scope, type, null);
+    }
 
-	/**
-	 * The {@link VersionReference} of the dependency. May be {@code null} for a
-	 * dependency whose version is expected to be provided by dependency management.
-	 * @return the version reference or {@code null}
-	 */
-	public VersionReference getVersion() {
-		return this.version;
-	}
 
-	/**
-	 * The {@link DependencyScope scope} of the dependency.
-	 * @return the scope
-	 */
-	public DependencyScope getScope() {
-		return this.scope;
-	}
+    public Dependency(String groupId, String artifactId, VersionReference version,
+                      DependencyScope scope, String type, String module) {
+        this(groupId, artifactId, version, scope, type, module,null);
+    }
 
-	/**
-	 * The type of the dependency. Can be {@code null} to indicate that the default type
-	 * should be used (i.e. {@code jar}).
-	 * @return the type or {@code null}
-	 */
-	public String getType() {
-		return this.type;
-	}
+    public Dependency(String groupId, String artifactId, VersionReference version,
+                      DependencyScope scope, String type, String module,String id) {
+        this.groupId = groupId;
+        this.artifactId = artifactId;
+        this.version = version;
+        this.scope = scope;
+        this.type = type;
+        this.module = module;
+        this.id = id;
+    }
 
+    /**
+     * The group ID of the dependency.
+     *
+     * @return the group ID
+     */
+    public String getGroupId() {
+        return this.groupId;
+    }
+
+    /**
+     * The artifact ID of the dependency.
+     *
+     * @return the artifact ID
+     */
+    public String getArtifactId() {
+        return this.artifactId;
+    }
+
+    /**
+     * The {@link VersionReference} of the dependency. May be {@code null} for a
+     * dependency whose version is expected to be provided by dependency management.
+     *
+     * @return the version reference or {@code null}
+     */
+    public VersionReference getVersion() {
+        return this.version;
+    }
+
+    /**
+     * The {@link DependencyScope scope} of the dependency.
+     *
+     * @return the scope
+     */
+    public DependencyScope getScope() {
+        return this.scope;
+    }
+
+    /**
+     * The type of the dependency. Can be {@code null} to indicate that the default type
+     * should be used (i.e. {@code jar}).
+     *
+     * @return the type or {@code null}
+     */
+    public String getType() {
+        return this.type;
+    }
+
+
+    public String getModule() {
+        return module;
+    }
+
+    public String getId() {
+        return id;
+    }
 }

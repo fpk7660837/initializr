@@ -36,11 +36,11 @@ public class ChildMavenBuildCustomizer implements BuildCustomizer<MavenBuild> {
         }
     }
 
-    public void addChildMavenBuild(MavenBuild build, Module module) {
+    private void addChildMavenBuild(MavenBuild build, Module module) {
         addChildMavenBuild(build, module.getName(), module.getPackaging(), module.getChildModules());
     }
 
-    public void addChildMavenBuild(MavenBuild build, String name, String packaging, List<Module> childModules) {
+    private void addChildMavenBuild(MavenBuild build, String name, String packaging, List<Module> childModules) {
         MavenBuild childBuild = build.childBuild(buildItemResolver);
         childBuild.parent(build.getGroup(), build.getArtifact(), build.getVersion());
         childBuild.setArtifact(name);
@@ -50,11 +50,11 @@ public class ChildMavenBuildCustomizer implements BuildCustomizer<MavenBuild> {
             return;
         }
 
-        addReferDependency(build, childBuild, childModules);
+        addInternDependency(build, childBuild, childModules);
     }
 
 
-    public void addReferDependency(MavenBuild build, MavenBuild childBuild, List<Module> childModules) {
+    private void addInternDependency(MavenBuild build, MavenBuild childBuild, List<Module> childModules) {
         DependencyContainer dependencies = childBuild.dependencies();
 
         childModules

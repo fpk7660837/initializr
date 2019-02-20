@@ -146,7 +146,6 @@ public class MavenBuild extends Build {
         return childBuilds;
     }
 
-
     public List<MavenProfile> getProfiles() {
         return profiles;
     }

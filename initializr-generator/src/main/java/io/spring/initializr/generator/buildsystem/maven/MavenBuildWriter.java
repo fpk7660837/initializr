@@ -47,6 +47,7 @@ public class MavenBuildWriter {
             writeProjectCoordinates(writer, build);
             writePackaging(writer, build);
             writeProjectName(writer, build);
+            writeChildModule(writer, build);
             writeProperties(writer, build);
             writeDependencies(writer, build);
             writeDependencyManagement(writer, build);
@@ -103,6 +104,21 @@ public class MavenBuildWriter {
         writeSingleElement(writer, "description", build.getDescription());
     }
 
+    private void writeChildModule(IndentingWriter writer, MavenBuild build) {
+        if (!build.isRoot()) {
+            return;
+        }
+
+        writeElement(writer, "modules", () -> {
+            build.getChildBuilds().stream()
+                    .map(MavenBuild::getArtifact)
+                    .forEach(moduleName -> {
+                        writeSingleElement(writer, "module", moduleName);
+                    });
+        });
+    }
+
+
     private void writeProperties(IndentingWriter writer, MavenBuild build) {
         if (build.getProperties().isEmpty() && build.getVersionProperties().isEmpty()) {
             return;
@@ -121,24 +137,29 @@ public class MavenBuildWriter {
             return;
         }
         DependencyContainer dependencies = build.dependencies();
+        writeDependencies(writer, dependencies, build.isRoot());
+    }
+
+    private void writeDependencies(IndentingWriter writer, DependencyContainer dependencies, boolean root) {
         writer.println();
         writeElement(writer, "dependencies", () -> {
-            Collection<Dependency> compiledDependencies = writeDependencies(writer,
-                    dependencies, build.isRoot(), DependencyScope.COMPILE);
+            Collection<Dependency> compiledDependencies = writeInternDependencies(writer,
+                    dependencies, root, DependencyScope.COMPILE);
             if (!compiledDependencies.isEmpty()) {
                 writer.println();
             }
-            writeDependencies(writer, dependencies, build.isRoot(), DependencyScope.RUNTIME);
-            writeDependencies(writer, dependencies, build.isRoot(), DependencyScope.COMPILE_ONLY);
-            writeDependencies(writer, dependencies, build.isRoot(), DependencyScope.ANNOTATION_PROCESSOR);
-            writeDependencies(writer, dependencies, build.isRoot(), DependencyScope.PROVIDED_RUNTIME);
-            writeDependencies(writer, dependencies, build.isRoot(), DependencyScope.TEST_COMPILE,
+            writeInternDependencies(writer, dependencies, root, DependencyScope.RUNTIME);
+            writeInternDependencies(writer, dependencies, root, DependencyScope.COMPILE_ONLY);
+            writeInternDependencies(writer, dependencies, root, DependencyScope.ANNOTATION_PROCESSOR);
+            writeInternDependencies(writer, dependencies, root, DependencyScope.PROVIDED_RUNTIME);
+            writeInternDependencies(writer, dependencies, root, DependencyScope.TEST_COMPILE,
                     DependencyScope.TEST_RUNTIME);
         });
     }
 
-    private Collection<Dependency> writeDependencies(IndentingWriter writer,
-                                                     DependencyContainer dependencies, boolean rootBuild, DependencyScope... types) {
+
+    private Collection<Dependency> writeInternDependencies(IndentingWriter writer,
+                                                           DependencyContainer dependencies, boolean rootBuild, DependencyScope... types) {
         Collection<Dependency> candidates = filterDependencies(dependencies, types);
         candidates.forEach(dependency -> dependency.setRoot(rootBuild));
         writeCollection(writer, candidates, this::writeDependency);
@@ -150,7 +171,9 @@ public class MavenBuildWriter {
             writeSingleElement(writer, "groupId", dependency.getGroupId());
             writeSingleElement(writer, "artifactId", dependency.getArtifactId());
             writeSingleElement(writer, "scope", scopeForType(dependency.getScope()));
-            if (dependency.isRoot()) {
+            if (dependency.isRoot() || (null != dependency.getVersion().getValue() && dependency.getVersion()
+                    .getValue()
+                    .startsWith("${project.parent.version}"))) {
                 writeSingleElement(writer, "version",
                         determineVersion(dependency.getVersion()));
                 if (isOptional(dependency.getScope())) {
@@ -365,7 +388,7 @@ public class MavenBuildWriter {
                     .forEach((key, value) -> writeSingleElement(writer, key, value)));
 
             DependencyContainer dependencies = mavenProfile.getDependencies();
-            writeDependencies(writer, dependencies, true, DependencyScope.PROVIDED_RUNTIME);
+            writeDependencies(writer, dependencies, true);
         })));
     }
 

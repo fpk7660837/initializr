@@ -86,7 +86,7 @@ public class MainSourceCodeProjectContributor<T extends TypeDeclaration, C exten
         S sourceCode = buildEmptySourceCode();
         buildMainApplicationSourceCode(sourceCode, projectDescription.getModuleName(DefaultModuleTopology.Modules.WEB
                 .getSuffix()));
-        buildMainApplicationSourceCode(sourceCode, projectDescription.getModuleName(DefaultModuleTopology.Modules.WEB
+        buildMainApplicationSourceCode(sourceCode, projectDescription.getModuleName(DefaultModuleTopology.Modules.API
                 .getSuffix()));
         buildMainSourceCode(sourceCode);
         return sourceCode;

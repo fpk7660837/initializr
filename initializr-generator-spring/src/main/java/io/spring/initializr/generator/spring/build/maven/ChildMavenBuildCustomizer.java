@@ -37,15 +37,14 @@ public class ChildMavenBuildCustomizer implements BuildCustomizer<MavenBuild> {
     }
 
     private void addChildMavenBuild(MavenBuild build, Module module) {
-        addChildMavenBuild(build, module.getName(), module.getPackaging(), module.getChildModules());
-    }
 
-    private void addChildMavenBuild(MavenBuild build, String name, String packaging, List<Module> childModules) {
         MavenBuild childBuild = build.childBuild(buildItemResolver);
         childBuild.parent(build.getGroup(), build.getArtifact(), build.getVersion());
-        childBuild.setArtifact(name);
-        childBuild.setPackaging(packaging);
+        childBuild.setArtifact(module.getName());
+        childBuild.setSuffix(module.getSuffix());
+        childBuild.setPackaging(module.getPackaging());
 
+        List<Module> childModules = module.getChildModules();
         if (CollectionUtils.isEmpty(childModules)) {
             return;
         }

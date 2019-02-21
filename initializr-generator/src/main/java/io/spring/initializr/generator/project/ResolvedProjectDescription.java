@@ -16,17 +16,16 @@
 
 package io.spring.initializr.generator.project;
 
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 import io.spring.initializr.generator.buildsystem.BuildSystem;
 import io.spring.initializr.generator.buildsystem.Dependency;
 import io.spring.initializr.generator.language.Language;
 import io.spring.initializr.generator.packaging.Packaging;
 import io.spring.initializr.generator.version.Version;
-
 import org.springframework.util.StringUtils;
+
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * An immutable description of a project that is being generated.
@@ -35,104 +34,108 @@ import org.springframework.util.StringUtils;
  */
 public final class ResolvedProjectDescription {
 
-	private final Map<String, Dependency> requestedDependencies;
+    private final Map<String, Dependency> requestedDependencies;
 
-	private final Version platformVersion;
+    private final Version platformVersion;
 
-	private final BuildSystem buildSystem;
+    private final BuildSystem buildSystem;
 
-	private final Packaging packaging;
+    private final Packaging packaging;
 
-	private final Language language;
+    private final Language language;
 
-	private final String groupId;
+    private final String groupId;
 
-	private final String artifactId;
+    private final String artifactId;
 
-	private final String name;
+    private final String name;
 
-	private final String description;
+    private final String description;
 
-	private final String applicationName;
+    private final String applicationName;
 
-	private final String packageName;
+    private final String packageName;
 
-	private final String baseDirectory;
+    private final String baseDirectory;
 
-	public ResolvedProjectDescription(ProjectDescription description) {
-		this.platformVersion = description.getPlatformVersion();
-		this.buildSystem = description.getBuildSystem();
-		this.packaging = description.getPackaging();
-		this.language = description.getLanguage();
-		this.groupId = description.getGroupId();
-		this.artifactId = description.getArtifactId();
-		this.name = description.getName();
-		this.description = description.getDescription();
-		this.applicationName = description.getApplicationName();
-		this.packageName = getPackageName(description);
-		this.baseDirectory = description.getBaseDirectory();
-		Map<String, Dependency> requestedDependencies = new LinkedHashMap<>(
-				description.getRequestedDependencies());
-		this.requestedDependencies = Collections.unmodifiableMap(requestedDependencies);
-	}
+    public ResolvedProjectDescription(ProjectDescription description) {
+        this.platformVersion = description.getPlatformVersion();
+        this.buildSystem = description.getBuildSystem();
+        this.packaging = description.getPackaging();
+        this.language = description.getLanguage();
+        this.groupId = description.getGroupId();
+        this.artifactId = description.getArtifactId();
+        this.name = description.getName();
+        this.description = description.getDescription();
+        this.applicationName = description.getApplicationName();
+        this.packageName = getPackageName(description);
+        this.baseDirectory = description.getBaseDirectory();
+        Map<String, Dependency> requestedDependencies = new LinkedHashMap<>(
+                description.getRequestedDependencies());
+        this.requestedDependencies = Collections.unmodifiableMap(requestedDependencies);
+    }
 
-	private String getPackageName(ProjectDescription description) {
-		if (StringUtils.hasText(description.getPackageName())) {
-			return description.getPackageName();
-		}
-		if (StringUtils.hasText(description.getGroupId())
-				&& StringUtils.hasText(description.getArtifactId())) {
-			return description.getGroupId() + "." + description.getArtifactId();
-		}
-		return null;
-	}
+    private String getPackageName(ProjectDescription description) {
+        if (StringUtils.hasText(description.getPackageName())) {
+            return description.getPackageName();
+        }
+        if (StringUtils.hasText(description.getGroupId())
+                && StringUtils.hasText(description.getArtifactId())) {
+            return description.getGroupId() + "." + description.getArtifactId();
+        }
+        return null;
+    }
 
-	public Map<String, Dependency> getRequestedDependencies() {
-		return this.requestedDependencies;
-	}
+    public Map<String, Dependency> getRequestedDependencies() {
+        return this.requestedDependencies;
+    }
 
-	public Version getPlatformVersion() {
-		return this.platformVersion;
-	}
+    public Version getPlatformVersion() {
+        return this.platformVersion;
+    }
 
-	public BuildSystem getBuildSystem() {
-		return this.buildSystem;
-	}
+    public BuildSystem getBuildSystem() {
+        return this.buildSystem;
+    }
 
-	public Packaging getPackaging() {
-		return this.packaging;
-	}
+    public Packaging getPackaging() {
+        return this.packaging;
+    }
 
-	public Language getLanguage() {
-		return this.language;
-	}
+    public Language getLanguage() {
+        return this.language;
+    }
 
-	public String getGroupId() {
-		return this.groupId;
-	}
+    public String getGroupId() {
+        return this.groupId;
+    }
 
-	public String getArtifactId() {
-		return this.artifactId;
-	}
+    public String getArtifactId() {
+        return this.artifactId;
+    }
 
-	public String getName() {
-		return this.name;
-	}
+    public String getName() {
+        return this.name;
+    }
 
-	public String getDescription() {
-		return this.description;
-	}
+    public String getDescription() {
+        return this.description;
+    }
 
-	public String getApplicationName() {
-		return this.applicationName;
-	}
+    public String getApplicationName() {
+        return this.applicationName;
+    }
 
-	public String getPackageName() {
-		return this.packageName;
-	}
+    public String getPackageName() {
+        return this.packageName;
+    }
 
-	public String getBaseDirectory() {
-		return this.baseDirectory;
-	}
+    public String getBaseDirectory() {
+        return this.baseDirectory;
+    }
+
+    public String getModuleName(String suffix) {
+        return this.artifactId + "-" + suffix;
+    }
 
 }

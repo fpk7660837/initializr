@@ -17,6 +17,7 @@
 package io.spring.initializr.generator.spring.configuration;
 
 import io.spring.initializr.generator.project.ProjectGenerationConfiguration;
+import io.spring.initializr.generator.project.ResolvedProjectDescription;
 import io.spring.initializr.generator.project.module.DefaultModuleTopology;
 import io.spring.initializr.generator.project.module.ModuleTopology;
 import io.spring.initializr.generator.project.module.MultiModuleProjectContributor;
@@ -36,8 +37,8 @@ public class ApplicationConfigurationProjectGenerationConfiguration {
     // }
 
     @Bean
-    public ApplicationMultiPropertiesContributor applicationMultiPropertiesContributor() {
-        return new ApplicationMultiPropertiesContributor();
+    public ApplicationMultiPropertiesContributor applicationMultiPropertiesContributor(ResolvedProjectDescription projectDescription) {
+        return new ApplicationMultiPropertiesContributor(projectDescription);
     }
 
     // @Bean
@@ -48,8 +49,8 @@ public class ApplicationConfigurationProjectGenerationConfiguration {
 
 
     @Bean
-    public ModuleTopology moduleTopology() {
-        return new DefaultModuleTopology();
+    public ModuleTopology moduleTopology(ResolvedProjectDescription projectDescription) {
+        return new DefaultModuleTopology(projectDescription);
     }
 
 

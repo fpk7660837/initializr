@@ -35,23 +35,21 @@ public class ReferMavenBuildCustomizer implements BuildCustomizer<MavenBuild> {
     }
 
     private void addReferMavenBuild(MavenBuild build, Module module) {
-        addReferMavenBuild(build, module.getName(), module.getPackaging());
-    }
-
-    private void addReferMavenBuild(MavenBuild build, String name, String packaging) {
         MavenBuild childBuild = build.childBuild(buildItemResolver);
-        childBuild.setArtifact(name);
+        childBuild.setArtifact(module.getName());
         childBuild.setGroup(build.getGroup());
-        childBuild.setPackaging(packaging);
+        childBuild.setPackaging(module.getPackaging());
+        childBuild.setSuffix(module.getSuffix());
         childBuild.setVersion(build.getVersion());
 
         addRepositories(childBuild);
     }
 
+
     private void addRepositories(MavenBuild build) {
         MavenRepositoryContainer repositories = build.repositories();
         repositories.add(new MavenRepository("nexus-releases", "Nexus Release Repository", "http://nexus.dmall.com:8081/nexus/content/repositories/releases/"));
-        repositories.add(new MavenRepository("nexus-snapshots", "Nexus Snapshot Repository", "http://nexus.dmall.com:8081/nexus/content/repositories/snapshots/",true));
+        repositories.add(new MavenRepository("nexus-snapshots", "Nexus Snapshot Repository", "http://nexus.dmall.com:8081/nexus/content/repositories/snapshots/", true));
     }
 
 

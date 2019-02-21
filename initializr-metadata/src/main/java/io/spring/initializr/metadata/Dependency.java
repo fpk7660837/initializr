@@ -105,7 +105,7 @@ public class Dependency extends MetadataElement implements Describable {
     @JsonInclude(JsonInclude.Include.NON_DEFAULT)
     private int weight;
 
-    private String module;
+    private String moduleSuffix;
 
     /**
      * Specify if the dependency represents a "starter", i.e. the sole presence of that
@@ -137,7 +137,7 @@ public class Dependency extends MetadataElement implements Describable {
         this.bom = dependency.bom;
         this.repository = dependency.repository;
         this.weight = dependency.weight;
-        this.module = dependency.module;
+        this.moduleSuffix = dependency.moduleSuffix;
         this.starter = dependency.starter;
         this.keywords.addAll(dependency.keywords);
         this.links.addAll(dependency.links);
@@ -445,12 +445,12 @@ public class Dependency extends MetadataElement implements Describable {
         return this.versionRange;
     }
 
-    public String getModule() {
-        return module;
+    public String getModuleSuffix() {
+        return moduleSuffix;
     }
 
-    public void setModule(String module) {
-        this.module = module;
+    public void setModuleSuffix(String moduleSuffix) {
+        this.moduleSuffix = moduleSuffix;
     }
 
     @Override

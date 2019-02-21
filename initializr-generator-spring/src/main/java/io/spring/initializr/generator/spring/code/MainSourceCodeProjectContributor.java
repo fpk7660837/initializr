@@ -71,17 +71,17 @@ public class MainSourceCodeProjectContributor<T extends TypeDeclaration, C exten
     @Override
     public void contribute(Path projectRoot) throws IOException {
         S sourceCode = buildMainSourceCode();
-        writeCode(projectRoot, sourceCode, "web");
-        writeCode(projectRoot, sourceCode, "api");
+        writeCode(projectRoot, sourceCode, projectDescription.getModuleName("web"));
+        writeCode(projectRoot, sourceCode, projectDescription.getModuleName("api"));
 
         sourceCode = buildEmptySourceCode();
 
-        writeCode(projectRoot, sourceCode, "service");
-        writeCode(projectRoot, sourceCode, "dao");
-        writeCode(projectRoot, sourceCode, "common");
-        writeCode(projectRoot, sourceCode, "rpc");
-        writeCode(projectRoot, sourceCode, "sdk");
-        writeCode(projectRoot, sourceCode, "mq");
+        writeCode(projectRoot, sourceCode, projectDescription.getModuleName("service"));
+        writeCode(projectRoot, sourceCode, projectDescription.getModuleName("dao"));
+        writeCode(projectRoot, sourceCode, projectDescription.getModuleName("common"));
+        writeCode(projectRoot, sourceCode, projectDescription.getModuleName("rpc"));
+        writeCode(projectRoot, sourceCode, projectDescription.getModuleName("sdk"));
+        writeCode(projectRoot, sourceCode, projectDescription.getModuleName("mq"));
     }
 
 

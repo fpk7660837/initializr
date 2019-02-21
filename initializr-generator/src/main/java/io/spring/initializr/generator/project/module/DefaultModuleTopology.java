@@ -1,5 +1,6 @@
 package io.spring.initializr.generator.project.module;
 
+import io.spring.initializr.generator.project.ResolvedProjectDescription;
 import org.springframework.util.CollectionUtils;
 
 import java.util.*;
@@ -18,20 +19,24 @@ public class DefaultModuleTopology implements ModuleTopology {
     private final Map<String, Module> moduleMap = new HashMap<>();
 
 
-    public DefaultModuleTopology() {
-        root = new Module("root");
+    private static ResolvedProjectDescription projectDescription;
+
+
+    public DefaultModuleTopology(ResolvedProjectDescription projectDescription) {
+        DefaultModuleTopology.projectDescription = projectDescription;
+        root = new Module("root", "root");
         moduleDependency();
     }
 
     private void moduleDependency() {
-        Module common = newModule(Modules.COMMON.getName());
-        Module rpc = newModule(Modules.RPC.getName());
-        Module service = newModule(Modules.SERVICE.getName());
-        Module dao = newModule(Modules.DAO.getName());
-        Module web = newModule(Modules.WEB.getName(), Modules.WEB.getPackaging());
-        Module api = newModule(Modules.API.getName(), Modules.API.getPackaging());
-        Module mq = newModule(Modules.MQ.getName());
-        Module pojo = newModule(Modules.POJO.getName());
+        Module common = newModule(Modules.COMMON);
+        Module rpc = newModule(Modules.RPC);
+        Module service = newModule(Modules.SERVICE);
+        Module dao = newModule(Modules.DAO);
+        Module web = newModule(Modules.WEB, Modules.WEB.getPackaging());
+        Module api = newModule(Modules.API, Modules.API.getPackaging());
+        Module mq = newModule(Modules.MQ);
+        Module pojo = newModule(Modules.POJO);
 
         dao.addChildModule(common);
         dao.addChildModule(pojo);
@@ -46,14 +51,15 @@ public class DefaultModuleTopology implements ModuleTopology {
         root.addChildModule(web);
         root.addChildModule(api);
 
-        Module sdk = newModule(Modules.SDK.getName());
+        Module sdk = newModule(Modules.SDK);
 
         root.addReferModule(sdk);
     }
 
 
-    private Module newModule(String name, String... packaging) {
-        Module module = new Module(name);
+    private Module newModule(Modules modules, String... packaging) {
+        String name = modules.getName();
+        Module module = new Module(name, modules.getSuffix());
         module.setPackaging(null == packaging || packaging.length == 0 ? null : packaging[0]);
         moduleMap.put(name, module);
         return module;
@@ -133,22 +139,26 @@ public class DefaultModuleTopology implements ModuleTopology {
         SDK("sdk", null);
 
 
-        private String name;
+        private String suffix;
 
         private String packaging;
 
-        Modules(String name, String packaging) {
-            this.name = name;
+        Modules(String suffix, String packaging) {
+            this.suffix = suffix;
             this.packaging = packaging;
         }
 
 
-        public String getName() {
-            return name;
-        }
-
         public String getPackaging() {
             return packaging;
+        }
+
+        public String getName() {
+            return projectDescription.getArtifactId() + "-" + suffix;
+        }
+
+        public String getSuffix() {
+            return suffix;
         }
     }
 

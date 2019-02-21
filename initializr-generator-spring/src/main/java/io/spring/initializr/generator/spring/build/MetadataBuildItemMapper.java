@@ -47,7 +47,7 @@ public final class MetadataBuildItemMapper {
 				dependency.getGroupId(), dependency.getArtifactId(),
 				VersionReference.ofValue(dependency.getVersion()),
 				toDependencyScope(dependency.getScope()), dependency.getType(),
-				dependency.getModule(),dependency.getId());
+				dependency.getModuleSuffix(),dependency.getId());
 	}
 
 	private static DependencyScope toDependencyScope(String scope) {

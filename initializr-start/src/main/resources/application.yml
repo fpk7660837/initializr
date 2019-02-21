@@ -173,7 +173,7 @@ initializr:
           scope: compileOnly
           description: Java annotation library which helps to reduce boilerplate code and code faster
           starter: false
-          module: pojo
+          moduleSuffix: pojo
         - name: Configuration Processor
           id: configuration-processor
           groupId: org.springframework.boot
@@ -185,7 +185,7 @@ initializr:
           links:
             - rel: reference
               href: http://docs.spring.io/spring-boot/docs/{bootVersion}/reference/htmlsingle/#configuration-metadata-annotation-processor
-          module: common
+          moduleSuffix: common
         - name: Session
           id: session
           groupId: org.springframework.session
@@ -195,7 +195,7 @@ initializr:
           mappings:
             - versionRange: "[1.5.0.RELEASE,2.0.0.M2]"
               artifactId: spring-session
-          module: service
+          moduleSuffix: service
         - name: Cache
           id: cache
           description: Spring's Cache abstraction
@@ -205,7 +205,7 @@ initializr:
               description: Caching Data with Spring
             - rel: reference
               href: http://docs.spring.io/spring-boot/docs/{bootVersion}/reference/htmlsingle/#boot-features-caching
-          module: service
+          moduleSuffix: service
         - name: Validation
           id: validation
           description: JSR-303 validation infrastructure (already included with web)
@@ -213,18 +213,18 @@ initializr:
             - rel: guide
               href: https://spring.io/guides/gs/validating-form-input/
               description: Validating Form Input
-          module: pojo
+          moduleSuffix: pojo
         - name: Retry
           id: retry
           groupId: org.springframework.retry
           artifactId: spring-retry
           description: Provide declarative retry support via spring-retry
           starter: false
-          module: service
+          moduleSuffix: service
         - name: Aspects
           id: aop
           description: Create your own Aspects using Spring AOP and AspectJ
-          module: common
+          moduleSuffix: common
     - name: Web
       content:
         - name: Web
@@ -246,7 +246,7 @@ initializr:
             - rel: guide
               href: https://spring.io/guides/tutorials/bookmarks/
               description: Building REST services with Spring
-          module: web
+          moduleSuffix: web
         - name: Reactive Web
           id: webflux
           versionRange: 2.0.0.M1
@@ -272,7 +272,7 @@ initializr:
               description: Accessing MongoDB Data with REST
             - rel: reference
               href: http://docs.spring.io/spring-boot/docs/{bootVersion}/reference/htmlsingle/#howto-use-exposing-spring-data-repositories-rest-endpoint
-          module: web
+          moduleSuffix: web
         - name: Rest Repositories HAL Browser
           id: data-rest-hal
           description: Browsing Spring Data REST repositories in your browser
@@ -322,7 +322,7 @@ initializr:
           groupId: org.springframework.restdocs
           artifactId: spring-restdocs-mockmvc
           scope: test
-          module: web
+          moduleSuffix: web
         - name: Vaadin
           id: vaadin
           facets:
@@ -472,7 +472,7 @@ initializr:
             - rel: guide
               href: https://spring.io/guides/gs/accessing-data-mysql/
               description: Accessing data with MySQL
-          module: dao
+          moduleSuffix: dao
         - name: H2
           id: h2
           description: H2 database (with embedded support)
@@ -492,7 +492,7 @@ initializr:
               description: Managing Transactions
             - rel: reference
               href: http://docs.spring.io/spring-boot/docs/{bootVersion}/reference/htmlsingle/#boot-features-sql
-          module: dao
+          moduleSuffix: dao
         - name: MyBatis
           id: mybatis
           description: Persistence support using MyBatis
@@ -509,7 +509,7 @@ initializr:
               version: 1.3.3
             - versionRange: 2.0.0.RELEASE
               version: 2.0.0
-          module: dao
+          moduleSuffix: dao
         - name: PostgreSQL
           id: postgresql
           description: PostgreSQL JDBC driver
@@ -517,7 +517,7 @@ initializr:
           artifactId: postgresql
           scope: runtime
           starter: false
-          module: dao
+          moduleSuffix: dao
         - name: SQL Server
           id: sqlserver
           description: Microsoft SQL Server JDBC driver
@@ -525,7 +525,7 @@ initializr:
           artifactId: mssql-jdbc
           scope: runtime
           starter: false
-          module: dao
+          moduleSuffix: dao
         - name: HSQLDB
           id: hsql
           description: HSQLDB database (with embedded support)
@@ -577,7 +577,7 @@ initializr:
               description: Messaging with Redis
             - rel: reference
               href: http://docs.spring.io/spring-boot/docs/{bootVersion}/reference/htmlsingle/#boot-features-redis
-          module: dao
+          moduleSuffix: dao
         - name: Reactive Redis
           id: data-redis-reactive
           description: Redis key-value data store, including spring-data-redis
@@ -588,7 +588,7 @@ initializr:
               description: Messaging with Redis
             - rel: reference
               href: http://docs.spring.io/spring-boot/docs/{bootVersion}/reference/htmlsingle/#boot-features-redis
-          module: dao
+          moduleSuffix: dao
         - name: MongoDB
           id: data-mongodb
           description: MongoDB NoSQL Database, including spring-data-mongodb
@@ -599,7 +599,7 @@ initializr:
               description: Accessing Data with MongoDB
             - rel: reference
               href: http://docs.spring.io/spring-boot/docs/{bootVersion}/reference/htmlsingle/#boot-features-mongodb
-          module: dao
+          moduleSuffix: dao
         - name: Reactive MongoDB
           id: data-mongodb-reactive
           description: MongoDB NoSQL Database, including spring-data-mongodb and the reactive driver
@@ -608,7 +608,7 @@ initializr:
           links:
             - rel: reference
               href: http://docs.spring.io/spring-boot/docs/{bootVersion}/reference/htmlsingle/#boot-features-mongodb
-          module: dao
+          moduleSuffix: dao
         - name: Embedded MongoDB
           id: flapdoodle-mongo
           description: Embedded MongoDB for testing
@@ -623,7 +623,7 @@ initializr:
           links:
             - rel: reference
               href: http://docs.spring.io/spring-boot/docs/{bootVersion}/reference/htmlsingle/#boot-features-elasticsearch
-          module: dao
+          moduleSuffix: dao
         - name: Solr
           id: data-solr
           description: Apache Solr search platform, including spring-data-solr
@@ -679,7 +679,7 @@ initializr:
       content:
         - name: Spring Integration
           id: integration
-          description: Common spring-integration modules
+          description: Common spring-integration moduleSuffixs
           weight: 100
           links:
             - rel: guide

@@ -15,6 +15,8 @@ public class Module {
 
     private String name;
 
+    private String suffix;
+
     private String packaging;
 
     private List<Module> childModules;
@@ -22,8 +24,9 @@ public class Module {
     private List<Module> referModules;
 
 
-    public Module(String name) {
+    public Module(String name,String suffix) {
         this.name = name;
+        this.suffix = suffix;
     }
 
     public String getName() {
@@ -32,6 +35,14 @@ public class Module {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getSuffix() {
+        return suffix;
+    }
+
+    public void setSuffix(String suffix) {
+        this.suffix = suffix;
     }
 
     public String getPackaging() {

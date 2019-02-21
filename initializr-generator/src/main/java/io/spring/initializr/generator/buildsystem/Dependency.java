@@ -35,7 +35,7 @@ public class Dependency {
 
     private final String type;
 
-    private String module;
+    private String moduleSuffix;
 
     private String id;
 
@@ -66,13 +66,13 @@ public class Dependency {
     }
 
     public Dependency(String groupId, String artifactId, VersionReference version,
-                      DependencyScope scope, String type, String module,String id) {
+                      DependencyScope scope, String type, String moduleSuffix,String id) {
         this.groupId = groupId;
         this.artifactId = artifactId;
         this.version = version;
         this.scope = scope;
         this.type = type;
-        this.module = module;
+        this.moduleSuffix = moduleSuffix;
         this.id = id;
     }
 
@@ -124,8 +124,8 @@ public class Dependency {
     }
 
 
-    public String getModule() {
-        return module;
+    public String getModuleSuffix() {
+        return moduleSuffix;
     }
 
     public String getId() {

@@ -34,6 +34,8 @@ public abstract class Build {
 
     private String artifact;
 
+    private String suffix;
+
     private String version = "0.0.1-SNAPSHOT";
 
     private final Map<VersionProperty, String> versionProperties = new TreeMap<>();
@@ -89,6 +91,14 @@ public abstract class Build {
 
     public void setArtifact(String artifact) {
         this.artifact = artifact;
+    }
+
+    public String getSuffix() {
+        return suffix;
+    }
+
+    public void setSuffix(String suffix) {
+        this.suffix = suffix;
     }
 
     public String getVersion() {

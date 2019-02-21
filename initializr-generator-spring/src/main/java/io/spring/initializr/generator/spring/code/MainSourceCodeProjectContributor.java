@@ -22,6 +22,7 @@ import io.spring.initializr.generator.language.SourceCodeWriter;
 import io.spring.initializr.generator.language.TypeDeclaration;
 import io.spring.initializr.generator.project.ResolvedProjectDescription;
 import io.spring.initializr.generator.project.contributor.ProjectContributor;
+import io.spring.initializr.generator.project.module.DefaultModuleTopology;
 import io.spring.initializr.generator.spring.util.LambdaSafe;
 import org.springframework.beans.factory.ObjectProvider;
 
@@ -70,36 +71,44 @@ public class MainSourceCodeProjectContributor<T extends TypeDeclaration, C exten
 
     @Override
     public void contribute(Path projectRoot) throws IOException {
-        S sourceCode = buildMainSourceCode();
-        writeCode(projectRoot, sourceCode, projectDescription.getModuleName("web"));
-        writeCode(projectRoot, sourceCode, projectDescription.getModuleName("api"));
-
-        sourceCode = buildEmptySourceCode();
-
-        writeCode(projectRoot, sourceCode, projectDescription.getModuleName("service"));
-        writeCode(projectRoot, sourceCode, projectDescription.getModuleName("dao"));
-        writeCode(projectRoot, sourceCode, projectDescription.getModuleName("common"));
-        writeCode(projectRoot, sourceCode, projectDescription.getModuleName("rpc"));
-        writeCode(projectRoot, sourceCode, projectDescription.getModuleName("sdk"));
-        writeCode(projectRoot, sourceCode, projectDescription.getModuleName("mq"));
+        S sourceCode = buildSourceCode();
+        for (DefaultModuleTopology.Modules module : DefaultModuleTopology.Modules.values()) {
+            String suffix = module.getSuffix();
+            String moduleName = projectDescription.getModuleName(suffix);
+            List<C> codeModuleCompilationUnits = sourceCode.getModuleCompilationUnits(moduleName);
+            S s = buildEmptySourceCode();
+            s.setCompilationUnits(codeModuleCompilationUnits);
+            writeCode(projectRoot, s, moduleName);
+        }
     }
 
+    private S buildSourceCode() {
+        S sourceCode = buildEmptySourceCode();
+        buildMainApplicationSourceCode(sourceCode, projectDescription.getModuleName(DefaultModuleTopology.Modules.WEB
+                .getSuffix()));
+        buildMainApplicationSourceCode(sourceCode, projectDescription.getModuleName(DefaultModuleTopology.Modules.WEB
+                .getSuffix()));
+        buildMainSourceCode(sourceCode);
+        return sourceCode;
+    }
 
     private S buildEmptySourceCode() {
         return this.sourceFactory.get();
     }
 
 
-    private S buildMainSourceCode() {
-        S sourceCode = this.sourceFactory.get();
+    private void buildMainSourceCode(S sourceCode) {
+        customizeMainSourceCode(sourceCode);
+    }
+
+
+    private void buildMainApplicationSourceCode(S sourceCode, String module) {
         String applicationName = this.projectDescription.getApplicationName();
         C compilationUnit = sourceCode.createCompilationUnit(
-                this.projectDescription.getPackageName(), applicationName);
+                this.projectDescription.getPackageName(), applicationName, module);
         T mainApplicationType = compilationUnit.createTypeDeclaration(applicationName);
         customizeMainApplicationType(mainApplicationType);
         customizeMainCompilationUnit(compilationUnit);
-        customizeMainSourceCode(sourceCode);
-        return sourceCode;
     }
 
     private void writeCode(Path projectRoot, S sourceCode, String module) throws IOException {

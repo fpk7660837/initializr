@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.BiFunction;
+import java.util.stream.Collectors;
 
 /**
  * Representation of application source code.
@@ -30,26 +31,47 @@ import java.util.function.BiFunction;
  */
 public abstract class SourceCode<T extends TypeDeclaration, C extends CompilationUnit<T>> {
 
-	private final List<C> compilationUnits = new ArrayList<>();
+    private List<C> compilationUnits = new ArrayList<>();
 
-	private final BiFunction<String, String, C> compilationUnitFactory;
 
-	protected SourceCode(BiFunction<String, String, C> compilationUnitFactory) {
-		this.compilationUnitFactory = compilationUnitFactory;
-	}
+    private final BiFunction<String, String, C> compilationUnitFactory;
 
-	public C createCompilationUnit(String packageName, String name) {
-		C compilationUnit = this.compilationUnitFactory.apply(packageName, name);
-		this.compilationUnits.add(compilationUnit);
-		return compilationUnit;
-	}
+    protected SourceCode(BiFunction<String, String, C> compilationUnitFactory) {
+        this.compilationUnitFactory = compilationUnitFactory;
+    }
 
-	/**
-	 * Returns an unmodifiable view of the {@link CompilationUnit compilation units}.
-	 * @return the compilation units
-	 */
-	public List<C> getCompilationUnits() {
-		return Collections.unmodifiableList(this.compilationUnits);
-	}
+
+    public C createCompilationUnit(String packageName, String name) {
+        return createCompilationUnit(packageName, name, null);
+    }
+
+
+    public C createCompilationUnit(String packageName, String name, String module) {
+        C compilationUnit = this.compilationUnitFactory.apply(packageName, name);
+        compilationUnit.setModule(module);
+        this.compilationUnits.add(compilationUnit);
+        return compilationUnit;
+    }
+
+
+    /**
+     * Returns an unmodifiable view of the {@link CompilationUnit compilation units}.
+     *
+     * @return the compilation units
+     */
+    public List<C> getCompilationUnits() {
+        return Collections.unmodifiableList(this.compilationUnits);
+    }
+
+    public void setCompilationUnits(List<C> compilationUnits) {
+        this.compilationUnits = compilationUnits;
+    }
+
+    public List<C> getModuleCompilationUnits(String module) {
+        return compilationUnits.stream()
+                .filter(c -> module.equals(c.getModule()))
+                .collect(Collectors.toList());
+    }
+
 
 }

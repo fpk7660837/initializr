@@ -28,35 +28,47 @@ import java.util.List;
  */
 public abstract class CompilationUnit<T extends TypeDeclaration> {
 
-	private final String packageName;
+    private final String packageName;
 
-	private final String name;
+    private final String name;
 
-	private final List<T> typeDeclarations = new ArrayList<>();
+    private String module;
 
-	public CompilationUnit(String packageName, String name) {
-		this.packageName = packageName;
-		this.name = name;
-	}
+    private final List<T> typeDeclarations = new ArrayList<>();
 
-	public String getPackageName() {
-		return this.packageName;
-	}
 
-	public String getName() {
-		return this.name;
-	}
+    public CompilationUnit(String packageName, String name) {
+        this.packageName = packageName;
+        this.name = name;
+    }
 
-	public T createTypeDeclaration(String name) {
-		T typeDeclaration = doCreateTypeDeclaration(name);
-		this.typeDeclarations.add(typeDeclaration);
-		return typeDeclaration;
-	}
 
-	public List<T> getTypeDeclarations() {
-		return Collections.unmodifiableList(this.typeDeclarations);
-	}
+    public String getPackageName() {
+        return this.packageName;
+    }
 
-	protected abstract T doCreateTypeDeclaration(String name);
+    public String getName() {
+        return this.name;
+    }
+
+    public String getModule() {
+        return module;
+    }
+
+    public void setModule(String module) {
+        this.module = module;
+    }
+
+    public T createTypeDeclaration(String name) {
+        T typeDeclaration = doCreateTypeDeclaration(name);
+        this.typeDeclarations.add(typeDeclaration);
+        return typeDeclaration;
+    }
+
+    public List<T> getTypeDeclarations() {
+        return Collections.unmodifiableList(this.typeDeclarations);
+    }
+
+    protected abstract T doCreateTypeDeclaration(String name);
 
 }

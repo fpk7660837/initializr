@@ -27,12 +27,14 @@ import java.nio.file.Path;
  */
 public interface SourceCodeWriter<S extends SourceCode<?, ?>> {
 
-	/**
-	 * Writes, to the given {@code directory}, the given {@code sourceCode}.
-	 * @param directory the root directory beneath which the source code is written
-	 * @param sourceCode the source code to write
-	 * @throws IOException if writing fails
-	 */
-	void writeTo(Path directory, S sourceCode) throws IOException;
+    /**
+     * Writes, to the given {@code directory}, the given {@code sourceCode}.
+     *
+     * @param directory  the root directory beneath which the source code is written
+     * @param sourceCode the source code to write
+     * @throws IOException if writing fails
+     */
+    void writeTo(Path directory, S sourceCode) throws IOException;
+
 
 }

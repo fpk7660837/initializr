@@ -22,6 +22,7 @@ import io.spring.initializr.generator.language.SourceCodeWriter;
 import io.spring.initializr.generator.language.TypeDeclaration;
 import io.spring.initializr.generator.project.ResolvedProjectDescription;
 import io.spring.initializr.generator.project.contributor.ProjectContributor;
+import io.spring.initializr.generator.project.module.DefaultModuleTopology;
 import io.spring.initializr.generator.spring.util.LambdaSafe;
 import org.springframework.beans.factory.ObjectProvider;
 
@@ -65,24 +66,33 @@ public class TestSourceCodeProjectContributor<T extends TypeDeclaration, C exten
 
     @Override
     public void contribute(Path projectRoot) throws IOException {
+        // fixme need to reduce code
+        String web = DefaultModuleTopology.Modules.WEB.getSuffix();
+        S sourceCode = generateTestSourceCode(projectDescription.getModuleName(web));
+        this.sourceWriter
+                .writeTo(
+                        this.projectDescription.getBuildSystem().getTestDirectory(
+                                projectRoot, this.projectDescription.getLanguage(), projectDescription.getModuleName(web)),
+                        sourceCode);
+
+        String api = DefaultModuleTopology.Modules.API.getSuffix();
+        sourceCode = generateTestSourceCode(projectDescription.getModuleName(api));
+        this.sourceWriter
+                .writeTo(
+                        this.projectDescription.getBuildSystem().getTestDirectory(
+                                projectRoot, this.projectDescription.getLanguage(), projectDescription.getModuleName(api)),
+                        sourceCode);
+    }
+
+    private S generateTestSourceCode(String moduleName) {
         S sourceCode = this.sourceFactory.get();
         String testName = this.projectDescription.getApplicationName() + "Tests";
         C compilationUnit = sourceCode.createCompilationUnit(
-                this.projectDescription.getPackageName(), testName);
+                this.projectDescription.getPackageName(), testName, moduleName);
         T testApplicationType = compilationUnit.createTypeDeclaration(testName);
         customizeTestApplicationType(testApplicationType);
         customizeTestSourceCode(sourceCode);
-        this.sourceWriter
-                .writeTo(
-                        this.projectDescription.getBuildSystem().getTestDirectory(
-                                projectRoot, this.projectDescription.getLanguage(), projectDescription.getModuleName("web")),
-                        sourceCode);
-
-        this.sourceWriter
-                .writeTo(
-                        this.projectDescription.getBuildSystem().getTestDirectory(
-                                projectRoot, this.projectDescription.getLanguage(), projectDescription.getModuleName("api")),
-                        sourceCode);
+        return sourceCode;
     }
 
     @SuppressWarnings("unchecked")

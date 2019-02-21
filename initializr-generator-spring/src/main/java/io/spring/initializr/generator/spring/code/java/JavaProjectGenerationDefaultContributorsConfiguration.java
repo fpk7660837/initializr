@@ -16,24 +16,19 @@
 
 package io.spring.initializr.generator.spring.code.java;
 
-import java.lang.reflect.Modifier;
-
 import io.spring.initializr.generator.condition.ConditionalOnPackaging;
 import io.spring.initializr.generator.language.Annotation;
 import io.spring.initializr.generator.language.Parameter;
-import io.spring.initializr.generator.language.java.JavaExpressionStatement;
-import io.spring.initializr.generator.language.java.JavaMethodDeclaration;
-import io.spring.initializr.generator.language.java.JavaMethodInvocation;
-import io.spring.initializr.generator.language.java.JavaReturnStatement;
-import io.spring.initializr.generator.language.java.JavaTypeDeclaration;
+import io.spring.initializr.generator.language.java.*;
 import io.spring.initializr.generator.packaging.war.WarPackaging;
 import io.spring.initializr.generator.project.ResolvedProjectDescription;
 import io.spring.initializr.generator.spring.code.MainApplicationTypeCustomizer;
 import io.spring.initializr.generator.spring.code.ServletInitializerCustomizer;
 import io.spring.initializr.generator.spring.code.TestApplicationTypeCustomizer;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.lang.reflect.Modifier;
 
 /**
  * Default Java language contributors.
@@ -44,53 +39,53 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 class JavaProjectGenerationDefaultContributorsConfiguration {
 
-	@Bean
-	public MainApplicationTypeCustomizer<JavaTypeDeclaration> mainMethodContributor() {
-		return (typeDeclaration) -> typeDeclaration
-				.addMethodDeclaration(JavaMethodDeclaration.method("main")
-						.modifiers(Modifier.PUBLIC | Modifier.STATIC).returning("void")
-						.parameters(new Parameter("java.lang.String[]", "args"))
-						.body(new JavaExpressionStatement(new JavaMethodInvocation(
-								"org.springframework.boot.SpringApplication", "run",
-								typeDeclaration.getName() + ".class", "args"))));
-	}
+    @Bean
+    public MainApplicationTypeCustomizer<JavaTypeDeclaration> mainMethodContributor() {
+        return (typeDeclaration) -> typeDeclaration
+                .addMethodDeclaration(JavaMethodDeclaration.method("main")
+                        .modifiers(Modifier.PUBLIC | Modifier.STATIC).returning("void")
+                        .parameters(new Parameter("java.lang.String[]", "args"))
+                        .body(new JavaExpressionStatement(new JavaMethodInvocation(
+                                "org.springframework.boot.SpringApplication", "run",
+                                typeDeclaration.getName() + ".class", "args"))));
+    }
 
-	@Bean
-	public TestApplicationTypeCustomizer<JavaTypeDeclaration> testMethodContributor() {
-		return (typeDeclaration) -> {
-			JavaMethodDeclaration method = JavaMethodDeclaration.method("contextLoads")
-					.modifiers(Modifier.PUBLIC).returning("void").body();
-			method.annotate(Annotation.name("org.junit.Test"));
-			typeDeclaration.addMethodDeclaration(method);
-		};
-	}
+    @Bean
+    public TestApplicationTypeCustomizer<JavaTypeDeclaration> testMethodContributor() {
+        return (typeDeclaration) -> {
+            JavaMethodDeclaration method = JavaMethodDeclaration.method("contextLoads")
+                    .modifiers(Modifier.PUBLIC).returning("void").body();
+            method.annotate(Annotation.name("org.junit.Test"));
+            typeDeclaration.addMethodDeclaration(method);
+        };
+    }
 
-	/**
-	 * Java source code contributions for projects using war packaging.
-	 */
-	@Configuration
-	@ConditionalOnPackaging(WarPackaging.ID)
-	static class WarPackagingConfiguration {
+    /**
+     * Java source code contributions for projects using war packaging.
+     */
+    @Configuration
+    @ConditionalOnPackaging(WarPackaging.ID)
+    static class WarPackagingConfiguration {
 
-		@Bean
-		public ServletInitializerCustomizer<JavaTypeDeclaration> javaServletInitializerCustomizer(
-				ResolvedProjectDescription projectDescription) {
-			return (typeDeclaration) -> {
-				JavaMethodDeclaration configure = JavaMethodDeclaration
-						.method("configure").modifiers(Modifier.PROTECTED)
-						.returning(
-								"org.springframework.boot.builder.SpringApplicationBuilder")
-						.parameters(new Parameter(
-								"org.springframework.boot.builder.SpringApplicationBuilder",
-								"application"))
-						.body(new JavaReturnStatement(new JavaMethodInvocation(
-								"application", "sources",
-								projectDescription.getApplicationName() + ".class")));
-				configure.annotate(Annotation.name("java.lang.Override"));
-				typeDeclaration.addMethodDeclaration(configure);
-			};
-		}
+        @Bean
+        public ServletInitializerCustomizer<JavaTypeDeclaration> javaServletInitializerCustomizer(
+                ResolvedProjectDescription projectDescription) {
+            return (typeDeclaration) -> {
+                JavaMethodDeclaration configure = JavaMethodDeclaration
+                        .method("configure").modifiers(Modifier.PROTECTED)
+                        .returning(
+                                "org.springframework.boot.builder.SpringApplicationBuilder")
+                        .parameters(new Parameter(
+                                "org.springframework.boot.builder.SpringApplicationBuilder",
+                                "application"))
+                        .body(new JavaReturnStatement(new JavaMethodInvocation(
+                                "application", "sources")
+                                .argument(projectDescription.getApplicationName() + ".class")));
+                configure.annotate(Annotation.name("java.lang.Override"));
+                typeDeclaration.addMethodDeclaration(configure);
+            };
+        }
 
-	}
+    }
 
 }

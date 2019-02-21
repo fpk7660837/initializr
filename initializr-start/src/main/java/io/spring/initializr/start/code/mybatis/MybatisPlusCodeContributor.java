@@ -1,5 +1,6 @@
 package io.spring.initializr.start.code.mybatis;
 
+import io.spring.initializr.generator.language.Annotation;
 import io.spring.initializr.generator.language.CompilationUnit;
 import io.spring.initializr.generator.language.SourceCode;
 import io.spring.initializr.generator.language.TypeDeclaration;
@@ -38,6 +39,7 @@ public class MybatisPlusCodeContributor implements MainSourceCodeCustomizer<Type
                         .getSuffix()));
         TypeDeclaration mybatisConfig = compilationUnit
                 .createTypeDeclaration("MybatisConfig");
+        mybatisConfig.annotate(Annotation.name("org.springframework.context.annotation.Configuration"));
         customizeMybatisConfig(mybatisConfig);
     }
 

@@ -1,11 +1,7 @@
 package io.spring.initializr.start.code;
 
 import io.spring.initializr.generator.language.Annotation;
-import io.spring.initializr.generator.language.Parameter;
-import io.spring.initializr.generator.language.java.JavaMethodDeclaration;
-import io.spring.initializr.generator.language.java.JavaMethodInvocation;
-import io.spring.initializr.generator.language.java.JavaReturnStatement;
-import io.spring.initializr.generator.language.java.JavaTypeDeclaration;
+import io.spring.initializr.generator.language.java.*;
 import io.spring.initializr.generator.project.ProjectGenerationConfiguration;
 import io.spring.initializr.generator.project.ResolvedProjectDescription;
 import io.spring.initializr.start.code.mybatis.MybatisPlusCodeContributor;
@@ -63,18 +59,34 @@ public class ExtensionSourceCodeConfiguration {
         public MybatisPlusCodeCustomizer<JavaTypeDeclaration> mybatisPlusCodeCustomizer(
                 ResolvedProjectDescription projectDescription) {
             return (typeDeclaration) -> {
-                // todo write plain java code for mybatis config
+                // // todo write plain java code for mybatis config
                 JavaMethodDeclaration configure = JavaMethodDeclaration
-                        .method("configure").modifiers(Modifier.PROTECTED)
-                        .returning(
-                                "org.springframework.boot.builder.SpringApplicationBuilder")
-                        .parameters(new Parameter(
-                                "org.springframework.boot.builder.SpringApplicationBuilder",
-                                "application"))
-                        .body(new JavaReturnStatement(
-                                new JavaMethodInvocation("application", "sources",
-                                        projectDescription.getApplicationName())));
-                configure.annotate(Annotation.name("java.lang.Override"));
+                        .method("dataSource").modifiers(Modifier.PROTECTED)
+                        .returning("com.alibaba.druid.pool.DruidDataSource")
+                        .parameters()
+                        .body(new JavaExpressionStatement(
+                                        new JavaMethodInvocation(" org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder", "create",
+                                                "org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder",
+                                                "dataSourceBuilder")),
+                                new JavaExpressionStatement(
+                                        new JavaMethodInvocation("org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder", "type",
+                                                "org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder",
+                                                "type").argument("DruidDataSource.class")),
+                                new JavaExpressionStatement(
+                                        new JavaMethodInvocation("type", "build",
+                                                "com.alibaba.druid.pool.DruidDataSource",
+                                                "dataSource")),
+                                new JavaReturnStatement(
+                                        new JavaMethodInvocation("", "","","dataSource")));
+
+                configure.annotate(Annotation.name("org.springframework.context.annotation.Bean", builder -> {
+                    builder.attribute("name", String.class, "dataSource");
+                    builder.attribute("initMethod", String.class, "init");
+                }));
+                configure.annotate(Annotation.name("org.springframework.context.annotation.Primary"));
+                configure.annotate(Annotation.name("org.springframework.boot.context.properties.ConfigurationProperties", builder -> {
+                    builder.attribute("prefix", String.class, "spring.datasource");
+                }));
                 typeDeclaration.addMethodDeclaration(configure);
             };
         }

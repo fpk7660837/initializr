@@ -16,31 +16,21 @@
 
 package io.spring.initializr.generator.language.java;
 
+import io.spring.initializr.generator.io.IndentingWriter;
+import io.spring.initializr.generator.io.IndentingWriterFactory;
+import io.spring.initializr.generator.language.*;
+import org.springframework.util.StringUtils;
+
 import java.io.IOException;
 import java.lang.reflect.Modifier;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import io.spring.initializr.generator.io.IndentingWriter;
-import io.spring.initializr.generator.io.IndentingWriterFactory;
-import io.spring.initializr.generator.language.Annotatable;
-import io.spring.initializr.generator.language.Annotation;
-import io.spring.initializr.generator.language.Parameter;
-import io.spring.initializr.generator.language.SourceCode;
-import io.spring.initializr.generator.language.SourceCodeWriter;
 
 /**
  * A {@link SourceCodeWriter} that writes {@link SourceCode} in Java.
@@ -219,9 +209,20 @@ public class JavaSourceCodeWriter implements SourceCodeWriter<JavaSourceCode> {
 
 	private void writeMethodInvocation(IndentingWriter writer,
 			JavaMethodInvocation methodInvocation) {
-		writer.print(getUnqualifiedName(methodInvocation.getTarget()) + "."
-				+ methodInvocation.getName() + "("
-				+ String.join(", ", methodInvocation.getArguments()) + ")");
+		String returnType = methodInvocation.getReturnType();
+		String returnName = methodInvocation.getReturnName();
+		if (StringUtils.isEmpty(returnType) && StringUtils.isEmpty(returnName)) {
+			writer.print(getUnqualifiedName(methodInvocation.getTarget()) + "."
+					+ methodInvocation.getName() + "("
+					+ String.join(", ", methodInvocation.getArguments()) + ")");
+		} else if (!StringUtils.isEmpty(returnName) && StringUtils.isEmpty(returnType)) {
+			writer.print(returnName);
+		} else {
+			writer.print(getUnqualifiedName(returnType) + " " + returnName + " = " +
+					getUnqualifiedName(methodInvocation.getTarget()) + "."
+					+ methodInvocation.getName() + "("
+					+ String.join(", ", methodInvocation.getArguments()) + ")");
+		}
 	}
 
 	private Path fileForCompilationUnit(Path directory,
@@ -295,6 +296,8 @@ public class JavaSourceCodeWriter implements SourceCodeWriter<JavaSourceCode> {
 	}
 
 	private String getUnqualifiedName(String name) {
+
+
 		if (!name.contains(".")) {
 			return name;
 		}

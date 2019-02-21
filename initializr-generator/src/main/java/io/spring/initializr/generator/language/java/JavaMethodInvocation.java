@@ -16,7 +16,7 @@
 
 package io.spring.initializr.generator.language.java;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,28 +26,51 @@ import java.util.List;
  */
 public class JavaMethodInvocation extends JavaExpression {
 
-	private final String target;
+    private final String target;
 
-	private final String name;
+    private final String name;
 
-	private final List<String> arguments;
+    private final List<String> arguments = new ArrayList<>();
 
-	public JavaMethodInvocation(String target, String name, String... arguments) {
-		this.target = target;
-		this.name = name;
-		this.arguments = Arrays.asList(arguments);
-	}
+    private final String returnType;
 
-	public String getTarget() {
-		return this.target;
-	}
+    private final String returnName;
 
-	public String getName() {
-		return this.name;
-	}
+    public JavaMethodInvocation(String target, String name, String returnType,
+                                String returnName) {
+        this.target = target;
+        this.name = name;
+        this.returnType = returnType;
+        this.returnName = returnName;
+    }
 
-	public List<String> getArguments() {
-		return this.arguments;
-	}
+    public JavaMethodInvocation(String target, String name) {
+        this(target, name, null, null);
+    }
 
+    public JavaMethodInvocation argument(String argument) {
+        this.arguments.add(argument);
+        return this;
+    }
+
+
+    public String getTarget() {
+        return this.target;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public List<String> getArguments() {
+        return this.arguments;
+    }
+
+    public String getReturnType() {
+        return returnType;
+    }
+
+    public String getReturnName() {
+        return returnName;
+    }
 }

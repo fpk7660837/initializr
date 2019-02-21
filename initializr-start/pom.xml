@@ -15,44 +15,53 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
+            <version>2.1.2.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+            <version>2.1.2.RELEASE</version>
         </dependency>
 
         <dependency>
             <groupId>io.spring.initializr</groupId>
             <artifactId>initializr-web</artifactId>
+            <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>io.spring.initializr</groupId>
             <artifactId>initializr-actuator</artifactId>
+            <version>${project.parent.version}</version>
         </dependency>
 
         <dependency>
             <groupId>javax.cache</groupId>
             <artifactId>cache-api</artifactId>
+            <version>1.1.0</version>
         </dependency>
         <dependency>
             <groupId>org.ehcache</groupId>
             <artifactId>ehcache</artifactId>
+            <version>3.6.3</version>
         </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
+            <version>2.1.2.RELEASE</version>
             <optional>true</optional>
         </dependency>
 
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
+            <version>5.4.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
+            <version>2.1.2.RELEASE</version>
             <scope>test</scope>
             <exclusions>
                 <exclusion>
@@ -64,12 +73,14 @@
         <dependency>
             <groupId>io.spring.initializr</groupId>
             <artifactId>initializr-generator</artifactId>
+            <version>${project.parent.version}</version>
             <type>test-jar</type>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>io.spring.initializr</groupId>
             <artifactId>initializr-generator-spring</artifactId>
+            <version>${project.parent.version}</version>
             <type>test-jar</type>
             <scope>test</scope>
         </dependency>
@@ -79,13 +90,15 @@
     <build>
         <finalName>start-site</finalName>
         <plugins>
-            <plugin>
-                <groupId>pl.project13.maven</groupId>
-                <artifactId>git-commit-id-plugin</artifactId>
-            </plugin>
+            <!--<plugin>-->
+                <!--<groupId>pl.project13.maven</groupId>-->
+                <!--<artifactId>git-commit-id-plugin</artifactId>-->
+                <!--<version>2.2.3</version>-->
+            <!--</plugin>-->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>2.1.2.RELEASE</version>
                 <!--<executions>-->
                     <!--<execution>-->
                         <!--<id>build-info</id>-->

@@ -58,4 +58,8 @@ public interface BuildSystem {
         return projectRoot.resolve(module + "/src/main/" + language.id());
     }
 
+    default Path getTestDirectory(Path projectRoot, Language language, String module) {
+        return projectRoot.resolve(module + "/src/test/" + language.id());
+    }
+
 }

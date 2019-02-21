@@ -74,13 +74,13 @@ public class TestSourceCodeProjectContributor<T extends TypeDeclaration, C exten
         customizeTestSourceCode(sourceCode);
         this.sourceWriter
                 .writeTo(
-                        this.projectDescription.getBuildSystem().getDirectory(
+                        this.projectDescription.getBuildSystem().getTestDirectory(
                                 projectRoot, this.projectDescription.getLanguage(), projectDescription.getModuleName("web")),
                         sourceCode);
 
         this.sourceWriter
                 .writeTo(
-                        this.projectDescription.getBuildSystem().getDirectory(
+                        this.projectDescription.getBuildSystem().getTestDirectory(
                                 projectRoot, this.projectDescription.getLanguage(), projectDescription.getModuleName("api")),
                         sourceCode);
     }

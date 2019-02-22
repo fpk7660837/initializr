@@ -222,6 +222,10 @@ public class JavaSourceCodeWriter implements SourceCodeWriter<JavaSourceCode> {
                     " new "
                     + getUnqualifiedName(methodInvocation.getConstructor()) + "("
                     + String.join(", ", methodInvocation.getArguments()) + ")");
+        } else if (!StringUtils.isEmpty(returnName) && !StringUtils.isEmpty(returnType) && StringUtils.isEmpty(methodInvocation
+                .getTarget()) &&
+                StringUtils.isEmpty(methodInvocation.getName())) {
+            writer.print("("+getUnqualifiedName(returnType) + ")" + returnName);
         } else {
             writer.print(getUnqualifiedName(returnType) + " " + returnName + " = " +
                     getUnqualifiedName(methodInvocation.getTarget()) + "."

@@ -63,14 +63,14 @@ public class ExtensionSourceCodeConfiguration {
                 // init mybatis datasOURCE
                 JavaMethodDeclaration dataSourceMethod = JavaMethodDeclaration
                         .method("dataSource").modifiers(Modifier.PROTECTED)
-                        .returning("javax.sql.DataSource")
+                        .returning("com.alibaba.druid.pool.DruidDataSource")
                         .parameters()
                         .body(new JavaExpressionStatement(
-                                        new JavaMethodInvocation(" org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder", "create",
+                                        new JavaMethodInvocation("org.springframework.boot.jdbc.DataSourceBuilder", "create",
                                                 "org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder",
                                                 "dataSourceBuilder")),
                                 new JavaExpressionStatement(
-                                        new JavaMethodInvocation("org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder", "type",
+                                        new JavaMethodInvocation("dataSourceBuilder", "type",
                                                 "org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder",
                                                 "type").argument("DruidDataSource.class")),
                                 new JavaExpressionStatement(
@@ -78,7 +78,7 @@ public class ExtensionSourceCodeConfiguration {
                                                 "javax.sql.DataSource",
                                                 "dataSource")),
                                 new JavaReturnStatement(
-                                        new JavaMethodInvocation("", "", "", "dataSource")));
+                                        new JavaMethodInvocation("", "", "DruidDataSource", "dataSource")));
 
                 dataSourceMethod.annotate(Annotation.name("org.springframework.context.annotation.Bean", builder -> {
                     builder.attribute("name", String.class, "dataSource");

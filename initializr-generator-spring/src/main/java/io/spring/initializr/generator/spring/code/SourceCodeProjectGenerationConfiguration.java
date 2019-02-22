@@ -69,21 +69,23 @@ public class SourceCodeProjectGenerationConfiguration {
 		@Bean
 		@ConditionalOnPlatformVersion("[1.5.0.M1, 2.0.0.M1)")
 		public ServletInitializerContributor boot15ServletInitializerContributor(
-				ObjectProvider<ServletInitializerCustomizer<?>> servletInitializerCustomizers) {
+				ObjectProvider<ServletInitializerCustomizer<?>> servletInitializerCustomizers,
+				ResolvedProjectDescription projectDescription) {
 			return new ServletInitializerContributor(
 					this.projectDescription.getPackageName(),
 					"org.springframework.boot.web.support.SpringBootServletInitializer",
-					servletInitializerCustomizers);
+					servletInitializerCustomizers,projectDescription);
 		}
 
 		@Bean
 		@ConditionalOnPlatformVersion("2.0.0.M1")
 		public ServletInitializerContributor boot20ServletInitializerContributor(
-				ObjectProvider<ServletInitializerCustomizer<?>> servletInitializerCustomizers) {
+				ObjectProvider<ServletInitializerCustomizer<?>> servletInitializerCustomizers,
+				ResolvedProjectDescription projectDescription) {
 			return new ServletInitializerContributor(
 					this.projectDescription.getPackageName(),
 					"org.springframework.boot.web.servlet.support.SpringBootServletInitializer",
-					servletInitializerCustomizers);
+					servletInitializerCustomizers,projectDescription);
 		}
 
 	}

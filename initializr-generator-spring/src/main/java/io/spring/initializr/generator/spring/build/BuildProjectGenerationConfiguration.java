@@ -21,9 +21,7 @@ import io.spring.initializr.generator.buildsystem.gradle.GradleBuildSystem;
 import io.spring.initializr.generator.buildsystem.maven.MavenBuildSystem;
 import io.spring.initializr.generator.condition.ConditionalOnBuildSystem;
 import io.spring.initializr.generator.condition.ConditionalOnLanguage;
-import io.spring.initializr.generator.condition.ConditionalOnPackaging;
 import io.spring.initializr.generator.language.kotlin.KotlinLanguage;
-import io.spring.initializr.generator.packaging.war.WarPackaging;
 import io.spring.initializr.generator.project.ProjectGenerationConfiguration;
 import io.spring.initializr.generator.project.ResolvedProjectDescription;
 import io.spring.initializr.generator.project.module.ModuleTopology;
@@ -74,12 +72,12 @@ public class BuildProjectGenerationConfiguration {
         return new ReferMavenBuildCustomizer(buildItemResolver.getIfAvailable(), moduleTopology);
     }
 
-    @Bean
-    @ConditionalOnPackaging(WarPackaging.ID)
-    public WarPackagingWebStarterBuildCustomizer warPackagingWebStarterBuildCustomizer(
-            InitializrMetadata metadata) {
-        return new WarPackagingWebStarterBuildCustomizer(metadata);
-    }
+    // @Bean
+    // @ConditionalOnPackaging(WarPackaging.ID)
+    // public WarPackagingWebStarterBuildCustomizer warPackagingWebStarterBuildCustomizer(
+    //         InitializrMetadata metadata) {
+    //     return new WarPackagingWebStarterBuildCustomizer(metadata);
+    // }
 
     @Bean
     @ConditionalOnLanguage(KotlinLanguage.ID)

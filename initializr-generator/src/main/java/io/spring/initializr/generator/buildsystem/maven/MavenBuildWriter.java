@@ -235,8 +235,6 @@ public class MavenBuildWriter {
             writeSingleElement(writer, "groupId", bom.getGroupId());
             writeSingleElement(writer, "artifactId", bom.getArtifactId());
             writeSingleElement(writer, "version", determineVersion(bom.getVersion()));
-            writeSingleElement(writer, "type", "pom");
-            writeSingleElement(writer, "scope", "import");
         });
     }
 

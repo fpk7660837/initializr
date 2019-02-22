@@ -36,16 +36,29 @@ public class JavaMethodInvocation extends JavaExpression {
 
     private final String returnName;
 
+    private final String constructor;
+
     public JavaMethodInvocation(String target, String name, String returnType,
-                                String returnName) {
+                                String returnName, String constructor) {
         this.target = target;
         this.name = name;
         this.returnType = returnType;
         this.returnName = returnName;
+        this.constructor = constructor;
     }
+
+    public JavaMethodInvocation(String target, String name, String returnType,
+                                String returnName) {
+        this(target, name, returnType, returnName, null);
+    }
+
 
     public JavaMethodInvocation(String target, String name) {
         this(target, name, null, null);
+    }
+
+    public JavaMethodInvocation(String returnType, String returnName, String constructor) {
+        this(null, null, returnType, returnName, constructor);
     }
 
     public JavaMethodInvocation argument(String argument) {
@@ -72,5 +85,9 @@ public class JavaMethodInvocation extends JavaExpression {
 
     public String getReturnName() {
         return returnName;
+    }
+
+    public String getConstructor() {
+        return constructor;
     }
 }

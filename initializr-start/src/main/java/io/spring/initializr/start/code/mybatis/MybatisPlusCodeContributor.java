@@ -40,6 +40,8 @@ public class MybatisPlusCodeContributor implements MainSourceCodeCustomizer<Type
         TypeDeclaration mybatisConfig = compilationUnit
                 .createTypeDeclaration("MybatisConfig");
         mybatisConfig.annotate(Annotation.name("org.springframework.context.annotation.Configuration"));
+        mybatisConfig.annotate(Annotation.name("org.mybatis.spring.annotation.MapperScan",
+                builder -> builder.attribute("basePackages", String.class, "this need to be define yourself")));
         customizeMybatisConfig(mybatisConfig);
     }
 

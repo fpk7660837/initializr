@@ -1233,6 +1233,22 @@ initializr:
           groupId: com.dmall
           artifactId: drt-core
           version: 1.0
+    - name: Mybatis-plus
+      content:
+        - name: Mybatis plus
+          id: mybatis-plus
+          description: mybatis plus integration
+          groupId: com.baomidou
+          artifactId: mybatis-plus-boot-starter
+          version: 3.0.7.1
+          moduleSuffix: dao
+        - name: Druid
+          id: druid
+          descripton: alibaba druid integration
+          groupId: com.alibaba
+          artifactId: druid-spring-boot-starter
+          version: 1.1.10
+          moduleSuffix: dao
   types:
     - name: Maven Project
       id: maven-project

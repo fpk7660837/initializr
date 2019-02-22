@@ -59,10 +59,11 @@ public class ExtensionSourceCodeConfiguration {
         public MybatisPlusCodeCustomizer<JavaTypeDeclaration> mybatisPlusCodeCustomizer(
                 ResolvedProjectDescription projectDescription) {
             return (typeDeclaration) -> {
-                // // todo write plain java code for mybatis config
-                JavaMethodDeclaration configure = JavaMethodDeclaration
+
+                // init mybatis datasOURCE
+                JavaMethodDeclaration dataSourceMethod = JavaMethodDeclaration
                         .method("dataSource").modifiers(Modifier.PROTECTED)
-                        .returning("com.alibaba.druid.pool.DruidDataSource")
+                        .returning("javax.sql.DataSource")
                         .parameters()
                         .body(new JavaExpressionStatement(
                                         new JavaMethodInvocation(" org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder", "create",
@@ -74,20 +75,51 @@ public class ExtensionSourceCodeConfiguration {
                                                 "type").argument("DruidDataSource.class")),
                                 new JavaExpressionStatement(
                                         new JavaMethodInvocation("type", "build",
-                                                "com.alibaba.druid.pool.DruidDataSource",
+                                                "javax.sql.DataSource",
                                                 "dataSource")),
                                 new JavaReturnStatement(
-                                        new JavaMethodInvocation("", "","","dataSource")));
+                                        new JavaMethodInvocation("", "", "", "dataSource")));
 
-                configure.annotate(Annotation.name("org.springframework.context.annotation.Bean", builder -> {
+                dataSourceMethod.annotate(Annotation.name("org.springframework.context.annotation.Bean", builder -> {
                     builder.attribute("name", String.class, "dataSource");
                     builder.attribute("initMethod", String.class, "init");
                 }));
-                configure.annotate(Annotation.name("org.springframework.context.annotation.Primary"));
-                configure.annotate(Annotation.name("org.springframework.boot.context.properties.ConfigurationProperties", builder -> {
+                dataSourceMethod.annotate(Annotation.name("org.springframework.context.annotation.Primary"));
+                dataSourceMethod.annotate(Annotation.name("org.springframework.boot.context.properties.ConfigurationProperties", builder -> {
                     builder.attribute("prefix", String.class, "spring.datasource");
                 }));
-                typeDeclaration.addMethodDeclaration(configure);
+                typeDeclaration.addMethodDeclaration(dataSourceMethod);
+
+
+                // init interceptor chain
+                JavaMethodDeclaration paginationInterceptor = JavaMethodDeclaration
+                        .method("pagePaginationInterceptor").modifiers(Modifier.PUBLIC)
+                        .returning("com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor")
+                        .parameters()
+                        .body(new JavaExpressionStatement(
+                                        new JavaMethodInvocation("com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor",
+                                                "paginationInterceptor", "com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor")
+                                ),
+                                new JavaExpressionStatement(
+                                        new JavaMethodInvocation("java.util.List<ISqlParser>", "sqlParserList", "java.util.ArrayList<>")
+                                ),
+                                new JavaExpressionStatement(
+                                        new JavaMethodInvocation("RiskySqlParser", "riskySqlParser",
+                                                "RiskySqlParser")
+                                ),
+                                new JavaExpressionStatement(
+                                        new JavaMethodInvocation("sqlParserList", "add")
+                                                .argument("riskySqlParser")
+                                ),
+                                new JavaExpressionStatement(
+                                        new JavaMethodInvocation("paginationInterceptor", "setSqlParserList")
+                                                .argument("sqlParserList")
+                                ),
+                                new JavaReturnStatement(
+                                        new JavaMethodInvocation("", "", "", "paginationInterceptor")
+                                ));
+                paginationInterceptor.annotate(Annotation.name("org.springframework.context.annotation.Bean"));
+                typeDeclaration.addMethodDeclaration(paginationInterceptor);
             };
         }
     }

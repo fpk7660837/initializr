@@ -1,1 +1,7 @@
-1
+spring:
+  profiles:
+    active: ${env},rpc-${env},dao-${env},mq-${env},service-${env}1
+
+
+server:
+  port: 8080

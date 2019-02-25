@@ -1,0 +1,16 @@
+dmall:
+  rocket:
+    clusterId:
+    appKey:
+    secretKey:
+    authUrl:
+    enabled:
+
+    ### 生产者
+    producer:
+      enable:
+      topics:
+        ### 这里是数组形式
+        - the topic you need to define
+    consumer:
+      properties:

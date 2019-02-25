@@ -1,1 +1,7 @@
-1
+dmall:
+  dmc:
+    projectCode:
+    appCode:
+    dmcServerAddress:
+    startupMonitor:
+    enabled:  

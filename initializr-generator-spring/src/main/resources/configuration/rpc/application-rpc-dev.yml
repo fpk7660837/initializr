@@ -1,1 +1,17 @@
-1
+dubbo:
+  application:
+    registryUrl:
+    name:
+    owner:
+    enabled:
+  #### Provider 配置
+  provider:
+    enable:
+    timeout:
+  protocol:
+    port:
+  #### Consumer 配置
+  consumer:
+    enable:
+    protocol:
+    timout:

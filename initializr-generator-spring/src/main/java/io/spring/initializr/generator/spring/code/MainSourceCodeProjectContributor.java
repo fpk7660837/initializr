@@ -84,10 +84,12 @@ public class MainSourceCodeProjectContributor<T extends TypeDeclaration, C exten
 
     private S buildSourceCode() {
         S sourceCode = buildEmptySourceCode();
-        buildMainApplicationSourceCode(sourceCode, projectDescription.getModuleName(DefaultModuleTopology.Modules.WEB
-                .getSuffix()));
-        buildMainApplicationSourceCode(sourceCode, projectDescription.getModuleName(DefaultModuleTopology.Modules.API
-                .getSuffix()));
+        String web = DefaultModuleTopology.Modules.WEB
+                .getSuffix();
+        buildMainApplicationSourceCode(sourceCode, projectDescription.getModuleName(web), web);
+        String api = DefaultModuleTopology.Modules.API
+                .getSuffix();
+        buildMainApplicationSourceCode(sourceCode, projectDescription.getModuleName(api), api);
         buildMainSourceCode(sourceCode);
         return sourceCode;
     }
@@ -102,10 +104,10 @@ public class MainSourceCodeProjectContributor<T extends TypeDeclaration, C exten
     }
 
 
-    private void buildMainApplicationSourceCode(S sourceCode, String module) {
+    private void buildMainApplicationSourceCode(S sourceCode, String module, String suffix) {
         String applicationName = this.projectDescription.getApplicationName();
         C compilationUnit = sourceCode.createCompilationUnit(
-                this.projectDescription.getPackageName(), applicationName, module);
+                this.projectDescription.getPackageName(suffix), applicationName, module);
         T mainApplicationType = compilationUnit.createTypeDeclaration(applicationName);
         customizeMainApplicationType(mainApplicationType);
         customizeMainCompilationUnit(compilationUnit);

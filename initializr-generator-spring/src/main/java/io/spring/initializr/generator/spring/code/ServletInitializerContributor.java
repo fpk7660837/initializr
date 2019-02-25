@@ -35,7 +35,6 @@ import java.util.stream.Collectors;
 class ServletInitializerContributor implements
         MainSourceCodeCustomizer<TypeDeclaration, CompilationUnit<TypeDeclaration>, SourceCode<TypeDeclaration, CompilationUnit<TypeDeclaration>>> {
 
-    private final String packageName;
 
     private final String initializerClassName;
 
@@ -43,10 +42,9 @@ class ServletInitializerContributor implements
 
     private final ResolvedProjectDescription projectDescription;
 
-    ServletInitializerContributor(String packageName, String initializerClassName,
+    ServletInitializerContributor(String initializerClassName,
                                   ObjectProvider<ServletInitializerCustomizer<?>> servletInitializerCustomizers,
                                   ResolvedProjectDescription projectDescription) {
-        this.packageName = packageName;
         this.initializerClassName = initializerClassName;
         this.servletInitializerCustomizers = servletInitializerCustomizers;
         this.projectDescription = projectDescription;
@@ -55,13 +53,13 @@ class ServletInitializerContributor implements
     @Override
     public void customize(
             SourceCode<TypeDeclaration, CompilationUnit<TypeDeclaration>> sourceCode) {
-        createServletInitializer(sourceCode, projectDescription.getModuleName("web"));
-        createServletInitializer(sourceCode, projectDescription.getModuleName("api"));
+        createServletInitializer(sourceCode, projectDescription.getModuleName("web"), "web");
+        createServletInitializer(sourceCode, projectDescription.getModuleName("api"), "api");
     }
 
-    private void createServletInitializer(SourceCode<TypeDeclaration, CompilationUnit<TypeDeclaration>> sourceCode, String module) {
+    private void createServletInitializer(SourceCode<TypeDeclaration, CompilationUnit<TypeDeclaration>> sourceCode, String module, String suffix) {
         CompilationUnit<TypeDeclaration> compilationUnit = sourceCode
-                .createCompilationUnit(this.packageName, "ServletInitializer", module);
+                .createCompilationUnit(projectDescription.getPackageName(suffix), "ServletInitializer", module);
         TypeDeclaration servletInitializer = compilationUnit
                 .createTypeDeclaration("ServletInitializer");
         servletInitializer.extend(this.initializerClassName);

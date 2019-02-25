@@ -72,7 +72,6 @@ public class SourceCodeProjectGenerationConfiguration {
 				ObjectProvider<ServletInitializerCustomizer<?>> servletInitializerCustomizers,
 				ResolvedProjectDescription projectDescription) {
 			return new ServletInitializerContributor(
-					this.projectDescription.getPackageName(),
 					"org.springframework.boot.web.support.SpringBootServletInitializer",
 					servletInitializerCustomizers,projectDescription);
 		}
@@ -83,7 +82,6 @@ public class SourceCodeProjectGenerationConfiguration {
 				ObjectProvider<ServletInitializerCustomizer<?>> servletInitializerCustomizers,
 				ResolvedProjectDescription projectDescription) {
 			return new ServletInitializerContributor(
-					this.projectDescription.getPackageName(),
 					"org.springframework.boot.web.servlet.support.SpringBootServletInitializer",
 					servletInitializerCustomizers,projectDescription);
 		}

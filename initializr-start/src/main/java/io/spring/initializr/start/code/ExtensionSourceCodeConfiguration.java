@@ -49,8 +49,7 @@ public class ExtensionSourceCodeConfiguration {
         @Bean
         public MybatisPlusCodeContributor mybatisPlusCodeContributor(
                 ObjectProvider<MybatisPlusCodeCustomizer<?>> mybatisPlusCodeCustomizers) {
-            return new MybatisPlusCodeContributor(
-                    this.projectDescription.getPackageName(), mybatisPlusCodeCustomizers, projectDescription);
+            return new MybatisPlusCodeContributor( mybatisPlusCodeCustomizers, projectDescription);
         }
 
 
@@ -73,7 +72,7 @@ public class ExtensionSourceCodeConfiguration {
 
         @Bean
         public WebMvcCodeContributor webMvcCodeContributor(ObjectProvider<WebMvcCodeCustomizer<?>> webMvcCodeCustomizers) {
-            return new WebMvcCodeContributor(this.projectDescription.getPackageName(), webMvcCodeCustomizers, projectDescription);
+            return new WebMvcCodeContributor( webMvcCodeCustomizers, projectDescription);
         }
 
         @Bean

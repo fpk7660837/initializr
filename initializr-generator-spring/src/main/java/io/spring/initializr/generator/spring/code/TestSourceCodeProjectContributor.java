@@ -68,7 +68,7 @@ public class TestSourceCodeProjectContributor<T extends TypeDeclaration, C exten
     public void contribute(Path projectRoot) throws IOException {
         // fixme need to reduce code
         String web = DefaultModuleTopology.Modules.WEB.getSuffix();
-        S sourceCode = generateTestSourceCode(projectDescription.getModuleName(web));
+        S sourceCode = generateTestSourceCode(projectDescription.getModuleName(web),web);
         this.sourceWriter
                 .writeTo(
                         this.projectDescription.getBuildSystem().getTestDirectory(
@@ -76,7 +76,7 @@ public class TestSourceCodeProjectContributor<T extends TypeDeclaration, C exten
                         sourceCode);
 
         String api = DefaultModuleTopology.Modules.API.getSuffix();
-        sourceCode = generateTestSourceCode(projectDescription.getModuleName(api));
+        sourceCode = generateTestSourceCode(projectDescription.getModuleName(api),api);
         this.sourceWriter
                 .writeTo(
                         this.projectDescription.getBuildSystem().getTestDirectory(
@@ -84,11 +84,11 @@ public class TestSourceCodeProjectContributor<T extends TypeDeclaration, C exten
                         sourceCode);
     }
 
-    private S generateTestSourceCode(String moduleName) {
+    private S generateTestSourceCode(String moduleName,String suffix) {
         S sourceCode = this.sourceFactory.get();
         String testName = this.projectDescription.getApplicationName() + "Tests";
         C compilationUnit = sourceCode.createCompilationUnit(
-                this.projectDescription.getPackageName(), testName, moduleName);
+                this.projectDescription.getPackageName(suffix), testName, moduleName);
         T testApplicationType = compilationUnit.createTypeDeclaration(testName);
         customizeTestApplicationType(testApplicationType);
         customizeTestSourceCode(sourceCode);

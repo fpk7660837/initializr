@@ -19,24 +19,23 @@ import java.util.stream.Collectors;
  */
 public class WebMvcCodeContributor implements MainSourceCodeCustomizer<TypeDeclaration, CompilationUnit<TypeDeclaration>, SourceCode<TypeDeclaration, CompilationUnit<TypeDeclaration>>> {
 
-    private String packageName;
 
     private ObjectProvider<WebMvcCodeCustomizer<?>> webMvcCodeCustomizers;
 
     private ResolvedProjectDescription projectDescription;
 
 
-    public WebMvcCodeContributor(String packageName, ObjectProvider<WebMvcCodeCustomizer<?>> webMvcCodeCustomizers, ResolvedProjectDescription projectDescription) {
-        this.packageName = packageName;
+    public WebMvcCodeContributor(ObjectProvider<WebMvcCodeCustomizer<?>> webMvcCodeCustomizers, ResolvedProjectDescription projectDescription) {
         this.webMvcCodeCustomizers = webMvcCodeCustomizers;
         this.projectDescription = projectDescription;
     }
 
     @Override
     public void customize(SourceCode<TypeDeclaration, CompilationUnit<TypeDeclaration>> sourceCode) {
+        String suffix = DefaultModuleTopology.Modules.WEB
+                .getSuffix();
         CompilationUnit<TypeDeclaration> compilationUnit = sourceCode
-                .createCompilationUnit(this.packageName, "WebMvcConfig", projectDescription.getModuleName(DefaultModuleTopology.Modules.WEB
-                        .getSuffix()));
+                .createCompilationUnit(projectDescription.getPackageName(suffix), "WebMvcConfig", projectDescription.getModuleName(suffix));
         TypeDeclaration webMvcConfig = compilationUnit
                 .createTypeDeclaration("WebMvcConfig");
         webMvcConfig.annotate(Annotation.name("org.springframework.context.annotation.Configuration"));

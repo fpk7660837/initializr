@@ -19,24 +19,23 @@ import java.util.stream.Collectors;
  */
 public class MybatisPlusCodeContributor implements MainSourceCodeCustomizer<TypeDeclaration, CompilationUnit<TypeDeclaration>, SourceCode<TypeDeclaration, CompilationUnit<TypeDeclaration>>> {
 
-    private String packageName;
 
     private ObjectProvider<MybatisPlusCodeCustomizer<?>> mybatisPlusCodeCustomizers;
 
     private ResolvedProjectDescription projectDescription;
 
 
-    public MybatisPlusCodeContributor(String packageName, ObjectProvider<MybatisPlusCodeCustomizer<?>> mybatisPlusCodeCustomizers, ResolvedProjectDescription projectDescription) {
-        this.packageName = packageName;
+    public MybatisPlusCodeContributor(ObjectProvider<MybatisPlusCodeCustomizer<?>> mybatisPlusCodeCustomizers, ResolvedProjectDescription projectDescription) {
         this.mybatisPlusCodeCustomizers = mybatisPlusCodeCustomizers;
         this.projectDescription = projectDescription;
     }
 
     @Override
     public void customize(SourceCode<TypeDeclaration, CompilationUnit<TypeDeclaration>> sourceCode) {
+        String suffix = DefaultModuleTopology.Modules.DAO
+                .getSuffix();
         CompilationUnit<TypeDeclaration> compilationUnit = sourceCode
-                .createCompilationUnit(this.packageName, "MybatisConfig", projectDescription.getModuleName(DefaultModuleTopology.Modules.DAO
-                        .getSuffix()));
+                .createCompilationUnit(projectDescription.getPackageName(suffix), "MybatisConfig", projectDescription.getModuleName(suffix));
         TypeDeclaration mybatisConfig = compilationUnit
                 .createTypeDeclaration("MybatisConfig");
         mybatisConfig.annotate(Annotation.name("org.springframework.context.annotation.Configuration"));

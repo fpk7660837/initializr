@@ -1249,6 +1249,80 @@ initializr:
           artifactId: druid-spring-boot-starter
           version: 1.1.10
           moduleSuffix: dao
+    - name: Dmall intern dubbo service
+      content:
+        - name: dmall-order-client
+          id: dmall-order-client
+          description: dmall order dubbo service sdk
+          groupId: com.dmall
+          artifactId: dmall-order-client
+          version: 1.1.75.RELEASE
+          moduleSuffix: rpc
+        - name: dmall-ofc-client
+          id: dmall-ofc-client
+          description: dmall ofc dubbo service sdk
+          groupId: com.dmall
+          artifactId: dmall-ofc-client
+          version: 2.0.46-RELEASE
+          moduleSuffix: rpc
+        - name: erp-auth-service
+          id: erp-auth-service
+          description: dmall erp auth service sdk
+          groupId: com.dmall
+          artifaceId: erp-auth-service
+          version: 1.0.RELEASE
+          moduleSuffix: rpc
+        - name: dmall-promise-client
+          id: dmall-promise-client
+          description: dmall promise dubbo service sdk
+          groupId: com.dmall
+          artifactId: dmall-promise-client
+          version: 2.0.3-RELEASE
+          moduleSuffix: rpc
+        - name: dmall-erp-dubbo-service
+          id: dmall-erp-dubbo-service
+          description: dmall erp dubbo service sdk
+          groupId: com.dmall
+          artifactId: dmall-erp-dubbo-service
+          version: 1.1.27.RELEASE
+          moduleSuffix: rpc
+        - name: dmall-terns-dubbo-service
+          id: dmall-terns-dubbo-service
+          description: dmall terns dubbo service sdk
+          groupId: com.dmall
+          artifactId: dmall-terns-dubbo-service
+          version: 1.4.0.RELEASE
+          moduleSuffix: rpc
+        - name: dmall-refund-si
+          id: dmall-refund-si
+          description: dmall refund dubbo sercie sdk
+          groupId: com.dmall
+          artifaceId: dmall-refund-si
+          version: 0.0.2-SNAPSHOT
+          moduleSuffix: rpc
+    - name: other open source framework
+      content:
+        - name: fastjson
+          id: fastjson
+          description: alibaba json
+          groupId: com.alibaba
+          artifactId: fastjson
+          version: 1.2.5
+          moduleSuffix: common
+        - name: guava
+          id: guava
+          description: google guava
+          groupId: com.google.guava
+          artifactId: guava
+          version: 18.0
+          moduleSuffix: common
+        - name: hutool-core
+          id: hutool-core
+          description: A set of tools that keep Java sweet
+          groupId: com.xiaoleilu
+          artifactId: hutool-core
+          version: 3.3.2
+          moduleSuffix: common
   types:
     - name: Maven Project
       id: maven-project

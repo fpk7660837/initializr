@@ -1247,13 +1247,13 @@ initializr:
           description: dmall middleware integration
           groupId: com.dmall
           artifactId: drt-spring-boot-starter
-          version: 1.0
+          version: 1.0-SNAPSHOT
         - name: Dmall Retail toolkit
           id: drt-core
           description: dmall intern toolkit
           groupId: com.dmall
           artifactId: drt-core
-          version: 1.1
+          version: 1.1-SNAPSHOT
     - name: Mybatis-plus
       content:
         - name: Mybatis plus

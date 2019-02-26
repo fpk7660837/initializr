@@ -20,9 +20,7 @@ import io.spring.initializr.generator.buildsystem.BuildItemResolver;
 import io.spring.initializr.generator.buildsystem.maven.MavenBuild;
 import io.spring.initializr.generator.buildsystem.maven.MavenBuildSystem;
 import io.spring.initializr.generator.condition.ConditionalOnBuildSystem;
-import io.spring.initializr.generator.condition.ConditionalOnPackaging;
 import io.spring.initializr.generator.io.IndentingWriterFactory;
-import io.spring.initializr.generator.packaging.war.WarPackaging;
 import io.spring.initializr.generator.project.ProjectGenerationConfiguration;
 import io.spring.initializr.generator.spring.build.BuildCustomizer;
 import io.spring.initializr.generator.spring.util.LambdaSafe;
@@ -70,11 +68,11 @@ public class MavenProjectGenerationConfiguration {
         return new MavenBuildProjectContributor(build, indentingWriterFactory);
     }
 
-    @Bean
-    @ConditionalOnPackaging(WarPackaging.ID)
-    public BuildCustomizer<MavenBuild> mavenWarPackagingConfigurer() {
-        return (build) -> build.setPackaging("war");
-    }
+    // @Bean
+    // @ConditionalOnPackaging(WarPackaging.ID)
+    // public BuildCustomizer<MavenBuild> mavenWarPackagingConfigurer() {
+    //     return (build) -> build.setPackaging("war");
+    // }
 
 
     @Bean

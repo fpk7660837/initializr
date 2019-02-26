@@ -220,7 +220,7 @@ public class JavaSourceCodeWriter implements SourceCodeWriter<JavaSourceCode> {
         String returnName = methodInvocation.getReturnName();
         String constructor = methodInvocation.getConstructor();
 
-        if (StringUtils.isEmpty(returnType) && StringUtils.isEmpty(returnName)) {
+        if (StringUtils.isEmpty(returnType) && StringUtils.isEmpty(returnName) && StringUtils.isEmpty(constructor)) {
             writer.print(getUnqualifiedName(methodInvocation.getTarget()) + "."
                     + methodInvocation.getName() + "("
                     + String.join(", ", methodInvocation.getArguments()) + ")");
@@ -229,6 +229,10 @@ public class JavaSourceCodeWriter implements SourceCodeWriter<JavaSourceCode> {
         } else if (!StringUtils.isEmpty(returnName) && !StringUtils.isEmpty(returnType) && !StringUtils.isEmpty(constructor)) {
             writer.print(getUnqualifiedName(returnType) + " " + returnName + " = " +
                     " new "
+                    + getUnqualifiedName(methodInvocation.getConstructor()) + "("
+                    + String.join(", ", methodInvocation.getArguments()) + ")");
+        } else if (StringUtils.isEmpty(returnName) && StringUtils.isEmpty(returnType) && !StringUtils.isEmpty(constructor)) {
+            writer.print(" new "
                     + getUnqualifiedName(methodInvocation.getConstructor()) + "("
                     + String.join(", ", methodInvocation.getArguments()) + ")");
         } else if (!StringUtils.isEmpty(returnName) && !StringUtils.isEmpty(returnType) && StringUtils.isEmpty(methodInvocation
@@ -260,6 +264,9 @@ public class JavaSourceCodeWriter implements SourceCodeWriter<JavaSourceCode> {
             if (requiresImport(typeDeclaration.getExtends())) {
                 imports.add(typeDeclaration.getExtends());
             }
+
+            imports.addAll(getRequiredImport(typeDeclaration.getImpls(), s -> s));
+
             imports.addAll(getRequiredImports(typeDeclaration.getAnnotations(),
                     this::determineImports));
             for (JavaMethodDeclaration methodDeclaration : typeDeclaration
@@ -290,7 +297,7 @@ public class JavaSourceCodeWriter implements SourceCodeWriter<JavaSourceCode> {
 
     private String getRawType(String type) {
         if (type.contains("<")) {
-            return type.substring(0, type.lastIndexOf("<"));
+            return type.substring(0, type.indexOf("<"));
         } else {
             return type;
         }
@@ -317,6 +324,15 @@ public class JavaSourceCodeWriter implements SourceCodeWriter<JavaSourceCode> {
                                                 Function<T, Collection<String>> mapping) {
         return getRequiredImports(candidates.stream(), mapping);
     }
+
+
+    private <T> List<String> getRequiredImport(List<T> candidates, Function<T, String> mapping) {
+        return candidates.stream()
+                .map(mapping)
+                .filter(this::requiresImport)
+                .collect(Collectors.toList());
+    }
+
 
     private <T> List<String> getRequiredImports(Stream<T> candidates,
                                                 Function<T, Collection<String>> mapping) {

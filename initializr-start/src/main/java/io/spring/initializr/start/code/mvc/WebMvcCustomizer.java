@@ -32,8 +32,8 @@ public class WebMvcCustomizer implements WebMvcCodeCustomizer<JavaTypeDeclaratio
                 .body(new JavaExpressionStatement(
                         new JavaMethodInvocation("java.nio.charset.Charset", "forName", "java.nio.charset.Charset", "defaultCharset")
                                 .argument("\"UTF-8\"")
-                ), new JavaExpressionStatement(
-                        new JavaMethodInvocation("org.springframework.http.converter.StringHttpMessageConverter", "responseBodyConverter",
+                ), new JavaReturnStatement(
+                        new JavaMethodInvocation("", "",
                                 "StringHttpMessageConverter")
                                 .argument("defaultCharset")
                 ));
@@ -44,8 +44,8 @@ public class WebMvcCustomizer implements WebMvcCodeCustomizer<JavaTypeDeclaratio
         JavaMethodDeclaration configureMessageConverters = JavaMethodDeclaration.method("configureMessageConverters")
                 .modifiers(Modifier.PUBLIC)
                 .returning("void")
-                .parameters(new Parameter("java.util.List<HttpMessageConverter>", "converters"))
-                .body(new JavaReturnStatement(
+                .parameters(new Parameter("java.util.List<HttpMessageConverter<?>>", "converters"))
+                .body(new JavaExpressionStatement(
                         new JavaMethodInvocation("converters", "add")
                                 .argument("responseBodyConverter())")
                 ));

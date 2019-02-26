@@ -47,7 +47,7 @@ public class WebMvcCustomizer implements WebMvcCodeCustomizer<JavaTypeDeclaratio
                 .parameters(new Parameter("java.util.List<HttpMessageConverter<?>>", "converters"))
                 .body(new JavaExpressionStatement(
                         new JavaMethodInvocation("converters", "add")
-                                .argument("responseBodyConverter())")
+                                .argument("responseBodyConverter()")
                 ));
         configureMessageConverters.annotate(Annotation.name("java.lang.Override"));
         typeDeclaration.addMethodDeclaration(configureMessageConverters);

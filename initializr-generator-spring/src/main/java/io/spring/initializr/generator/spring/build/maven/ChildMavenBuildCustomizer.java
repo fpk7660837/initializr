@@ -34,6 +34,8 @@ public class ChildMavenBuildCustomizer implements BuildCustomizer<MavenBuild> {
         for (String moduleName : allModuleNames) {
             addChildMavenBuild(build, moduleTopology.getModule(moduleName));
         }
+
+        build.setPackaging("pom");
     }
 
     private void addChildMavenBuild(MavenBuild build, Module module) {

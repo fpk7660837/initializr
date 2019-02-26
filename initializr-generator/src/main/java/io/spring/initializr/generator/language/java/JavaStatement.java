@@ -21,6 +21,10 @@ package io.spring.initializr.generator.language.java;
  *
  * @author Andy Wilkinson
  */
-public class JavaStatement {
+public abstract class JavaStatement {
+
+
+    public abstract JavaExpression getExpression();
+
 
 }

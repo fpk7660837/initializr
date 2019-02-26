@@ -291,9 +291,8 @@ public class JavaSourceCodeWriter implements SourceCodeWriter<JavaSourceCode> {
 
                 imports.addAll(getRequiredImports(
                         methodDeclaration.getStatements().stream()
-                                .filter(JavaExpressionStatement.class::isInstance)
-                                .map(JavaExpressionStatement.class::cast)
-                                .map(JavaExpressionStatement::getExpression)
+                                .map(JavaStatement.class::cast)
+                                .map(JavaStatement::getExpression)
                                 .filter(JavaMethodInvocation.class::isInstance)
                                 .map(JavaMethodInvocation.class::cast),
                         (methodInvocation) -> Collections

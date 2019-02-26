@@ -34,7 +34,7 @@ public class WebMvcCustomizer implements WebMvcCodeCustomizer<JavaTypeDeclaratio
                                 .argument("\"UTF-8\"")
                 ), new JavaReturnStatement(
                         new JavaMethodInvocation("", "",
-                                "StringHttpMessageConverter")
+                                "org.springframework.http.converter.StringHttpMessageConverter")
                                 .argument("defaultCharset")
                 ));
         responseBodyConverter.annotate(Annotation.name("org.springframework.context.annotation.Bean"));

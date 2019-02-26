@@ -29,6 +29,7 @@ public class JavaReturnStatement extends JavaStatement {
 		this.expression = expression;
 	}
 
+	@Override
 	public JavaExpression getExpression() {
 		return this.expression;
 	}

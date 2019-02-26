@@ -173,7 +173,8 @@ initializr:
           scope: compileOnly
           description: Java annotation library which helps to reduce boilerplate code and code faster
           starter: false
-          moduleSuffix: pojo
+          modules:
+            - pojo
         - name: Configuration Processor
           id: configuration-processor
           groupId: org.springframework.boot
@@ -185,7 +186,8 @@ initializr:
           links:
             - rel: reference
               href: http://docs.spring.io/spring-boot/docs/{bootVersion}/reference/htmlsingle/#configuration-metadata-annotation-processor
-          moduleSuffix: common
+          modules:
+            - common
         - name: Session
           id: session
           groupId: org.springframework.session
@@ -195,7 +197,8 @@ initializr:
           mappings:
             - versionRange: "[1.5.0.RELEASE,2.0.0.M2]"
               artifactId: spring-session
-          moduleSuffix: service
+          modules:
+            - service
         - name: Cache
           id: cache
           description: Spring's Cache abstraction
@@ -205,7 +208,8 @@ initializr:
               description: Caching Data with Spring
             - rel: reference
               href: http://docs.spring.io/spring-boot/docs/{bootVersion}/reference/htmlsingle/#boot-features-caching
-          moduleSuffix: service
+          modules:
+            - service
         - name: Validation
           id: validation
           description: JSR-303 validation infrastructure (already included with web)
@@ -213,18 +217,21 @@ initializr:
             - rel: guide
               href: https://spring.io/guides/gs/validating-form-input/
               description: Validating Form Input
-          moduleSuffix: pojo
+          modules:
+            - pojo
         - name: Retry
           id: retry
           groupId: org.springframework.retry
           artifactId: spring-retry
           description: Provide declarative retry support via spring-retry
           starter: false
-          moduleSuffix: service
+          modules:
+            - service
         - name: Aspects
           id: aop
           description: Create your own Aspects using Spring AOP and AspectJ
-          moduleSuffix: common
+          modules:
+           - common
     - name: Web
       content:
         - name: Web
@@ -246,7 +253,9 @@ initializr:
             - rel: guide
               href: https://spring.io/guides/tutorials/bookmarks/
               description: Building REST services with Spring
-          moduleSuffix: web
+          modules:
+           - web
+           - api
         - name: Reactive Web
           id: webflux
           versionRange: 2.0.0.M1
@@ -272,7 +281,8 @@ initializr:
               description: Accessing MongoDB Data with REST
             - rel: reference
               href: http://docs.spring.io/spring-boot/docs/{bootVersion}/reference/htmlsingle/#howto-use-exposing-spring-data-repositories-rest-endpoint
-          moduleSuffix: web
+          modules:
+           - web
         - name: Rest Repositories HAL Browser
           id: data-rest-hal
           description: Browsing Spring Data REST repositories in your browser
@@ -322,7 +332,8 @@ initializr:
           groupId: org.springframework.restdocs
           artifactId: spring-restdocs-mockmvc
           scope: test
-          moduleSuffix: web
+          modules:
+           - web
         - name: Vaadin
           id: vaadin
           facets:
@@ -472,7 +483,8 @@ initializr:
             - rel: guide
               href: https://spring.io/guides/gs/accessing-data-mysql/
               description: Accessing data with MySQL
-          moduleSuffix: dao
+          modules:
+           - dao
         - name: H2
           id: h2
           description: H2 database (with embedded support)
@@ -492,7 +504,8 @@ initializr:
               description: Managing Transactions
             - rel: reference
               href: http://docs.spring.io/spring-boot/docs/{bootVersion}/reference/htmlsingle/#boot-features-sql
-          moduleSuffix: dao
+          modules:
+           - dao
         - name: MyBatis
           id: mybatis
           description: Persistence support using MyBatis
@@ -509,7 +522,8 @@ initializr:
               version: 1.3.3
             - versionRange: 2.0.0.RELEASE
               version: 2.0.0
-          moduleSuffix: dao
+          modules:
+           - dao
         - name: PostgreSQL
           id: postgresql
           description: PostgreSQL JDBC driver
@@ -517,7 +531,8 @@ initializr:
           artifactId: postgresql
           scope: runtime
           starter: false
-          moduleSuffix: dao
+          modules:
+           - dao
         - name: SQL Server
           id: sqlserver
           description: Microsoft SQL Server JDBC driver
@@ -525,7 +540,8 @@ initializr:
           artifactId: mssql-jdbc
           scope: runtime
           starter: false
-          moduleSuffix: dao
+          modules:
+           - dao
         - name: HSQLDB
           id: hsql
           description: HSQLDB database (with embedded support)
@@ -577,7 +593,8 @@ initializr:
               description: Messaging with Redis
             - rel: reference
               href: http://docs.spring.io/spring-boot/docs/{bootVersion}/reference/htmlsingle/#boot-features-redis
-          moduleSuffix: dao
+          modules:
+           - dao
         - name: Reactive Redis
           id: data-redis-reactive
           description: Redis key-value data store, including spring-data-redis
@@ -588,7 +605,8 @@ initializr:
               description: Messaging with Redis
             - rel: reference
               href: http://docs.spring.io/spring-boot/docs/{bootVersion}/reference/htmlsingle/#boot-features-redis
-          moduleSuffix: dao
+          modules:
+           - dao
         - name: MongoDB
           id: data-mongodb
           description: MongoDB NoSQL Database, including spring-data-mongodb
@@ -599,7 +617,8 @@ initializr:
               description: Accessing Data with MongoDB
             - rel: reference
               href: http://docs.spring.io/spring-boot/docs/{bootVersion}/reference/htmlsingle/#boot-features-mongodb
-          moduleSuffix: dao
+          modules:
+           - dao
         - name: Reactive MongoDB
           id: data-mongodb-reactive
           description: MongoDB NoSQL Database, including spring-data-mongodb and the reactive driver
@@ -608,7 +627,8 @@ initializr:
           links:
             - rel: reference
               href: http://docs.spring.io/spring-boot/docs/{bootVersion}/reference/htmlsingle/#boot-features-mongodb
-          moduleSuffix: dao
+          modules:
+           - dao
         - name: Embedded MongoDB
           id: flapdoodle-mongo
           description: Embedded MongoDB for testing
@@ -623,7 +643,8 @@ initializr:
           links:
             - rel: reference
               href: http://docs.spring.io/spring-boot/docs/{bootVersion}/reference/htmlsingle/#boot-features-elasticsearch
-          moduleSuffix: dao
+          modules:
+           - dao
         - name: Solr
           id: data-solr
           description: Apache Solr search platform, including spring-data-solr
@@ -679,7 +700,7 @@ initializr:
       content:
         - name: Spring Integration
           id: integration
-          description: Common spring-integration moduleSuffixs
+          description: Common spring-integration moduless
           weight: 100
           links:
             - rel: guide
@@ -1241,14 +1262,16 @@ initializr:
           groupId: com.baomidou
           artifactId: mybatis-plus-boot-starter
           version: 3.0.7.1
-          moduleSuffix: dao
+          modules:
+           - dao
         - name: Druid
           id: druid
           descripton: alibaba druid integration
           groupId: com.alibaba
           artifactId: druid-spring-boot-starter
           version: 1.1.10
-          moduleSuffix: dao
+          modules:
+           - dao
     - name: Dmall intern dubbo service
       content:
         - name: dmall-order-client
@@ -1257,49 +1280,56 @@ initializr:
           groupId: com.dmall
           artifactId: dmall-order-client
           version: 1.1.75.RELEASE
-          moduleSuffix: rpc
+          modules:
+           - rpc
         - name: dmall-ofc-client
           id: dmall-ofc-client
           description: dmall ofc dubbo service sdk
           groupId: com.dmall
           artifactId: dmall-ofc-client
           version: 2.0.46-RELEASE
-          moduleSuffix: rpc
+          modules:
+           - rpc
         - name: erp-auth-service
           id: erp-auth-service
           description: dmall erp auth service sdk
           groupId: com.dmall
           artifaceId: erp-auth-service
           version: 1.0.RELEASE
-          moduleSuffix: rpc
+          modules:
+           - rpc
         - name: dmall-promise-client
           id: dmall-promise-client
           description: dmall promise dubbo service sdk
           groupId: com.dmall
           artifactId: dmall-promise-client
           version: 2.0.3-RELEASE
-          moduleSuffix: rpc
+          modules:
+           - rpc
         - name: dmall-erp-dubbo-service
           id: dmall-erp-dubbo-service
           description: dmall erp dubbo service sdk
           groupId: com.dmall
           artifactId: dmall-erp-dubbo-service
           version: 1.1.27.RELEASE
-          moduleSuffix: rpc
+          modules:
+           - rpc
         - name: dmall-terns-dubbo-service
           id: dmall-terns-dubbo-service
           description: dmall terns dubbo service sdk
           groupId: com.dmall
           artifactId: dmall-terns-dubbo-service
           version: 1.4.0.RELEASE
-          moduleSuffix: rpc
+          modules:
+           - rpc
         - name: dmall-refund-si
           id: dmall-refund-si
           description: dmall refund dubbo sercie sdk
           groupId: com.dmall
           artifaceId: dmall-refund-si
           version: 0.0.2-SNAPSHOT
-          moduleSuffix: rpc
+          modules:
+           - rpc
     - name: other open source framework
       content:
         - name: fastjson
@@ -1308,21 +1338,24 @@ initializr:
           groupId: com.alibaba
           artifactId: fastjson
           version: 1.2.5
-          moduleSuffix: common
+          modules:
+           - common
         - name: guava
           id: guava
           description: google guava
           groupId: com.google.guava
           artifactId: guava
           version: 18.0
-          moduleSuffix: common
+          modules:
+           - common
         - name: hutool-core
           id: hutool-core
           description: A set of tools that keep Java sweet
           groupId: com.xiaoleilu
           artifactId: hutool-core
           version: 3.3.2
-          moduleSuffix: common
+          modules:
+           - common
   types:
     - name: Maven Project
       id: maven-project

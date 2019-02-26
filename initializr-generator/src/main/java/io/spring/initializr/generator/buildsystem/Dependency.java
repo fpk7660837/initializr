@@ -18,6 +18,8 @@ package io.spring.initializr.generator.buildsystem;
 
 import io.spring.initializr.generator.version.VersionReference;
 
+import java.util.List;
+
 /**
  * A dependency to be declared in a project's build configuration.
  *
@@ -35,7 +37,7 @@ public class Dependency {
 
     private final String type;
 
-    private String moduleSuffix;
+    private List<String> modules;
 
     private String id;
 
@@ -61,18 +63,18 @@ public class Dependency {
 
 
     public Dependency(String groupId, String artifactId, VersionReference version,
-                      DependencyScope scope, String type, String module) {
-        this(groupId, artifactId, version, scope, type, module,null);
+                      DependencyScope scope, String type, List<String> modules) {
+        this(groupId, artifactId, version, scope, type, modules, null);
     }
 
     public Dependency(String groupId, String artifactId, VersionReference version,
-                      DependencyScope scope, String type, String moduleSuffix,String id) {
+                      DependencyScope scope, String type, List<String> modules, String id) {
         this.groupId = groupId;
         this.artifactId = artifactId;
         this.version = version;
         this.scope = scope;
         this.type = type;
-        this.moduleSuffix = moduleSuffix;
+        this.modules = modules;
         this.id = id;
     }
 
@@ -123,9 +125,8 @@ public class Dependency {
         return this.type;
     }
 
-
-    public String getModuleSuffix() {
-        return moduleSuffix;
+    public List<String> getModules() {
+        return modules;
     }
 
     public String getId() {

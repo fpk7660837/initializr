@@ -5,7 +5,7 @@ import io.spring.initializr.generator.buildsystem.DependencyContainer;
 import io.spring.initializr.generator.buildsystem.maven.MavenBuild;
 import io.spring.initializr.generator.project.module.DefaultModuleTopology;
 import io.spring.initializr.generator.spring.build.BuildCustomizer;
-import org.springframework.util.StringUtils;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,11 +27,11 @@ public class BaseChildDependencyMavenBuildCustomizer implements BuildCustomizer<
 
         for (MavenBuild childBuild : build.getChildBuilds()) {
             dependencies.items().forEach(dependency -> {
-                if (null != dependency.getModuleSuffix() && dependency.getModuleSuffix()
-                        .equals(childBuild.getSuffix())) {
+                if (null != dependency.getModules() && dependency.getModules()
+                        .contains(childBuild.getSuffix())) {
                     childBuild.dependencies()
                             .add(dependency.getId(), dependency);
-                } else if (null == dependency.getModuleSuffix() && DefaultModuleTopology.Modules.COMMON.getSuffix()
+                } else if (null == dependency.getModules() && DefaultModuleTopology.Modules.COMMON.getSuffix()
                         .equals(childBuild.getSuffix())) {
                     // default behavior, set the dependency to common module
                     childBuild.dependencies()
@@ -58,7 +58,7 @@ public class BaseChildDependencyMavenBuildCustomizer implements BuildCustomizer<
 
     private List<io.spring.initializr.generator.buildsystem.Dependency> filterModuleDependency(DependencyContainer dependencies) {
         return dependencies.items()
-                .filter(dependency -> !StringUtils.isEmpty(dependency.getModuleSuffix()))
+                .filter(dependency -> !CollectionUtils.isEmpty(dependency.getModules()))
                 .collect(Collectors.toList());
     }
 

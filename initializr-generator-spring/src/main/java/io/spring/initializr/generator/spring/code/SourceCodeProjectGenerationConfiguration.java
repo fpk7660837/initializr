@@ -23,7 +23,6 @@ import io.spring.initializr.generator.language.TypeDeclaration;
 import io.spring.initializr.generator.packaging.war.WarPackaging;
 import io.spring.initializr.generator.project.ProjectGenerationConfiguration;
 import io.spring.initializr.generator.project.ResolvedProjectDescription;
-
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -36,56 +35,61 @@ import org.springframework.context.annotation.Configuration;
 @ProjectGenerationConfiguration
 public class SourceCodeProjectGenerationConfiguration {
 
-	@Bean
-	public MainApplicationTypeCustomizer<TypeDeclaration> springBootApplicationAnnotator() {
-		return (typeDeclaration) -> typeDeclaration.annotate(Annotation
-				.name("org.springframework.boot.autoconfigure.SpringBootApplication"));
-	}
+    @Bean
+    public MainApplicationTypeCustomizer<TypeDeclaration> springBootApplicationAnnotator(ResolvedProjectDescription projectDescription) {
+        return (typeDeclaration) -> {
+            typeDeclaration
+                    .annotate(Annotation.name("org.springframework.boot.autoconfigure.SpringBootApplication"));
+            typeDeclaration.annotate(Annotation.name("org.springframework.context.annotation.ComponentScan", builder -> {
+                builder.attribute("value", String.class, projectDescription.getPackageName(null));
+            }));
+        };
+    }
 
-	@Bean
-	public TestApplicationTypeCustomizer<TypeDeclaration> springBootTestAnnotator() {
-		return (typeDeclaration) -> {
-			typeDeclaration.annotate(Annotation.name("org.junit.runner.RunWith",
-					(annotation) -> annotation.attribute("value", Class.class,
-							"org.springframework.test.context.junit4.SpringRunner")));
-			typeDeclaration.annotate(Annotation
-					.name("org.springframework.boot.test.context.SpringBootTest"));
-		};
-	}
+    @Bean
+    public TestApplicationTypeCustomizer<TypeDeclaration> springBootTestAnnotator() {
+        return (typeDeclaration) -> {
+            typeDeclaration.annotate(Annotation.name("org.junit.runner.RunWith",
+                    (annotation) -> annotation.attribute("value", Class.class,
+                            "org.springframework.test.context.junit4.SpringRunner")));
+            typeDeclaration.annotate(Annotation
+                    .name("org.springframework.boot.test.context.SpringBootTest"));
+        };
+    }
 
-	/**
-	 * Language-agnostic source code contributions for projects using war packaging.
-	 */
-	@Configuration
-	@ConditionalOnPackaging(WarPackaging.ID)
-	static class WarPackagingConfiguration {
+    /**
+     * Language-agnostic source code contributions for projects using war packaging.
+     */
+    @Configuration
+    @ConditionalOnPackaging(WarPackaging.ID)
+    static class WarPackagingConfiguration {
 
-		private final ResolvedProjectDescription projectDescription;
+        private final ResolvedProjectDescription projectDescription;
 
-		WarPackagingConfiguration(ResolvedProjectDescription projectDescription) {
-			this.projectDescription = projectDescription;
-		}
+        WarPackagingConfiguration(ResolvedProjectDescription projectDescription) {
+            this.projectDescription = projectDescription;
+        }
 
-		@Bean
-		@ConditionalOnPlatformVersion("[1.5.0.M1, 2.0.0.M1)")
-		public ServletInitializerContributor boot15ServletInitializerContributor(
-				ObjectProvider<ServletInitializerCustomizer<?>> servletInitializerCustomizers,
-				ResolvedProjectDescription projectDescription) {
-			return new ServletInitializerContributor(
-					"org.springframework.boot.web.support.SpringBootServletInitializer",
-					servletInitializerCustomizers,projectDescription);
-		}
+        @Bean
+        @ConditionalOnPlatformVersion("[1.5.0.M1, 2.0.0.M1)")
+        public ServletInitializerContributor boot15ServletInitializerContributor(
+                ObjectProvider<ServletInitializerCustomizer<?>> servletInitializerCustomizers,
+                ResolvedProjectDescription projectDescription) {
+            return new ServletInitializerContributor(
+                    "org.springframework.boot.web.support.SpringBootServletInitializer",
+                    servletInitializerCustomizers, projectDescription);
+        }
 
-		@Bean
-		@ConditionalOnPlatformVersion("2.0.0.M1")
-		public ServletInitializerContributor boot20ServletInitializerContributor(
-				ObjectProvider<ServletInitializerCustomizer<?>> servletInitializerCustomizers,
-				ResolvedProjectDescription projectDescription) {
-			return new ServletInitializerContributor(
-					"org.springframework.boot.web.servlet.support.SpringBootServletInitializer",
-					servletInitializerCustomizers,projectDescription);
-		}
+        @Bean
+        @ConditionalOnPlatformVersion("2.0.0.M1")
+        public ServletInitializerContributor boot20ServletInitializerContributor(
+                ObjectProvider<ServletInitializerCustomizer<?>> servletInitializerCustomizers,
+                ResolvedProjectDescription projectDescription) {
+            return new ServletInitializerContributor(
+                    "org.springframework.boot.web.servlet.support.SpringBootServletInitializer",
+                    servletInitializerCustomizers, projectDescription);
+        }
 
-	}
+    }
 
 }

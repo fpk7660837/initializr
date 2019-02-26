@@ -46,8 +46,9 @@ class JavaProjectGenerationDefaultContributorsConfiguration {
                         .modifiers(Modifier.PUBLIC | Modifier.STATIC).returning("void")
                         .parameters(new Parameter("java.lang.String[]", "args"))
                         .body(new JavaExpressionStatement(new JavaMethodInvocation(
-                                "org.springframework.boot.SpringApplication", "run",
-                                typeDeclaration.getName() + ".class", "args"))));
+                                "org.springframework.boot.SpringApplication", "run")
+                                .argument(typeDeclaration.getName() + ".class")
+                                .argument("args"))));
     }
 
     @Bean

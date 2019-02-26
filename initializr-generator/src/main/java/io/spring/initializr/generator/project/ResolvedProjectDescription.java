@@ -139,7 +139,7 @@ public final class ResolvedProjectDescription {
     }
 
     public String getPackageName(String suffix) {
-        String packagePrefix = this.artifactId.replaceAll("-", "/");
+        String packagePrefix = this.artifactId.replaceAll("-", ".");
         return StringUtils.isEmpty(suffix) ? "com." + packagePrefix : "com." + packagePrefix + "." + suffix;
     }
 

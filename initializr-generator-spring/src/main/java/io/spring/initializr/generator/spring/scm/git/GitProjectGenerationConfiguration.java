@@ -50,7 +50,7 @@ public class GitProjectGenerationConfiguration {
 	@ConditionalOnBuildSystem(MavenBuildSystem.ID)
 	public GitIgnoreCustomizer mavenGitIgnoreCustomizer() {
 		return (gitIgnore) -> {
-			gitIgnore.getGeneral().add("/target/", "!.mvn/wrapper/maven-wrapper.jar");
+			gitIgnore.getGeneral().add("/target/", "!.mvn/wrapper/maven-wrapper.jar",".mvn");
 			gitIgnore.getNetBeans().add("/build/");
 		};
 	}

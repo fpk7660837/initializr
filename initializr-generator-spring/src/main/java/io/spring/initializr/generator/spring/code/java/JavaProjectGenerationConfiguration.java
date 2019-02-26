@@ -18,21 +18,13 @@ package io.spring.initializr.generator.spring.code.java;
 
 import io.spring.initializr.generator.condition.ConditionalOnLanguage;
 import io.spring.initializr.generator.io.IndentingWriterFactory;
-import io.spring.initializr.generator.language.java.JavaCompilationUnit;
-import io.spring.initializr.generator.language.java.JavaLanguage;
-import io.spring.initializr.generator.language.java.JavaSourceCode;
-import io.spring.initializr.generator.language.java.JavaSourceCodeWriter;
-import io.spring.initializr.generator.language.java.JavaTypeDeclaration;
+import io.spring.initializr.generator.language.java.*;
 import io.spring.initializr.generator.project.ProjectGenerationConfiguration;
 import io.spring.initializr.generator.project.ResolvedProjectDescription;
 import io.spring.initializr.generator.spring.code.MainApplicationTypeCustomizer;
 import io.spring.initializr.generator.spring.code.MainCompilationUnitCustomizer;
 import io.spring.initializr.generator.spring.code.MainSourceCodeCustomizer;
 import io.spring.initializr.generator.spring.code.MainSourceCodeProjectContributor;
-import io.spring.initializr.generator.spring.code.TestApplicationTypeCustomizer;
-import io.spring.initializr.generator.spring.code.TestSourceCodeCustomizer;
-import io.spring.initializr.generator.spring.code.TestSourceCodeProjectContributor;
-
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
@@ -71,14 +63,14 @@ public class JavaProjectGenerationConfiguration {
 				mainSourceCodeCustomizers);
 	}
 
-	@Bean
-	public TestSourceCodeProjectContributor<JavaTypeDeclaration, JavaCompilationUnit, JavaSourceCode> testJavaSourceCodeProjectContributor(
-			ObjectProvider<TestApplicationTypeCustomizer<?>> testApplicationTypeCustomizers,
-			ObjectProvider<TestSourceCodeCustomizer<?, ?, ?>> testSourceCodeCustomizers) {
-		return new TestSourceCodeProjectContributor<>(this.projectDescription,
-				JavaSourceCode::new,
-				new JavaSourceCodeWriter(this.indentingWriterFactory),
-				testApplicationTypeCustomizers, testSourceCodeCustomizers);
-	}
+	// @Bean
+	// public TestSourceCodeProjectContributor<JavaTypeDeclaration, JavaCompilationUnit, JavaSourceCode> testJavaSourceCodeProjectContributor(
+	// 		ObjectProvider<TestApplicationTypeCustomizer<?>> testApplicationTypeCustomizers,
+	// 		ObjectProvider<TestSourceCodeCustomizer<?, ?, ?>> testSourceCodeCustomizers) {
+	// 	return new TestSourceCodeProjectContributor<>(this.projectDescription,
+	// 			JavaSourceCode::new,
+	// 			new JavaSourceCodeWriter(this.indentingWriterFactory),
+	// 			testApplicationTypeCustomizers, testSourceCodeCustomizers);
+	// }
 
 }

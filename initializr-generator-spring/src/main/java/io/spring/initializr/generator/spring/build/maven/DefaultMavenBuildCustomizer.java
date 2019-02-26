@@ -68,6 +68,7 @@ public class DefaultMavenBuildCustomizer implements BuildCustomizer<MavenBuild> 
 		}
 		build.parent(parentPom.getGroupId(), parentPom.getArtifactId(),
 				parentPom.getVersion());
+		build.setPackaging("pom");
 	}
 
 	private boolean hasBom(MavenBuild build, BillOfMaterials bom) {

@@ -81,7 +81,9 @@ public class MavenBuildWriter {
             writeSingleElement(writer, "groupId", parent.getGroupId());
             writeSingleElement(writer, "artifactId", parent.getArtifactId());
             writeSingleElement(writer, "version", parent.getVersion());
-            writer.println("<relativePath/> <!-- lookup parent from repository -->");
+            if (build.isRoot()) {
+                writer.println("<relativePath/> <!-- lookup parent from repository -->");
+            }
         });
         writer.println("</parent>");
     }

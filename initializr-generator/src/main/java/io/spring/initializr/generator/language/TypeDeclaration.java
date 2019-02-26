@@ -27,36 +27,46 @@ import java.util.List;
  */
 public class TypeDeclaration implements Annotatable {
 
-	private final List<Annotation> annotations = new ArrayList<>();
+    private final List<Annotation> annotations = new ArrayList<>();
 
-	private final String name;
+    private final String name;
 
-	private String extendedClassName;
+    private String extendedClassName;
 
-	public TypeDeclaration(String name) {
-		this.name = name;
-	}
+    private List<String> implementClassNames = new ArrayList<>();
 
-	public void extend(String name) {
-		this.extendedClassName = name;
-	}
+    public TypeDeclaration(String name) {
+        this.name = name;
+    }
 
-	@Override
-	public void annotate(Annotation annotation) {
-		this.annotations.add(annotation);
-	}
+    public void extend(String name) {
+        this.extendedClassName = name;
+    }
 
-	@Override
-	public List<Annotation> getAnnotations() {
-		return Collections.unmodifiableList(this.annotations);
-	}
+    public void impl(String name) {
+        this.implementClassNames.add(name);
+    }
 
-	public String getName() {
-		return this.name;
-	}
+    @Override
+    public void annotate(Annotation annotation) {
+        this.annotations.add(annotation);
+    }
 
-	public String getExtends() {
-		return this.extendedClassName;
-	}
+    @Override
+    public List<Annotation> getAnnotations() {
+        return Collections.unmodifiableList(this.annotations);
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public String getExtends() {
+        return this.extendedClassName;
+    }
+
+    public List<String> getImpls() {
+        return this.implementClassNames;
+    }
 
 }

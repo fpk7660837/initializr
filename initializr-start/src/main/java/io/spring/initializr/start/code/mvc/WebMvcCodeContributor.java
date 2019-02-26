@@ -39,7 +39,7 @@ public class WebMvcCodeContributor implements MainSourceCodeCustomizer<TypeDecla
         TypeDeclaration webMvcConfig = compilationUnit
                 .createTypeDeclaration("WebMvcConfig");
         webMvcConfig.annotate(Annotation.name("org.springframework.context.annotation.Configuration"));
-        webMvcConfig.extend("org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter");
+        webMvcConfig.impl("org.springframework.web.servlet.config.annotation.WebMvcConfigurer");
         customizeWebMvcConfig(webMvcConfig);
     }
 

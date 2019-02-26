@@ -19,6 +19,7 @@ package io.spring.initializr.generator.language.java;
 import io.spring.initializr.generator.io.IndentingWriter;
 import io.spring.initializr.generator.io.IndentingWriterFactory;
 import io.spring.initializr.generator.language.*;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.io.IOException;
@@ -92,6 +93,14 @@ public class JavaSourceCodeWriter implements SourceCodeWriter<JavaSourceCode> {
                 if (type.getExtends() != null) {
                     writer.print(" extends " + getUnqualifiedName(type.getExtends()));
                 }
+
+                if (!CollectionUtils.isEmpty(type.getImpls())) {
+                    String impleNames = type.getImpls().stream()
+                            .map(this::getUnqualifiedName)
+                            .reduce((o, o2) -> o + "," + o2).get();
+                    writer.println(" implements " + impleNames);
+                }
+
                 writer.println(" {");
                 writer.println();
                 List<JavaMethodDeclaration> methodDeclarations = type
@@ -225,7 +234,7 @@ public class JavaSourceCodeWriter implements SourceCodeWriter<JavaSourceCode> {
         } else if (!StringUtils.isEmpty(returnName) && !StringUtils.isEmpty(returnType) && StringUtils.isEmpty(methodInvocation
                 .getTarget()) &&
                 StringUtils.isEmpty(methodInvocation.getName())) {
-            writer.print("("+getUnqualifiedName(returnType) + ")" + returnName);
+            writer.print("(" + getUnqualifiedName(returnType) + ")" + returnName);
         } else {
             writer.print(getUnqualifiedName(returnType) + " " + returnName + " = " +
                     getUnqualifiedName(methodInvocation.getTarget()) + "."
@@ -256,12 +265,13 @@ public class JavaSourceCodeWriter implements SourceCodeWriter<JavaSourceCode> {
             for (JavaMethodDeclaration methodDeclaration : typeDeclaration
                     .getMethodDeclarations()) {
                 if (requiresImport(methodDeclaration.getReturnType())) {
-                    imports.add(methodDeclaration.getReturnType());
+                    imports.add(getRawType(methodDeclaration.getReturnType())
+                    );
                 }
                 imports.addAll(getRequiredImports(methodDeclaration.getAnnotations(),
                         this::determineImports));
                 imports.addAll(getRequiredImports(methodDeclaration.getParameters(),
-                        (parameter) -> Collections.singletonList(parameter.getType())));
+                        (parameter) -> Collections.singletonList(getRawType(parameter.getType()))));
                 imports.addAll(getRequiredImports(
                         methodDeclaration.getStatements().stream()
                                 .filter(JavaExpressionStatement.class::isInstance)
@@ -276,6 +286,16 @@ public class JavaSourceCodeWriter implements SourceCodeWriter<JavaSourceCode> {
         Collections.sort(imports);
         return new LinkedHashSet<>(imports);
     }
+
+
+    private String getRawType(String type) {
+        if (type.contains("<")) {
+            return type.substring(0, type.lastIndexOf("<"));
+        } else {
+            return type;
+        }
+    }
+
 
     private Collection<String> determineImports(Annotation annotation) {
         List<String> imports = new ArrayList<>();

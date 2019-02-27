@@ -1,7 +1,12 @@
+# 默认加载profile
 spring:
   profiles:
     active: ${env},rpc-${env},dao-${env},mq-${env},service-${env}1
 
-
+# 默认tomcat启动端口
 server:
   port: 8080
+
+# 自定义文件，详情请见:https://blog.csdn.net/AaronSimon/article/details/82710792
+logging:
+  config: classpath:logback-custom:xml

@@ -105,12 +105,17 @@ public class MainSourceCodeProjectContributor<T extends TypeDeclaration, C exten
 
 
     private void buildMainApplicationSourceCode(S sourceCode, String module, String suffix) {
-        String applicationName = this.projectDescription.getApplicationName();
         C compilationUnit = sourceCode.createCompilationUnit(
-                this.projectDescription.getPackageName(suffix), applicationName, module);
-        T mainApplicationType = compilationUnit.createTypeDeclaration(applicationName);
+                this.projectDescription.getPackageName(suffix), getApplicationName(suffix), module);
+        T mainApplicationType = compilationUnit.createTypeDeclaration(getApplicationName(suffix));
         customizeMainApplicationType(mainApplicationType);
         customizeMainCompilationUnit(compilationUnit);
+    }
+
+
+    private String getApplicationName(String suffix) {
+        String applicationName = suffix + "Application";
+        return applicationName.substring(0, 1).toUpperCase() + applicationName.substring(1);
     }
 
     private void writeCode(Path projectRoot, S sourceCode, String module) throws IOException {

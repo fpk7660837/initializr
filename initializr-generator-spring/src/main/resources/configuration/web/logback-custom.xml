@@ -13,7 +13,8 @@
         <appender-ref ref="CONSOLE"/>
     </root>
 
-    <!-- Springboot读取配置信息
+    <!--
+    Springboot读取配置信息,详细使用参见 https://blog.csdn.net/AaronSimon/article/details/82710792
     <springProperty scope="context" name="sprint.xxx" source="spring.xxx"/>
     -->
 

@@ -9,4 +9,4 @@ server:
 
 # 自定义文件，详情请见:https://blog.csdn.net/AaronSimon/article/details/82710792
 logging:
-  config: classpath:logback-custom:xml
+  config: classpath:logback-custom.xml

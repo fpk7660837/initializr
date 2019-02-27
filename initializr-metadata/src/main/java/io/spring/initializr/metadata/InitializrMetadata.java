@@ -16,14 +16,14 @@
 
 package io.spring.initializr.metadata;
 
+import io.spring.initializr.generator.version.Version;
+import io.spring.initializr.generator.version.VersionParser;
+import io.spring.initializr.generator.version.VersionProperty;
+
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import io.spring.initializr.generator.version.Version;
-import io.spring.initializr.generator.version.VersionParser;
-import io.spring.initializr.generator.version.VersionProperty;
 
 /**
  * Meta-data used to generate a project.
@@ -33,293 +33,321 @@ import io.spring.initializr.generator.version.VersionProperty;
  */
 public class InitializrMetadata {
 
-	private final InitializrConfiguration configuration;
+    private final InitializrConfiguration configuration;
 
-	private final DependenciesCapability dependencies = new DependenciesCapability();
+    private final DependenciesCapability dependencies = new DependenciesCapability();
 
-	private final TypeCapability types = new TypeCapability();
+    private final TypeCapability types = new TypeCapability();
 
-	private final SingleSelectCapability bootVersions = new SingleSelectCapability(
-			"bootVersion", "Spring Boot Version", "spring boot version");
+    private final SingleSelectCapability bootVersions = new SingleSelectCapability(
+            "bootVersion", "Spring Boot Version", "spring boot version");
 
-	private final SingleSelectCapability packagings = new SingleSelectCapability(
-			"packaging", "Packaging", "project packaging");
+    private final SingleSelectCapability packagings = new SingleSelectCapability(
+            "packaging", "Packaging", "project packaging");
 
-	private final SingleSelectCapability javaVersions = new SingleSelectCapability(
-			"javaVersion", "Java Version", "language level");
+    private final SingleSelectCapability javaVersions = new SingleSelectCapability(
+            "javaVersion", "Java Version", "language level");
 
-	private final SingleSelectCapability languages = new SingleSelectCapability(
-			"language", "Language", "programming language");
+    private final SingleSelectCapability languages = new SingleSelectCapability(
+            "language", "Language", "programming language");
 
-	private final TextCapability name = new TextCapability("name", "Name",
-			"project name (infer application name)");
+    private final TextCapability name = new TextCapability("name", "Name",
+            "project name (infer application name)");
 
-	private final TextCapability description = new TextCapability("description",
-			"Description", "project description");
+    private final TextCapability description = new TextCapability("description",
+            "Description", "project description");
 
-	private final TextCapability groupId = new TextCapability("groupId", "Group",
-			"project coordinates");
+    private final TextCapability groupId = new TextCapability("groupId", "Group",
+            "project coordinates");
 
-	private final TextCapability artifactId = new ArtifactIdCapability(this.name);
+    private final TextCapability artifactId = new ArtifactIdCapability(this.name);
 
-	private final TextCapability version = new TextCapability("version", "Version",
-			"project version");
+    private final TextCapability jdbcUrl = new TextCapability("jdbcUrl", "JdbcUrl", "jdbc url");
 
-	private final TextCapability packageName = new PackageCapability(this.groupId,
-			this.artifactId);
+    private final TextCapability userName = new TextCapability("userName", "UserName", "db user name");
 
-	public InitializrMetadata() {
-		this(new InitializrConfiguration());
-	}
+    private final TextCapability password = new TextCapability("password", "Password", "db password");
 
-	protected InitializrMetadata(InitializrConfiguration configuration) {
-		this.configuration = configuration;
-	}
+    private final TextCapability version = new TextCapability("version", "Version",
+            "project version");
 
-	public InitializrConfiguration getConfiguration() {
-		return this.configuration;
-	}
+    private final TextCapability packageName = new PackageCapability(this.groupId,
+            this.artifactId);
 
-	public DependenciesCapability getDependencies() {
-		return this.dependencies;
-	}
+    public InitializrMetadata() {
+        this(new InitializrConfiguration());
+    }
 
-	public TypeCapability getTypes() {
-		return this.types;
-	}
+    protected InitializrMetadata(InitializrConfiguration configuration) {
+        this.configuration = configuration;
+    }
 
-	public SingleSelectCapability getBootVersions() {
-		return this.bootVersions;
-	}
+    public InitializrConfiguration getConfiguration() {
+        return this.configuration;
+    }
 
-	public SingleSelectCapability getPackagings() {
-		return this.packagings;
-	}
+    public DependenciesCapability getDependencies() {
+        return this.dependencies;
+    }
 
-	public SingleSelectCapability getJavaVersions() {
-		return this.javaVersions;
-	}
+    public TypeCapability getTypes() {
+        return this.types;
+    }
 
-	public SingleSelectCapability getLanguages() {
-		return this.languages;
-	}
+    public SingleSelectCapability getBootVersions() {
+        return this.bootVersions;
+    }
 
-	public TextCapability getName() {
-		return this.name;
-	}
+    public SingleSelectCapability getPackagings() {
+        return this.packagings;
+    }
 
-	public TextCapability getDescription() {
-		return this.description;
-	}
+    public SingleSelectCapability getJavaVersions() {
+        return this.javaVersions;
+    }
 
-	public TextCapability getGroupId() {
-		return this.groupId;
-	}
+    public SingleSelectCapability getLanguages() {
+        return this.languages;
+    }
 
-	public TextCapability getArtifactId() {
-		return this.artifactId;
-	}
+    public TextCapability getName() {
+        return this.name;
+    }
 
-	public TextCapability getVersion() {
-		return this.version;
-	}
+    public TextCapability getDescription() {
+        return this.description;
+    }
 
-	public TextCapability getPackageName() {
-		return this.packageName;
-	}
+    public TextCapability getGroupId() {
+        return this.groupId;
+    }
 
-	/**
-	 * Merge this instance with the specified argument.
-	 * @param other the other instance
-	 */
-	public void merge(InitializrMetadata other) {
-		this.configuration.merge(other.configuration);
-		this.dependencies.merge(other.dependencies);
-		this.types.merge(other.types);
-		this.bootVersions.merge(other.bootVersions);
-		this.packagings.merge(other.packagings);
-		this.javaVersions.merge(other.javaVersions);
-		this.languages.merge(other.languages);
-		this.name.merge(other.name);
-		this.description.merge(other.description);
-		this.groupId.merge(other.groupId);
-		this.artifactId.merge(other.artifactId);
-		this.version.merge(other.version);
-		this.packageName.merge(other.packageName);
-	}
+    public TextCapability getArtifactId() {
+        return this.artifactId;
+    }
 
-	/**
-	 * Validate the metadata.
-	 */
-	public void validate() {
-		this.configuration.validate();
-		this.dependencies.validate();
+    public TextCapability getJdbcUrl() {
+        return this.jdbcUrl;
+    }
 
-		Map<String, Repository> repositories = this.configuration.getEnv()
-				.getRepositories();
-		Map<String, BillOfMaterials> boms = this.configuration.getEnv().getBoms();
-		for (Dependency dependency : this.dependencies.getAll()) {
-			if (dependency.getBom() != null && !boms.containsKey(dependency.getBom())) {
-				throw new InvalidInitializrMetadataException(
-						"Dependency " + dependency + "defines an invalid BOM id "
-								+ dependency.getBom() + ", available boms " + boms);
-			}
+    public TextCapability getUserName() {
+        return this.userName;
+    }
 
-			if (dependency.getRepository() != null
-					&& !repositories.containsKey(dependency.getRepository())) {
-				throw new InvalidInitializrMetadataException("Dependency " + dependency
-						+ "defines an invalid repository id " + dependency.getRepository()
-						+ ", available repositories " + repositories);
-			}
-		}
-		for (BillOfMaterials bom : boms.values()) {
-			for (String r : bom.getRepositories()) {
-				if (!repositories.containsKey(r)) {
-					throw new InvalidInitializrMetadataException(
-							bom + "defines an invalid repository id " + r
-									+ ", available repositories " + repositories);
-				}
-			}
-			for (String b : bom.getAdditionalBoms()) {
-				if (!boms.containsKey(b)) {
-					throw new InvalidInitializrMetadataException(
-							bom + " defines an invalid " + "additional bom id " + b
-									+ ", available boms " + boms);
-				}
-			}
-			for (BillOfMaterials.Mapping m : bom.getMappings()) {
-				for (String r : m.getRepositories()) {
-					if (!repositories.containsKey(r)) {
-						throw new InvalidInitializrMetadataException(
-								m + " of " + bom + "defines an invalid repository id " + r
-										+ ", available repositories " + repositories);
-					}
+    public TextCapability getPassword() {
+        return this.password;
+    }
 
-				}
-				for (String b : m.getAdditionalBoms()) {
-					if (!boms.containsKey(b)) {
-						throw new InvalidInitializrMetadataException(m + " of " + bom
-								+ " defines " + "an invalid additional bom id " + b
-								+ ", available boms " + boms);
-					}
-				}
-			}
-		}
-	}
+    public TextCapability getVersion() {
+        return this.version;
+    }
 
-	/**
-	 * Update the available Spring Boot versions with the specified capabilities.
-	 * @param versionsMetadata the Spring Boot boot versions metadata to use
-	 */
-	public void updateSpringBootVersions(List<DefaultMetadataElement> versionsMetadata) {
-		this.bootVersions.getContent().clear();
-		this.bootVersions.getContent().addAll(versionsMetadata);
-		List<Version> bootVersions = this.bootVersions.getContent().stream()
-				.map((it) -> Version.parse(it.getId())).collect(Collectors.toList());
-		VersionParser parser = new VersionParser(bootVersions);
-		this.dependencies.updateVersionRange(parser);
-		this.configuration.getEnv().getBoms().values()
-				.forEach((it) -> it.updateVersionRange(parser));
-		this.configuration.getEnv().getKotlin().updateVersionRange(parser);
-	}
+    public TextCapability getPackageName() {
+        return this.packageName;
+    }
 
-	/**
-	 * Create an URL suitable to download Spring Boot cli for the specified version and
-	 * extension.
-	 * @param extension the required extension
-	 * @return the download URL
-	 */
-	public String createCliDistributionURl(String extension) {
-		String bootVersion = defaultId(this.bootVersions);
-		return this.configuration.getEnv().getArtifactRepository()
-				+ "org/springframework/boot/spring-boot-cli/" + bootVersion
-				+ "/spring-boot-cli-" + bootVersion + "-bin." + extension;
-	}
+    /**
+     * Merge this instance with the specified argument.
+     *
+     * @param other the other instance
+     */
+    public void merge(InitializrMetadata other) {
+        this.configuration.merge(other.configuration);
+        this.dependencies.merge(other.dependencies);
+        this.types.merge(other.types);
+        this.bootVersions.merge(other.bootVersions);
+        this.packagings.merge(other.packagings);
+        this.javaVersions.merge(other.javaVersions);
+        this.languages.merge(other.languages);
+        this.name.merge(other.name);
+        this.description.merge(other.description);
+        this.groupId.merge(other.groupId);
+        this.artifactId.merge(other.artifactId);
+        this.version.merge(other.version);
+        this.packageName.merge(other.packageName);
+        this.jdbcUrl.merge(other.jdbcUrl);
+        this.userName.merge(other.userName);
+        this.password.merge(other.password);
+    }
 
-	/**
-	 * Create a {@link BillOfMaterials} for the spring boot BOM.
-	 * @param bootVersion the Spring Boot version
-	 * @param versionProperty the property that contains the version
-	 * @return a new {@link BillOfMaterials} instance
-	 */
-	public BillOfMaterials createSpringBootBom(String bootVersion,
-			String versionProperty) {
-		BillOfMaterials bom = BillOfMaterials.create("org.springframework.boot",
-				"spring-boot-dependencies", bootVersion);
-		bom.setVersionProperty(VersionProperty.of(versionProperty));
-		bom.setOrder(100);
-		return bom;
-	}
+    /**
+     * Validate the metadata.
+     */
+    public void validate() {
+        this.configuration.validate();
+        this.dependencies.validate();
 
-	/**
-	 * Return the defaults for the capabilities defined on this instance.
-	 * @return the default capabilities
-	 */
-	public Map<String, Object> defaults() {
-		Map<String, Object> defaults = new LinkedHashMap<>();
-		defaults.put("type", defaultId(this.types));
-		defaults.put("bootVersion", defaultId(this.bootVersions));
-		defaults.put("packaging", defaultId(this.packagings));
-		defaults.put("javaVersion", defaultId(this.javaVersions));
-		defaults.put("language", defaultId(this.languages));
-		defaults.put("groupId", this.groupId.getContent());
-		defaults.put("artifactId", this.artifactId.getContent());
-		defaults.put("version", this.version.getContent());
-		defaults.put("name", this.name.getContent());
-		defaults.put("description", this.description.getContent());
-		defaults.put("packageName", this.packageName.getContent());
-		return defaults;
-	}
+        Map<String, Repository> repositories = this.configuration.getEnv()
+                .getRepositories();
+        Map<String, BillOfMaterials> boms = this.configuration.getEnv().getBoms();
+        for (Dependency dependency : this.dependencies.getAll()) {
+            if (dependency.getBom() != null && !boms.containsKey(dependency.getBom())) {
+                throw new InvalidInitializrMetadataException(
+                        "Dependency " + dependency + "defines an invalid BOM id "
+                                + dependency.getBom() + ", available boms " + boms);
+            }
 
-	private static String defaultId(
-			Defaultable<? extends DefaultMetadataElement> element) {
-		DefaultMetadataElement defaultValue = element.getDefault();
-		return (defaultValue != null) ? defaultValue.getId() : null;
-	}
+            if (dependency.getRepository() != null
+                    && !repositories.containsKey(dependency.getRepository())) {
+                throw new InvalidInitializrMetadataException("Dependency " + dependency
+                        + "defines an invalid repository id " + dependency.getRepository()
+                        + ", available repositories " + repositories);
+            }
+        }
+        for (BillOfMaterials bom : boms.values()) {
+            for (String r : bom.getRepositories()) {
+                if (!repositories.containsKey(r)) {
+                    throw new InvalidInitializrMetadataException(
+                            bom + "defines an invalid repository id " + r
+                                    + ", available repositories " + repositories);
+                }
+            }
+            for (String b : bom.getAdditionalBoms()) {
+                if (!boms.containsKey(b)) {
+                    throw new InvalidInitializrMetadataException(
+                            bom + " defines an invalid " + "additional bom id " + b
+                                    + ", available boms " + boms);
+                }
+            }
+            for (BillOfMaterials.Mapping m : bom.getMappings()) {
+                for (String r : m.getRepositories()) {
+                    if (!repositories.containsKey(r)) {
+                        throw new InvalidInitializrMetadataException(
+                                m + " of " + bom + "defines an invalid repository id " + r
+                                        + ", available repositories " + repositories);
+                    }
 
-	private static class ArtifactIdCapability extends TextCapability {
+                }
+                for (String b : m.getAdditionalBoms()) {
+                    if (!boms.containsKey(b)) {
+                        throw new InvalidInitializrMetadataException(m + " of " + bom
+                                + " defines " + "an invalid additional bom id " + b
+                                + ", available boms " + boms);
+                    }
+                }
+            }
+        }
+    }
 
-		private final TextCapability nameCapability;
+    /**
+     * Update the available Spring Boot versions with the specified capabilities.
+     *
+     * @param versionsMetadata the Spring Boot boot versions metadata to use
+     */
+    public void updateSpringBootVersions(List<DefaultMetadataElement> versionsMetadata) {
+        this.bootVersions.getContent().clear();
+        this.bootVersions.getContent().addAll(versionsMetadata);
+        List<Version> bootVersions = this.bootVersions.getContent().stream()
+                .map((it) -> Version.parse(it.getId())).collect(Collectors.toList());
+        VersionParser parser = new VersionParser(bootVersions);
+        this.dependencies.updateVersionRange(parser);
+        this.configuration.getEnv().getBoms().values()
+                .forEach((it) -> it.updateVersionRange(parser));
+        this.configuration.getEnv().getKotlin().updateVersionRange(parser);
+    }
 
-		ArtifactIdCapability(TextCapability nameCapability) {
-			super("artifactId", "Artifact", "project coordinates (infer archive name)");
-			this.nameCapability = nameCapability;
-		}
+    /**
+     * Create an URL suitable to download Spring Boot cli for the specified version and
+     * extension.
+     *
+     * @param extension the required extension
+     * @return the download URL
+     */
+    public String createCliDistributionURl(String extension) {
+        String bootVersion = defaultId(this.bootVersions);
+        return this.configuration.getEnv().getArtifactRepository()
+                + "org/springframework/boot/spring-boot-cli/" + bootVersion
+                + "/spring-boot-cli-" + bootVersion + "-bin." + extension;
+    }
 
-		@Override
-		public String getContent() {
-			String value = super.getContent();
-			return (value != null) ? value : this.nameCapability.getContent();
-		}
+    /**
+     * Create a {@link BillOfMaterials} for the spring boot BOM.
+     *
+     * @param bootVersion     the Spring Boot version
+     * @param versionProperty the property that contains the version
+     * @return a new {@link BillOfMaterials} instance
+     */
+    public BillOfMaterials createSpringBootBom(String bootVersion,
+                                               String versionProperty) {
+        BillOfMaterials bom = BillOfMaterials.create("org.springframework.boot",
+                "spring-boot-dependencies", bootVersion);
+        bom.setVersionProperty(VersionProperty.of(versionProperty));
+        bom.setOrder(100);
+        return bom;
+    }
 
-	}
+    /**
+     * Return the defaults for the capabilities defined on this instance.
+     *
+     * @return the default capabilities
+     */
+    public Map<String, Object> defaults() {
+        Map<String, Object> defaults = new LinkedHashMap<>();
+        defaults.put("type", defaultId(this.types));
+        defaults.put("bootVersion", defaultId(this.bootVersions));
+        defaults.put("packaging", defaultId(this.packagings));
+        defaults.put("javaVersion", defaultId(this.javaVersions));
+        defaults.put("language", defaultId(this.languages));
+        defaults.put("groupId", this.groupId.getContent());
+        defaults.put("artifactId", this.artifactId.getContent());
+        defaults.put("jdbcUrl", this.jdbcUrl.getContent());
+        defaults.put("userName", this.userName.getContent());
+        defaults.put("password", this.password.getContent());
+        defaults.put("version", this.version.getContent());
+        defaults.put("name", this.name.getContent());
+        defaults.put("description", this.description.getContent());
+        defaults.put("packageName", this.packageName.getContent());
+        return defaults;
+    }
 
-	private static class PackageCapability extends TextCapability {
+    private static String defaultId(
+            Defaultable<? extends DefaultMetadataElement> element) {
+        DefaultMetadataElement defaultValue = element.getDefault();
+        return (defaultValue != null) ? defaultValue.getId() : null;
+    }
 
-		private final TextCapability groupId;
+    private static class ArtifactIdCapability extends TextCapability {
 
-		private final TextCapability artifactId;
+        private final TextCapability nameCapability;
 
-		PackageCapability(TextCapability groupId, TextCapability artifactId) {
-			super("packageName", "Package Name", "root package");
-			this.groupId = groupId;
-			this.artifactId = artifactId;
-		}
+        ArtifactIdCapability(TextCapability nameCapability) {
+            super("artifactId", "Artifact", "project coordinates (infer archive name)");
+            this.nameCapability = nameCapability;
+        }
 
-		@Override
-		public String getContent() {
-			String value = super.getContent();
-			if (value != null) {
-				return value;
-			}
-			else if (this.groupId.getContent() != null
-					&& this.artifactId.getContent() != null) {
-				return InitializrConfiguration.cleanPackageName(
-						this.groupId.getContent() + "." + this.artifactId.getContent());
-			}
-			return null;
-		}
+        @Override
+        public String getContent() {
+            String value = super.getContent();
+            return (value != null) ? value : this.nameCapability.getContent();
+        }
 
-	}
+    }
+
+    private static class PackageCapability extends TextCapability {
+
+        private final TextCapability groupId;
+
+        private final TextCapability artifactId;
+
+        PackageCapability(TextCapability groupId, TextCapability artifactId) {
+            super("packageName", "Package Name", "root package");
+            this.groupId = groupId;
+            this.artifactId = artifactId;
+        }
+
+        @Override
+        public String getContent() {
+            String value = super.getContent();
+            if (value != null) {
+                return value;
+            } else if (this.groupId.getContent() != null
+                    && this.artifactId.getContent() != null) {
+                return InitializrConfiguration.cleanPackageName(
+                        this.groupId.getContent() + "." + this.artifactId.getContent());
+            }
+            return null;
+        }
+
+    }
 
 }

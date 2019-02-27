@@ -16,17 +16,16 @@
 
 package io.spring.initializr.metadata;
 
-import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.List;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.core.io.Resource;
 import org.springframework.util.StreamUtils;
 import org.springframework.util.StringUtils;
+
+import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Builder for {@link InitializrMetadata}. Allows to read metadata from any arbitrary
@@ -135,6 +134,15 @@ public final class InitializrMetadataBuilder {
 		if (!StringUtils.hasText(metadata.getVersion().getContent())) {
 			metadata.getVersion().setContent("0.0.1-SNAPSHOT");
 		}
+		if (!StringUtils.hasText(metadata.getJdbcUrl().getContent())) {
+			metadata.getJdbcUrl().setContent("jdbc:mysql://127.0.0.1:3306/xxxx?useUnicode=true&useSSL=false&characterEncoding=utf8");
+		}
+		if (!StringUtils.hasText(metadata.getUserName().getContent())) {
+			metadata.getUserName().setContent("root");
+		}
+		if (!StringUtils.hasText(metadata.getPassword().getContent())) {
+			metadata.getPassword().setContent("root");
+		}
 	}
 
 	/**
@@ -181,6 +189,9 @@ public final class InitializrMetadataBuilder {
 			this.properties.getName().apply(metadata.getName());
 			this.properties.getDescription().apply(metadata.getDescription());
 			this.properties.getPackageName().apply(metadata.getPackageName());
+			this.properties.getJdbcUrl().apply(metadata.getJdbcUrl());
+			this.properties.getUserName().apply(metadata.getUserName());
+			this.properties.getPassword().apply(metadata.getPassword());
 		}
 
 	}

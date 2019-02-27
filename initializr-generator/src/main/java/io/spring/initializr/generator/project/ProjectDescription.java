@@ -16,15 +16,15 @@
 
 package io.spring.initializr.generator.project;
 
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 import io.spring.initializr.generator.buildsystem.BuildSystem;
 import io.spring.initializr.generator.buildsystem.Dependency;
 import io.spring.initializr.generator.language.Language;
 import io.spring.initializr.generator.packaging.Packaging;
 import io.spring.initializr.generator.version.Version;
+
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Description of a project to generate.
@@ -56,6 +56,12 @@ public class ProjectDescription {
 	private String packageName;
 
 	private String baseDirectory;
+
+	private String jdbcUrl;
+
+	private String userName;
+
+	private String password;
 
 	/**
 	 * Resolve the state of this instance to a {@link ResolvedProjectDescription}.
@@ -161,4 +167,27 @@ public class ProjectDescription {
 		this.baseDirectory = baseDirectory;
 	}
 
+	public String getJdbcUrl() {
+		return jdbcUrl;
+	}
+
+	public void setJdbcUrl(String jdbcUrl) {
+		this.jdbcUrl = jdbcUrl;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
 }

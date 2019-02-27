@@ -5,6 +5,7 @@ import io.spring.initializr.generator.project.ResolvedProjectDescription;
 import io.spring.initializr.start.code.mvc.WebMvcCodeContributor;
 import io.spring.initializr.start.code.mvc.WebMvcCodeCustomizer;
 import io.spring.initializr.start.code.mvc.WebMvcCustomizer;
+import io.spring.initializr.start.code.mybatis.MybatisDaoCodeProjectContributor;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -56,6 +57,11 @@ public class ExtensionSourceCodeConfiguration {
     //     }
     // }
 
+    @Bean
+    public MybatisDaoCodeProjectContributor mybatisDaoCodeProjectContributor(ResolvedProjectDescription projectDescription) {
+        return new MybatisDaoCodeProjectContributor(projectDescription);
+    }
+
 
     @Configuration
     static class WebMvcConfig {
@@ -69,7 +75,7 @@ public class ExtensionSourceCodeConfiguration {
 
         @Bean
         public WebMvcCodeContributor webMvcCodeContributor(ObjectProvider<WebMvcCodeCustomizer<?>> webMvcCodeCustomizers) {
-            return new WebMvcCodeContributor( webMvcCodeCustomizers, projectDescription);
+            return new WebMvcCodeContributor(webMvcCodeCustomizers, projectDescription);
         }
 
         @Bean

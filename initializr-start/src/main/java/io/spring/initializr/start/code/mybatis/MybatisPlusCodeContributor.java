@@ -42,6 +42,7 @@ public class MybatisPlusCodeContributor implements MainSourceCodeCustomizer<Type
         mybatisConfig.annotate(Annotation.name("org.mybatis.spring.annotation.MapperScan",
                 builder -> builder.attribute("basePackages", String.class, "this need to be define yourself")));
         customizeMybatisConfig(mybatisConfig);
+
     }
 
     @SuppressWarnings("unchecked")
@@ -53,4 +54,8 @@ public class MybatisPlusCodeContributor implements MainSourceCodeCustomizer<Type
                         mybatisConfig)
                 .invoke((customizer) -> customizer.customize(mybatisConfig));
     }
+
+
+
+
 }

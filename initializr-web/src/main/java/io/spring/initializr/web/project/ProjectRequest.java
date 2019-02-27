@@ -16,10 +16,10 @@
 
 package io.spring.initializr.web.project;
 
+import org.springframework.util.StringUtils;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import org.springframework.util.StringUtils;
 
 /**
  * The base settings of a project request. Only these can be bound by user's input.
@@ -28,161 +28,190 @@ import org.springframework.util.StringUtils;
  */
 public class ProjectRequest {
 
-	private List<String> style = new ArrayList<>();
+    private List<String> style = new ArrayList<>();
 
-	private List<String> dependencies = new ArrayList<>();
+    private List<String> dependencies = new ArrayList<>();
 
-	private String name;
+    private String name;
 
-	private String type;
+    private String type;
 
-	private String description;
+    private String description;
 
-	private String groupId;
+    private String groupId;
 
-	private String artifactId;
+    private String artifactId;
 
-	private String version;
+    private String version;
 
-	private String bootVersion;
+    private String bootVersion;
 
-	private String packaging;
+    private String packaging;
 
-	private String applicationName;
+    private String applicationName;
 
-	private String language;
+    private String language;
 
-	private String packageName;
+    private String packageName;
 
-	private String javaVersion;
+    private String javaVersion;
 
-	// The base directory to create in the archive - no baseDir by default
-	private String baseDir;
+    private String jdbcUrl;
 
-	public List<String> getStyle() {
-		return this.style;
-	}
+    private String userName;
 
-	public void setStyle(List<String> style) {
-		this.style = style;
-	}
+    private String password;
 
-	public List<String> getDependencies() {
-		return this.dependencies;
-	}
+    // The base directory to create in the archive - no baseDir by default
+    private String baseDir;
 
-	public void setDependencies(List<String> dependencies) {
-		this.dependencies = dependencies;
-	}
+    public List<String> getStyle() {
+        return this.style;
+    }
 
-	public String getName() {
-		return this.name;
-	}
+    public void setStyle(List<String> style) {
+        this.style = style;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public List<String> getDependencies() {
+        return this.dependencies;
+    }
 
-	public String getType() {
-		return this.type;
-	}
+    public void setDependencies(List<String> dependencies) {
+        this.dependencies = dependencies;
+    }
 
-	public void setType(String type) {
-		this.type = type;
-	}
+    public String getName() {
+        return this.name;
+    }
 
-	public String getDescription() {
-		return this.description;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public String getType() {
+        return this.type;
+    }
 
-	public String getGroupId() {
-		return this.groupId;
-	}
+    public void setType(String type) {
+        this.type = type;
+    }
 
-	public void setGroupId(String groupId) {
-		this.groupId = groupId;
-	}
+    public String getDescription() {
+        return this.description;
+    }
 
-	public String getArtifactId() {
-		return this.artifactId;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public void setArtifactId(String artifactId) {
-		this.artifactId = artifactId;
-	}
+    public String getGroupId() {
+        return this.groupId;
+    }
 
-	public String getVersion() {
-		return this.version;
-	}
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
+    }
 
-	public void setVersion(String version) {
-		this.version = version;
-	}
+    public String getArtifactId() {
+        return this.artifactId;
+    }
 
-	public String getBootVersion() {
-		return this.bootVersion;
-	}
+    public void setArtifactId(String artifactId) {
+        this.artifactId = artifactId;
+    }
 
-	public void setBootVersion(String bootVersion) {
-		this.bootVersion = bootVersion;
-	}
+    public String getVersion() {
+        return this.version;
+    }
 
-	public String getPackaging() {
-		return this.packaging;
-	}
+    public void setVersion(String version) {
+        this.version = version;
+    }
 
-	public void setPackaging(String packaging) {
-		this.packaging = packaging;
-	}
+    public String getBootVersion() {
+        return this.bootVersion;
+    }
 
-	public String getApplicationName() {
-		return this.applicationName;
-	}
+    public void setBootVersion(String bootVersion) {
+        this.bootVersion = bootVersion;
+    }
 
-	public void setApplicationName(String applicationName) {
-		this.applicationName = applicationName;
-	}
+    public String getPackaging() {
+        return this.packaging;
+    }
 
-	public String getLanguage() {
-		return this.language;
-	}
+    public void setPackaging(String packaging) {
+        this.packaging = packaging;
+    }
 
-	public void setLanguage(String language) {
-		this.language = language;
-	}
+    public String getApplicationName() {
+        return this.applicationName;
+    }
 
-	public String getPackageName() {
-		if (StringUtils.hasText(this.packageName)) {
-			return this.packageName;
-		}
-		if (StringUtils.hasText(this.groupId) && StringUtils.hasText(this.artifactId)) {
-			return getGroupId() + "." + getArtifactId();
-		}
-		return null;
-	}
+    public void setApplicationName(String applicationName) {
+        this.applicationName = applicationName;
+    }
 
-	public void setPackageName(String packageName) {
-		this.packageName = packageName;
-	}
+    public String getLanguage() {
+        return this.language;
+    }
 
-	public String getJavaVersion() {
-		return this.javaVersion;
-	}
+    public void setLanguage(String language) {
+        this.language = language;
+    }
 
-	public void setJavaVersion(String javaVersion) {
-		this.javaVersion = javaVersion;
-	}
+    public String getPackageName() {
+        if (StringUtils.hasText(this.packageName)) {
+            return this.packageName;
+        }
+        if (StringUtils.hasText(this.groupId) && StringUtils.hasText(this.artifactId)) {
+            return getGroupId() + "." + getArtifactId();
+        }
+        return null;
+    }
 
-	public String getBaseDir() {
-		return this.baseDir;
-	}
+    public void setPackageName(String packageName) {
+        this.packageName = packageName;
+    }
 
-	public void setBaseDir(String baseDir) {
-		this.baseDir = baseDir;
-	}
+    public String getJavaVersion() {
+        return this.javaVersion;
+    }
 
+    public void setJavaVersion(String javaVersion) {
+        this.javaVersion = javaVersion;
+    }
+
+    public String getBaseDir() {
+        return this.baseDir;
+    }
+
+    public void setBaseDir(String baseDir) {
+        this.baseDir = baseDir;
+    }
+
+    public String getJdbcUrl() {
+        return jdbcUrl;
+    }
+
+    public void setJdbcUrl(String jdbcUrl) {
+        this.jdbcUrl = jdbcUrl;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }

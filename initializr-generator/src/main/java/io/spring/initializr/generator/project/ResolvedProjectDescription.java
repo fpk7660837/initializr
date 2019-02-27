@@ -58,6 +58,12 @@ public final class ResolvedProjectDescription {
 
     private final String baseDirectory;
 
+    private final String jdbcUrl;
+
+    private final String userName;
+
+    private final String password;
+
     public ResolvedProjectDescription(ProjectDescription description) {
         this.platformVersion = description.getPlatformVersion();
         this.buildSystem = description.getBuildSystem();
@@ -73,6 +79,9 @@ public final class ResolvedProjectDescription {
         Map<String, Dependency> requestedDependencies = new LinkedHashMap<>(
                 description.getRequestedDependencies());
         this.requestedDependencies = Collections.unmodifiableMap(requestedDependencies);
+        this.jdbcUrl = description.getJdbcUrl();
+        this.userName = description.getUserName();
+        this.password = description.getPassword();
     }
 
     private String getPackageName(ProjectDescription description) {
@@ -136,6 +145,18 @@ public final class ResolvedProjectDescription {
 
     public String getModuleName(String suffix) {
         return this.artifactId + "-" + suffix;
+    }
+
+    public String getJdbcUrl() {
+        return jdbcUrl;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     public String getPackageName(String suffix) {

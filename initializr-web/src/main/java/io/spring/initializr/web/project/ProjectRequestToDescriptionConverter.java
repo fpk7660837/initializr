@@ -16,9 +16,6 @@
 
 package io.spring.initializr.web.project;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import io.spring.initializr.generator.buildsystem.BuildSystem;
 import io.spring.initializr.generator.language.Language;
 import io.spring.initializr.generator.packaging.Packaging;
@@ -29,8 +26,10 @@ import io.spring.initializr.metadata.DefaultMetadataElement;
 import io.spring.initializr.metadata.Dependency;
 import io.spring.initializr.metadata.InitializrMetadata;
 import io.spring.initializr.metadata.Type;
-
 import org.springframework.util.StringUtils;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Validates a {@link ProjectRequest} and creates a {@link ProjectDescription} from it.
@@ -64,6 +63,9 @@ public class ProjectRequestToDescriptionConverter {
 		resolvedDependencies
 				.forEach((dependency) -> description.addDependency(dependency.getId(),
 						MetadataBuildItemMapper.toDependency(dependency)));
+		description.setJdbcUrl(request.getJdbcUrl());
+		description.setUserName(request.getUserName());
+		description.setPassword(request.getPassword());
 		return description;
 	}
 
